@@ -47,7 +47,7 @@ public class OdmHealthCheckJob {
 
         } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException e) {
             logger.info("[CRON JOB] odmHealthChecking: ODM ({}) Health Checking 發生錯誤, 錯誤訊息: {}",
-					environment.getProperty("spring.sms.phoneNum"),
+					environment.getProperty("odm.health.check.origin"),
 					e.getMessage());
 		}
 

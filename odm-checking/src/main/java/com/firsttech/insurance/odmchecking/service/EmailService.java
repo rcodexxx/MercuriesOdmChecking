@@ -52,8 +52,8 @@ public class EmailService {
             mailSender.send(mimeMessage);
 
             logger.info("[EmailService] Sending Email successful");
-        }
-        catch (MessagingException e) {
+            isSuccess = true;
+        } catch (MessagingException e) {
             logger.info("[EmailService] Sending Email failed, error message is : " + e.getMessage());
         }
 
