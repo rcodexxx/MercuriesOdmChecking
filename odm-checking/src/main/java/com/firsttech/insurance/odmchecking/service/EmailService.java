@@ -40,7 +40,7 @@ public class EmailService {
             // 設定寄件人
             helper.setFrom(sender + "@" + mailHost);
             // 設定收件人
-            helper.setTo(recipients);
+            helper.setTo(recipients.split(";"));
             // 信件主旨
             helper.setSubject("ODM 未正常運作請盡快協助處理");
 //            Context context = new Context(LocaleContextHolder.getLocale());
