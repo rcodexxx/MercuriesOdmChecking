@@ -32,7 +32,7 @@ public class OdmHealthCheckJob {
 	@Autowired
 	private EmailService emailService;
 	
-	@Scheduled(cron = "0 0/5 * * * ?")
+	@Scheduled(cron = "0 0/10 * * * ?")
 	public void odmHealthChecking() {
 		boolean isAlive = false;
 		logger.info("[CRON JOB] odmHealthChecking: start to do health checking for ODM");
@@ -42,13 +42,8 @@ public class OdmHealthCheckJob {
             HttpResponse response = HttpUtil.httpRequestGet(url, new HashMap<>());
 			String returnBody = IOUtils.toString(response.getEntity().getContent(), "UTF-8");
 			int statusCode = response.getStatusLine().getStatusCode();
-			if (statusCode == HttpStatus.OK.value()) {
-				isAlive = true;
-				logger.info("[CRON JOB] odmHealthChecking: ODM is working: {}", returnBody);
-			} else {
-				logger.info("[CRON JOB] odmHealthChecking: ODM is NOT working: {}", returnBody);
-
-			}
+			isAlive = true;
+			logger.info("[CRON JOB] odmHealthChecking: ODM is working => statusCode: {}, body: {}", statusCode, returnBody);
 
         } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException e) {
             logger.info("[CRON JOB] odmHealthChecking: ODM ({}) Health Checking 發生錯誤, 錯誤訊息: {}",
@@ -57,8 +52,9 @@ public class OdmHealthCheckJob {
 		}
 
 		if (!isAlive) {
-			boolean isSMSSuccess = smsService.sendSMS();
-			logger.info("[CRON JOB] 提醒簡訊發送結果: {}", isSMSSuccess ? "成功" : "失敗");
+//			boolean isSMSSuccess = smsService.sendSMS();
+//			logger.info("[CRON JOB] 提醒簡訊發送結果: {}", isSMSSuccess ? "成功" : "失敗");
+			
 			boolean isEmailSuccess = emailService.sendMail();
 			logger.info("[CRON JOB] 提醒EMAIL發送結果: {}", isEmailSuccess ? "成功" : "失敗");
 		}
