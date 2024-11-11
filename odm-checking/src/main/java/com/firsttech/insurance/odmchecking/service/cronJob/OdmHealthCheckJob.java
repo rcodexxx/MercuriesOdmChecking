@@ -53,11 +53,11 @@ public class OdmHealthCheckJob {
 		}
 
 		if (!isAlive) {
-//			boolean isSMSSuccess = smsService.sendSMS();
-//			logger.info("[CRON JOB] 提醒簡訊發送結果: {}", isSMSSuccess ? "成功" : "失敗");
-			
 			boolean isEmailSuccess = emailService.sendMail();
 			logger.info("[CRON JOB] 提醒EMAIL發送結果: {}", isEmailSuccess ? "成功" : "失敗");
+			
+			boolean isSMSSuccess = smsService.sendSMS();
+			logger.info("[CRON JOB] 提醒簡訊發送結果: {}", isSMSSuccess ? "成功" : "失敗");
 		}
 
 		logger.info("[CRON JOB] health checking for ODM is finished");
