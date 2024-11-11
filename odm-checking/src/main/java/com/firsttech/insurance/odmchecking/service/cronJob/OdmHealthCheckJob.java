@@ -4,6 +4,8 @@ import com.firsttech.insurance.odmchecking.service.EmailService;
 import com.firsttech.insurance.odmchecking.service.SmsService;
 import com.firsttech.insurance.odmchecking.service.utils.HttpUtil;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -16,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpStatus;
 
 
 @Service
@@ -38,7 +39,7 @@ public class OdmHealthCheckJob {
 		logger.info("[CRON JOB] odmHealthChecking: start to do health checking for ODM");
         try {
 
-			String url = environment.getProperty("odm.health.check.origin");
+			String url = this.getResUrl();
             HttpResponse response = HttpUtil.httpRequestGet(url, new HashMap<>());
 			String returnBody = IOUtils.toString(response.getEntity().getContent(), "UTF-8");
 			int statusCode = response.getStatusLine().getStatusCode();
@@ -61,4 +62,45 @@ public class OdmHealthCheckJob {
 
 		logger.info("[CRON JOB] health checking for ODM is finished");
     }
+	
+	public String getResUrl() {
+		String currentIP = this.getCurrentIP();
+		String prodMiddle1IP = environment.getProperty("odm.healthcheck.middle.prod.ip1");
+		String prodMiddle2IP = environment.getProperty("odm.healthcheck.middle.prod.ip2");
+		String uatMiddle1IP = environment.getProperty("odm.healthcheck.middle.uat.ip1");
+		String uatMiddle2IP = environment.getProperty("odm.healthcheck.middle.uat.ip2");
+		
+		String prodOdm1Url = environment.getProperty("odm.healthcheck.target.prod.url1");
+		String prodOdm2Url = environment.getProperty("odm.healthcheck.target.prod.url2");
+		String uatOdmUrl = environment.getProperty("odm.healthcheck.target.uat.url");
+		
+		if (currentIP == null) {
+			logger.info("cannot get a correct current IP ...");
+			return prodOdm1Url;
+		} 
+		
+		if (currentIP.equals(prodMiddle1IP)){
+			return prodOdm1Url;
+		} else if (currentIP.equals(prodMiddle2IP)){
+			return prodOdm2Url;
+		} else if (currentIP.equals(uatMiddle1IP) || currentIP.equals(uatMiddle2IP)){
+			return uatOdmUrl;
+		} else {
+			logger.info("there is no correct mapping target ODM url ...");
+			return prodOdm1Url;
+		}
+	}
+	
+	public String getCurrentIP() {
+		String ipStr = null;
+		try {
+			String hostname = InetAddress.getLocalHost().getHostName();
+			InetAddress address = InetAddress.getByName(hostname);
+			ipStr = address.getHostAddress();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		logger.info("get a Current IP: {}", ipStr);
+		return ipStr;
+	}
 }
