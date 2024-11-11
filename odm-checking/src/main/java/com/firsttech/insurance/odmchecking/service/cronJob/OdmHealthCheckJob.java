@@ -64,6 +64,7 @@ public class OdmHealthCheckJob {
     }
 	
 	public String getResUrl() {
+		
 		String currentIP = this.getCurrentIP();
 		String prodMiddle1IP = environment.getProperty("odm.healthcheck.middle.prod.ip1");
 		String prodMiddle2IP = environment.getProperty("odm.healthcheck.middle.prod.ip2");
@@ -74,21 +75,25 @@ public class OdmHealthCheckJob {
 		String prodOdm2Url = environment.getProperty("odm.healthcheck.target.prod.url2");
 		String uatOdmUrl = environment.getProperty("odm.healthcheck.target.uat.url");
 		
+		String rtnUrl = prodOdm1Url;
+		
 		if (currentIP == null) {
-			logger.info("cannot get a correct current IP ...");
-			return prodOdm1Url;
+			logger.info("[CRON JOB] cannot get a correct current IP ...");
+			return rtnUrl;
 		} 
 		
 		if (currentIP.equals(prodMiddle1IP)){
-			return prodOdm1Url;
+			rtnUrl = prodOdm1Url;
 		} else if (currentIP.equals(prodMiddle2IP)){
-			return prodOdm2Url;
+			rtnUrl = prodOdm2Url;
 		} else if (currentIP.equals(uatMiddle1IP) || currentIP.equals(uatMiddle2IP)){
-			return uatOdmUrl;
+			rtnUrl = uatOdmUrl;
 		} else {
-			logger.info("there is no correct mapping target ODM url ...");
-			return prodOdm1Url;
+			logger.info("[CRON JOB] there is no correct mapping target ODM url ...");
+			rtnUrl = prodOdm1Url;
 		}
+		logger.info("[CRON JOB] health checking url is: {}", rtnUrl);
+		return rtnUrl;
 	}
 	
 	public String getCurrentIP() {
@@ -100,7 +105,7 @@ public class OdmHealthCheckJob {
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-		logger.info("get a Current IP: {}", ipStr);
+		logger.info("[CRON JOB] get a Current IP: {}", ipStr);
 		return ipStr;
 	}
 }
