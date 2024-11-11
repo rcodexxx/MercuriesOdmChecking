@@ -16,7 +16,7 @@ public class EmailController {
 
     @GetMapping("/send-email")
     public String sendEmail() {
-        emailService.sendMail();
-        return "Email sent successfully";
+        boolean isSuccess = emailService.sendMail();
+        return "Email sent result: " + (isSuccess ? "SUCCESSFUL" : "FAIL");
     }
 }
