@@ -55,8 +55,8 @@ public class SmsService {
         String[] phoneNumsArray = phoneNums.split(";");
         for (String phoneNum : phoneNumsArray) {
         	logger.info("============> phoneNum: " + phoneNum);
-//        	boolean isThisSuccess = this.doSending(phoneNum);
-//        	logger.info("簡訊寄送({}) 發送結果: {}", phoneNum, isThisSuccess ? "成功" : "失敗");
+        	boolean isThisSuccess = this.doSending(phoneNum);
+        	logger.info("簡訊寄送({}) 發送結果: {}", phoneNum, isThisSuccess ? "成功" : "失敗");
         }
         
     }
