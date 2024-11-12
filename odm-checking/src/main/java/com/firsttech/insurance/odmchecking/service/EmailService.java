@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import com.firsttech.insurance.odmchecking.service.utils.HttpUtil;
+
 //import org.thymeleaf.context.Context;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,6 +23,9 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
+    @Value("${spring.mail.isEnabled}")
+    private String isEnabled;
+    
     @Value("${spring.mail.host}")
     private String mailHost;
 
@@ -32,6 +38,18 @@ public class EmailService {
     private final static Logger logger = LoggerFactory.getLogger(EmailService.class);
 
     public boolean sendMail() {
+    	// 檢核
+        if (isEnabled.isEmpty() || !isEnabled.equals("Y")) {
+        	logger.info("未於 properties 檔案中啟用 email 服務");
+        	return false;
+        }
+        
+        if (recipients.isEmpty() || recipients.length() == 0) {
+        	logger.info("未於 properties 檔案中設定收件人的email");
+        	return false;
+        }
+        
+    	// 開始寄信
         boolean isSuccess = false;
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -63,9 +81,10 @@ public class EmailService {
     private String getODMNotWorkingEmailContent () {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentDateTimeStr = dateFormat.format(new Date());
-
+        String currentIP = HttpUtil.getCurrentIP();
+        
         StringBuilder sb = new StringBuilder();
-        sb.append("親愛的ODM管理者 您好, 監控排程於").append(currentDateTimeStr)
+        sb.append("親愛的ODM管理者 您好, 從").append(currentIP).append("監控排程於").append(currentDateTimeStr)
                 .append("發現 ODM 有異常無法連通狀況，請盡快協助確認處理，謝謝");
         return sb.toString();
     }
