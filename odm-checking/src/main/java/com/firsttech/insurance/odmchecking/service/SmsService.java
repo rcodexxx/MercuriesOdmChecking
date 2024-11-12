@@ -147,8 +147,8 @@ public class SmsService {
         String currentIP = HttpUtil.getCurrentIP();
         
         StringBuilder sb = new StringBuilder();
-        sb.append("親愛的ODM管理者 您好, 從").append(currentIP).append("監控排程於").append(currentDateTimeStr)
-                .append("發現 ODM 有異常無法連通狀況，請盡快協助確認處理，謝謝");
+        sb.append("親愛的ODM管理者您好，從").append(currentIP).append("監控排程於").append(currentDateTimeStr)
+                .append("發現ODM有異常無法連通狀況，請盡快協助確認處理，謝謝");
         return sb.toString();
     }
 
