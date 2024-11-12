@@ -1,18 +1,21 @@
 package com.firsttech.insurance.odmchecking.service;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import com.firsttech.insurance.odmchecking.service.utils.HttpUtil;
-
-import javax.net.ssl.HttpsURLConnection;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class SmsService {
@@ -57,42 +60,86 @@ public class SmsService {
     
     private boolean doSending (String phoneNum) {
     	boolean isSuccess = false;
-    	StringBuilder params = new StringBuilder();
-        params.append("username=").append(userName);
-        params.append("&password=").append(password);
-        params.append("&dstaddr=").append(phoneNum);
-        params.append("&smbody=").append(this.getODMNotWorkingSmsContent());
-
-        URL url = null;
-        HttpsURLConnection urlConnection = null;
-        DataOutputStream dos = null;
-
-        try {
-            url = new URL(smsUrl);
-            urlConnection = (HttpsURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            urlConnection.setDoOutput(true);
-            urlConnection.connect();
-
-            dos = new DataOutputStream(urlConnection.getOutputStream());
-            dos.write(params.toString().getBytes("utf-8"));
-            isSuccess = true;
-        } catch (IOException e) {
-            logger.info(e.getMessage());
-        } finally {
-            if (dos != null) {
-                try {
-                    dos.flush();
-                    dos.close();
-                } catch (IOException e) {
-                    logger.info(e.getMessage());
-                }
-            }
-        }
-        
-        return isSuccess;
+    	
+    	try {
+    		HttpResponse response = HttpUtil.httpRequestPost(
+    				smsUrl + this.getParamsUrl(phoneNum), 
+    				phoneNum, 
+    				this.getSMSHeaderMap());
+    		String returnBody = IOUtils.toString(response.getEntity().getContent(), "UTF-8");
+			int statusCode = response.getStatusLine().getStatusCode();
+			
+			logger.info("SMS sending response => statusCode: {}, body: {}", statusCode, returnBody);
+    		if (statusCode == HttpStatus.OK.value()) {
+    			isSuccess = true;
+    		}
+    		
+		} catch (KeyManagementException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (KeyStoreException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	
+    	return isSuccess;
     }
+    
+    private String getParamsUrl (String phoneNum) {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("&username=").append(userName);
+    	sb.append("&password=").append(password);
+    	sb.append("&dstaddr=").append(phoneNum);
+    	sb.append("&smbody=").append(this.getODMNotWorkingSmsContent());
+    	return sb.toString();
+    }
+    
+    private Map<String, String> getSMSHeaderMap(){
+    	Map<String, String> map = new HashMap<>();
+    	map.put("Content-Type", "application/x-www-form-urlencoded");
+    	return map;
+    }
+    
+//    private boolean doSendingOrigin (String phoneNum) {
+//    	boolean isSuccess = false;
+//    	StringBuilder params = new StringBuilder();
+//        params.append("username=").append(userName);
+//        params.append("&password=").append(password);
+//        params.append("&dstaddr=").append(phoneNum);
+//        params.append("&smbody=").append(this.getODMNotWorkingSmsContent());
+//
+//        URL url = null;
+//        HttpsURLConnection urlConnection = null;
+//        DataOutputStream dos = null;
+//
+//        try {
+//            url = new URL(smsUrl);
+//            urlConnection = (HttpsURLConnection) url.openConnection();
+//            urlConnection.setRequestMethod("POST");
+//            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+//            urlConnection.setDoOutput(true);
+//            urlConnection.connect();
+//
+//            dos = new DataOutputStream(urlConnection.getOutputStream());
+//            dos.write(params.toString().getBytes("utf-8"));
+//            isSuccess = true;
+//        } catch (IOException e) {
+//            logger.info(e.getMessage());
+//        } finally {
+//            if (dos != null) {
+//                try {
+//                    dos.flush();
+//                    dos.close();
+//                } catch (IOException e) {
+//                    logger.info(e.getMessage());
+//                }
+//            }
+//        }
+//        
+//        return isSuccess;
+//    }
 
     private String getODMNotWorkingSmsContent () {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
