@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.firsttech.insurance.odmchecking.service.utils.HttpUtil;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -16,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.net.URLEncoder;
 
 @Service
 public class SmsService {
@@ -87,12 +89,14 @@ public class SmsService {
     	return isSuccess;
     }
     
-    private String getParamsUrl (String phoneNum) {
+    private String getParamsUrl (String phoneNum) throws UnsupportedEncodingException {
+    	String encodedContents = URLEncoder.encode(this.getODMNotWorkingSmsContent(), "UTF-8");
+    	
     	StringBuilder sb = new StringBuilder();
     	sb.append("&username=").append(userName);
     	sb.append("&password=").append(password);
     	sb.append("&dstaddr=").append(phoneNum);
-    	sb.append("&smbody=").append(this.getODMNotWorkingSmsContent());
+    	sb.append("&smbody=").append(encodedContents);
     	return sb.toString();
     }
     
