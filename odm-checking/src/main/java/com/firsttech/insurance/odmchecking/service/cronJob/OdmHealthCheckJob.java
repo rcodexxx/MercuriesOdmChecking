@@ -32,7 +32,7 @@ public class OdmHealthCheckJob {
 	@Autowired
 	private EmailService emailService;
 	
-	@Scheduled(cron = "0 0/10 * * * ?")
+	@Scheduled(cron = "0 0/5 * * * ?")
 	public void odmHealthChecking() {
 		boolean isAlive = false;
 		logger.info("[CRON JOB] odmHealthChecking: start to do health checking for ODM");
