@@ -115,17 +115,17 @@ public class SmsService {
     
     private boolean doSending (String phoneNum) {
     	boolean isSuccess = false;
-    	StringBuilder params = new StringBuilder();
-        params.append("&username=").append(userName);
-        params.append("&password=").append(password);
-        params.append("&dstaddr=").append(phoneNum);
-        params.append("&smbody=").append(this.getODMNotWorkingSmsContent());
-
         URL url = null;
         HttpsURLConnection urlConnection = null;
         DataOutputStream dos = null;
 
         try {
+        	StringBuilder params = new StringBuilder();
+            params.append("&username=").append(userName);
+            params.append("&password=").append(password);
+            params.append("&dstaddr=").append(phoneNum);
+            params.append("&smbody=").append(this.getODMNotWorkingSmsContent());
+            
             url = new URL(smsUrl);
             urlConnection = (HttpsURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
@@ -152,7 +152,7 @@ public class SmsService {
         return isSuccess;
     }
 
-    private String getODMNotWorkingSmsContent () {
+    private String getODMNotWorkingSmsContent () throws UnsupportedEncodingException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentDateTimeStr = dateFormat.format(new Date());
         String currentIP = HttpUtil.getCurrentIP();
@@ -160,7 +160,7 @@ public class SmsService {
         StringBuilder sb = new StringBuilder();
         sb.append("親愛的ODM管理者您好，從").append(currentIP).append("監控排程於").append(currentDateTimeStr)
                 .append("發現ODM有異常無法連通狀況，請盡快協助確認處理，謝謝");
-        return sb.toString();
+        return URLEncoder.encode(sb.toString(), "UTF-8");
     }
 
 }
