@@ -38,6 +38,11 @@ public class OdmHealthCheckJob {
 	private HttpUtil httpUtil = new HttpUtil();
 	
 	@Scheduled(cron = "0 0/5 * * * ?")
+	public void testing () {
+		System.out.println("1111111111111111111111");
+	}
+	
+	@Scheduled(cron = "0 0/5 * * * ?")
 	public void odmHealthChecking() {
 		boolean isAlive = false;
 		System.out.println("[CRON JOB] odmHealthChecking: start to do health checking for ODM");
