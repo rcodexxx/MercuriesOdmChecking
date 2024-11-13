@@ -1,5 +1,5 @@
 local.ip=172.16.9.92
-target.odm.url=http://172.16.9.90:9081/res/login.jsf
+target.odm.url=http://172.16.9.90:9081/DecisionService/rest/NBRulesApp/4.0/NBRulesRuleset/4.8
 mail.isEnabled=Y
 mail.alert.recipients=alan.yc.liu@mail.mli.com.tw
 sms.isEnabled=Y
