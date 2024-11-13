@@ -11,7 +11,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,12 +35,7 @@ public class OdmHealthCheckJob {
 	private EmailService emailService;
 	
 	private HttpUtil httpUtil = new HttpUtil();
-	
-	@Scheduled(cron = "0 0/5 * * * ?")
-	public void testing () {
-		System.out.println("1111111111111111111111");
-	}
-	
+		
 	@Scheduled(cron = "0 0/5 * * * ?")
 	public void odmHealthChecking() {
 		boolean isAlive = false;
