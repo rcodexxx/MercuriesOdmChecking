@@ -14,14 +14,12 @@ import java.util.Map;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 
 
-@Service
 public class OdmHealthCheckJob {
 	private final static Logger logger = LoggerFactory.getLogger(OdmHealthCheckJob.class);
 	
