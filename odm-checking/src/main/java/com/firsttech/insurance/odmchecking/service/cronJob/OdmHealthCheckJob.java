@@ -61,13 +61,13 @@ public class OdmHealthCheckJob {
         	headerMap.put("Content-type", "application/json");
         	
             HttpResponse response = HttpUtil.httpRequestPost(odmCheckUrl, nbTestJson, headerMap);
-			String returnBody = IOUtils.toString(response.getEntity().getContent(), "UTF-8");
+//			String returnBody = IOUtils.toString(response.getEntity().getContent(), "UTF-8");
 			int statusCode = response.getStatusLine().getStatusCode();
 			
 			if (statusCode == HttpStatus.OK.value()) {
 				isAlive = true;
 			} 
-			System.out.println("[CRON JOB] odmHealthChecking: ODM checking result => statusCode: " + statusCode + ", body: " + returnBody);
+			System.out.println("[CRON JOB] odmHealthChecking: ODM checking result => statusCode: " + statusCode);
 
         } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException e) {
             System.out.println("[CRON JOB] odmHealthChecking: ODM (" + odmCheckUrl + ") Health Checking 發生錯誤, 錯誤訊息: " + e.getMessage());
