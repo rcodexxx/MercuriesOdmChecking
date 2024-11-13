@@ -1,5 +1,5 @@
 local.ip=172.16.18.178
-target.odm.url=http://172.16.18.175:9081/DecisionService/rest/NBRulesApp/4.0/NBRulesRuleset/4.8
+target.odm.url=http://172.16.18.175:9081/DecisionService/rest/NBRulesApp/NBRulesRuleset
 mail.isEnabled=Y
 mail.alert.recipients=alan.yc.liu@mail.mli.com.tw
 sms.isEnabled=Y
