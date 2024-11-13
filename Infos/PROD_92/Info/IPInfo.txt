@@ -1,4 +1,6 @@
 local.ip=172.16.9.92
 target.odm.url=http://172.16.9.90:9081/res/login.jsf
+mail.isEnabled=Y
 mail.alert.recipients=alan.yc.liu@mail.mli.com.tw
+sms.isEnabled=Y
 sms.phoneNums=0909572091
