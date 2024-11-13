@@ -29,10 +29,10 @@ import org.apache.http.ssl.TrustStrategy;
 public final class HttpUtil {
 
 
-    private HttpUtil() {
+    public HttpUtil() {
     }
 
-    public static HttpResponse httpRequestGet(String inputUri, Map<String, String> headers) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
+    public HttpResponse httpRequestGet(String inputUri, Map<String, String> headers) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
         HttpGet request = new HttpGet(inputUri);
         for (String key : headers.keySet()) {
             request.setHeader(key, headers.get(key));
@@ -44,7 +44,7 @@ public final class HttpUtil {
 
     }
 
-    public static HttpResponse httpRequestPost(String inputUri, String inputPayload, Map<String, String> headers) throws IOException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
+    public HttpResponse httpRequestPost(String inputUri, String inputPayload, Map<String, String> headers) throws IOException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
         HttpPost request = new HttpPost(inputUri);
         for (String key : headers.keySet()) {
             request.setHeader(key, headers.get(key));
@@ -56,7 +56,7 @@ public final class HttpUtil {
         return httpClient.execute(request, httpContext);
     }
 
-    private static Registry<ConnectionSocketFactory> getRegistry()
+    private Registry<ConnectionSocketFactory> getRegistry()
         throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
         SSLContext sslContext = null;
         sslContext = SSLContexts.custom().loadTrustMaterial(null, new TrustStrategy() {
@@ -75,7 +75,7 @@ public final class HttpUtil {
             .register("https", sslConnectionSocketFactory).build();
     }
 
-    private static CloseableHttpClient getHttpClient() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+    private CloseableHttpClient getHttpClient() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
         PoolingHttpClientConnectionManager clientConnectionManager = new PoolingHttpClientConnectionManager(getRegistry());
         clientConnectionManager.setMaxTotal(1000);
         clientConnectionManager.setDefaultMaxPerRoute(20);

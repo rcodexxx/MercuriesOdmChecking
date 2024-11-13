@@ -40,6 +40,8 @@ public class SmsService {
     @Value("${current.ip.info}")
     private String infoFilePath;
     
+    private HttpUtil httpUtil = new HttpUtil();
+    
     public void sendSMS () {
     	// 取得設定檔資訊
     	Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
@@ -72,7 +74,7 @@ public class SmsService {
     	boolean isSuccess = false;
     	
     	try {
-    		HttpResponse response = HttpUtil.httpRequestPost(
+    		HttpResponse response = httpUtil.httpRequestPost(
     				smsUrl + this.getParamsUrl(phoneNum), 
     				phoneNum, 
     				this.getSMSHeaderMap());

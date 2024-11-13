@@ -35,6 +35,8 @@ public class OdmHealthCheckJob {
 	@Autowired
 	private EmailService emailService;
 	
+	private HttpUtil httpUtil = new HttpUtil();
+	
 	@Scheduled(cron = "0 0/5 * * * ?")
 	public void odmHealthChecking() {
 		boolean isAlive = false;
@@ -60,7 +62,7 @@ public class OdmHealthCheckJob {
         	headerMap.put("Accept", "application/json");
         	headerMap.put("Content-type", "application/json");
         	
-            HttpResponse response = HttpUtil.httpRequestPost(odmCheckUrl, nbTestJson, headerMap);
+            HttpResponse response = httpUtil.httpRequestPost(odmCheckUrl, nbTestJson, headerMap);
 //			String returnBody = IOUtils.toString(response.getEntity().getContent(), "UTF-8");
 			int statusCode = response.getStatusLine().getStatusCode();
 			
