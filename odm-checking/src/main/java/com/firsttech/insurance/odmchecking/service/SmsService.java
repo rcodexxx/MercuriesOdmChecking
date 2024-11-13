@@ -25,8 +25,8 @@ public class SmsService {
 
     private final static Logger logger = LoggerFactory.getLogger(SmsService.class);
 
-    @Value("${spring.sms.isEnabled}")
-    private String isEnabled;
+//    @Value("${spring.sms.isEnabled}")
+//    private String isEnabled;
 
     @Value("${spring.sms.username}")
     private String userName;
@@ -41,14 +41,16 @@ public class SmsService {
     private String infoFilePath;
     
     public void sendSMS () {
+    	// 取得設定檔資訊
+    	Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
+		String phoneNums = infoMap.get("sms.phoneNums");
+		String isEnabled = infoMap.get("sms.isEnabled");
+		
     	// 檢核
         if (isEnabled.isEmpty() || !isEnabled.equals("Y")) {
         	logger.info("未於 properties 檔案中啟用 sms 服務");
         	return;
         }
-        
-		Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
-		String phoneNums = infoMap.get("sms.phoneNums");
         
         if (phoneNums.isEmpty() || phoneNums.length() < 10) {
         	logger.info("未於 info 設定檔案中設定收簡訊人的電話號碼");
@@ -57,6 +59,7 @@ public class SmsService {
         
         // 依收件人電話發送
         String[] phoneNumsArray = phoneNums.split(";");
+        logger.info("phoneNumsArray Num: " + phoneNumsArray.length);
         for (String phoneNum : phoneNumsArray) {
         	logger.info("============> phoneNum: " + phoneNum);
         	boolean isThisSuccess = this.doSending(phoneNum);

@@ -26,8 +26,8 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    @Value("${spring.mail.isEnabled}")
-    private String isEnabled;
+//    @Value("${spring.mail.isEnabled}")
+//    private String isEnabled;
     
     @Value("${spring.mail.host}")
     private String mailHost;
@@ -44,14 +44,16 @@ public class EmailService {
     private final static Logger logger = LoggerFactory.getLogger(EmailService.class);
 
     public boolean sendMail() {
+    	// 取得設定檔資訊
+    	Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
+		String recipients = infoMap.get("mail.alert.recipients");
+		String isEnabled = infoMap.get("mail.isEnabled");
+		
     	// 檢核
         if (isEnabled.isEmpty() || !isEnabled.equals("Y")) {
         	logger.info("未於 properties 檔案中啟用 email 服務");
         	return false;
         }
-        
-        Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
-		String recipients = infoMap.get("mail.alert.recipients");
         
         if (recipients.isEmpty() || recipients.length() == 0) {
         	logger.info("未於 info 設定檔案中設定收件人的email");
