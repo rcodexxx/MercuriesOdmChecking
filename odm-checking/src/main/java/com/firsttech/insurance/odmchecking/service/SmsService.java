@@ -7,9 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import com.firsttech.insurance.odmchecking.service.utils.FileUtil;
 import com.firsttech.insurance.odmchecking.service.utils.HttpUtil;
-
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.KeyManagementException;
@@ -19,10 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.net.ssl.HttpsURLConnection;
-
-import java.net.URL;
 import java.net.URLEncoder;
 
 @Service
@@ -32,9 +27,6 @@ public class SmsService {
 
     @Value("${spring.sms.isEnabled}")
     private String isEnabled;
-    
-    @Value("${spring.sms.phoneNums}")
-    private String phoneNums;
 
     @Value("${spring.sms.username}")
     private String userName;
@@ -45,6 +37,9 @@ public class SmsService {
     @Value("${spring.sms.url}")
     private String smsUrl;
     
+    @Value("${current.ip.info}")
+    private String infoFilePath;
+    
     public void sendSMS () {
     	// 檢核
         if (isEnabled.isEmpty() || !isEnabled.equals("Y")) {
@@ -52,8 +47,11 @@ public class SmsService {
         	return;
         }
         
+		Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
+		String phoneNums = infoMap.get("sms.phoneNums");
+        
         if (phoneNums.isEmpty() || phoneNums.length() < 10) {
-        	logger.info("未於 properties 檔案中設定收簡訊人的電話號碼");
+        	logger.info("未於 info 設定檔案中設定收簡訊人的電話號碼");
         	return;
         }
         
@@ -110,50 +108,12 @@ public class SmsService {
     	map.put("Content-Type", "application/x-www-form-urlencoded");
     	return map;
     }
-    
-//    private boolean doSending (String phoneNum) {
-//    	boolean isSuccess = false;
-//        URL url = null;
-//        HttpsURLConnection urlConnection = null;
-//        DataOutputStream dos = null;
-//
-//        try {
-//        	StringBuilder params = new StringBuilder();
-//            params.append("&username=").append(userName);
-//            params.append("&password=").append(password);
-//            params.append("&dstaddr=").append(phoneNum);
-//            params.append("&smbody=").append(this.getODMNotWorkingSmsContent());
-//            
-//            url = new URL(smsUrl);
-//            urlConnection = (HttpsURLConnection) url.openConnection();
-//            urlConnection.setRequestMethod("POST");
-//            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-//            urlConnection.setDoOutput(true);
-//            urlConnection.connect();
-//
-//            dos = new DataOutputStream(urlConnection.getOutputStream());
-//            dos.write(params.toString().getBytes("utf-8"));
-//            isSuccess = true;
-//        } catch (IOException e) {
-//            logger.info(e.getMessage());
-//        } finally {
-//            if (dos != null) {
-//                try {
-//                    dos.flush();
-//                    dos.close();
-//                } catch (IOException e) {
-//                    logger.info(e.getMessage());
-//                }
-//            }
-//        }
-//        
-//        return isSuccess;
-//    }
 
     private String getODMNotWorkingSmsContent () throws UnsupportedEncodingException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentDateTimeStr = dateFormat.format(new Date());
-        String currentIP = HttpUtil.getCurrentIP();
+        Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
+		String currentIP = infoMap.get("local.ip");
         
         StringBuilder sb = new StringBuilder();
         sb.append("親愛的ODM管理者您好，從").append(currentIP).append("監控排程於").append(currentDateTimeStr)

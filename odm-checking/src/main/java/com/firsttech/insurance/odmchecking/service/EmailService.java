@@ -9,11 +9,14 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import com.firsttech.insurance.odmchecking.service.utils.FileUtil;
 import com.firsttech.insurance.odmchecking.service.utils.HttpUtil;
 
 //import org.thymeleaf.context.Context;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
@@ -32,8 +35,11 @@ public class EmailService {
     @Value("${spring.mail.sender}")
     private String sender;
 
-    @Value("${spring.mail.alert.recipients}")
-    private String recipients;
+//    @Value("${spring.mail.alert.recipients}")
+//    private String recipients;
+    
+    @Value("${current.ip.info}")
+    private String infoFilePath;
 
     private final static Logger logger = LoggerFactory.getLogger(EmailService.class);
 
@@ -44,8 +50,11 @@ public class EmailService {
         	return false;
         }
         
+        Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
+		String recipients = infoMap.get("mail.alert.recipients");
+        
         if (recipients.isEmpty() || recipients.length() == 0) {
-        	logger.info("未於 properties 檔案中設定收件人的email");
+        	logger.info("未於 info 設定檔案中設定收件人的email");
         	return false;
         }
         
@@ -81,7 +90,8 @@ public class EmailService {
     private String getODMNotWorkingEmailContent () {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentDateTimeStr = dateFormat.format(new Date());
-        String currentIP = HttpUtil.getCurrentIP();
+        Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
+		String currentIP = infoMap.get("local.ip");
         
         StringBuilder sb = new StringBuilder();
         sb.append("親愛的ODM管理者 您好, 從").append(currentIP).append("監控排程於").append(currentDateTimeStr)
