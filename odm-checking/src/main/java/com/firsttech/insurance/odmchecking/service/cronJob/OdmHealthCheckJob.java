@@ -37,18 +37,18 @@ public class OdmHealthCheckJob {
 	@Scheduled(cron = "0 0/5 * * * ?")
 	public void odmHealthChecking() {
 		boolean isAlive = false;
-		System.out.println("[CRON JOB] odmHealthChecking: start to do health checking for ODM");
+		logger.info("[CRON JOB] odmHealthChecking: start to do health checking for ODM");
 		
 		// 取得 IP 資訊檔案位置
 		String infoFilePath = environment.getProperty("current.ip.info");
 		Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
 		String currentIP = infoMap.get("local.ip");
 		String odmCheckUrl = infoMap.get("target.odm.url"); // 取得要驗證 ODM 的 URL
-		System.out.println("[CRON JOB] currentIP: " + currentIP);
-		System.out.println("[CRON JOB] odmCheckUrl: " + odmCheckUrl);
+		logger.info("[CRON JOB] currentIP: " + currentIP);
+		logger.info("[CRON JOB] odmCheckUrl: " + odmCheckUrl);
 		
 		if (currentIP == null || odmCheckUrl == null) {
-			System.out.println("無法在設定檔中找到正確的 ODM check 連結");
+			logger.info("無法在設定檔中找到正確的 ODM check 連結");
 			return;
 		}
 		
@@ -66,25 +66,25 @@ public class OdmHealthCheckJob {
 			if (statusCode == HttpStatus.OK.value()) {
 				isAlive = true;
 			} 
-			System.out.println("[CRON JOB] odmHealthChecking: ODM checking result => statusCode: " + statusCode);
+			logger.info("[CRON JOB] odmHealthChecking: ODM checking result => statusCode: " + statusCode);
 
         } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException e) {
-            System.out.println("[CRON JOB] odmHealthChecking: ODM (" + odmCheckUrl + ") Health Checking 發生錯誤, 錯誤訊息: " + e.getMessage());
+            logger.info("[CRON JOB] odmHealthChecking: ODM (" + odmCheckUrl + ") Health Checking 發生錯誤, 錯誤訊息: " + e.getMessage());
 		}
 
         // 如果確認失敗計送通知
 		if (!isAlive) {
 			// email 通知
 			boolean isEmailSuccess = emailService.sendMail();
-			System.out.println("[CRON JOB] 提醒EMAIL發送結果: " + (isEmailSuccess ? "成功" : "失敗"));
+			logger.info("[CRON JOB] 提醒EMAIL發送結果: " + (isEmailSuccess ? "成功" : "失敗"));
 			
 			// 簡訊 通知
 			smsService.sendSMS();
 		} else {
-			System.out.println("[CRON JOB] 於 " + new Date() + "確認 ODM 運作正常");
+			logger.info("[CRON JOB] 於 " + new Date() + "確認 ODM 運作正常");
 		}
 
-		System.out.println("[CRON JOB] health checking for ODM is finished");
+		logger.info("[CRON JOB] health checking for ODM is finished");
     }
 
 }
