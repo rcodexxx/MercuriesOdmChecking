@@ -1,8 +1,10 @@
 package com.firsttech.insurance.odmchecking.service.utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +29,20 @@ public class FileUtil {
 		}
 
 		return lines;
+	}
+	
+	// 寫檔
+	public static boolean writeToFile(List<String> contents, String fileName) {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+			for (String line : contents) {
+				writer.write(line);
+				writer.newLine();
+			}
+			return true;
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
 	}
 	
 	public static Map<String, String> getLocalIpInfo (String infoFilePath) {
