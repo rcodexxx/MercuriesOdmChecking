@@ -15,15 +15,13 @@ public class OdmVersionComparingJob {
 	@Autowired
 	private VersionComparingService versionComparingService;
 	
-	@Scheduled(cron = "0 0/3 * * * ?")
+	@Scheduled(cron = "0 0 13 * * ?")
 	public void doComparing() {
 		
 		DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyyMMdd");
 		LocalDate today = LocalDate.now();
 		String todayStr = today.format(f);
 		String tomorrowStr = today.plusDays(1).format(f);
-		todayStr = "20241015";
-		tomorrowStr = "20241115";
 		logger.info("[CRON JOB] start to do version comparing: {} ~ {}", todayStr, tomorrowStr);
 		versionComparingService.doComparing(todayStr, tomorrowStr);
 	}
