@@ -238,6 +238,11 @@ public class VersionComparingService {
 		String odm9CheckUrl = target.equals("nb") ? reqUrlMap.get(ODM9_CHECK_NB_URL_KEY) : reqUrlMap.get(ODM9_CHECK_TA_URL_KEY);
 		HttpUtil httpUtil = new HttpUtil();
 		ObjectMapper mapper = new ObjectMapper();
+		HttpResponse originResponse = null;
+		Optional<Policy> caseOutPolicy = null;
+		List<String> nodeCode8 = null;
+		List<String> nodeCode9 = null;
+		StringBuilder eachRowSb = null;
 		
 		// d. 讀取今日測試IN案例
 		for (Policy policy : caseInList) {
@@ -246,7 +251,8 @@ public class VersionComparingService {
 			// 	原本的設計沒有 caseIn 對應 到 caseOut的 key, 已詢問 Elvis 就按照時間順序
 			// 	in 的第一筆對應到 out找到的第一筆即可
 			// e. 找到對應的OUT結果JSON資料
-			Optional<Policy> caseOutPolicy = caseOutList.stream()
+			originResponse = null;
+			caseOutPolicy = caseOutList.stream()
                     .filter(outPolicy -> outPolicy.getMappingKey().equals(policy.getMappingKey()))
                     .findFirst();
 			String odm8ResponseContent = null;
@@ -272,10 +278,11 @@ public class VersionComparingService {
 //			}
 			
 			String odm9ResponseContent = null;
+			int statusCode = 0;
 			// f. 呼叫 升級後 ODM9
 			try {
-				HttpResponse originResponse = httpUtil.httpRequestPost(odm9CheckUrl, policy.getJsonStr(), headerMap);
-				int statusCode = originResponse.getStatusLine().getStatusCode();
+				originResponse = httpUtil.httpRequestPost(odm9CheckUrl, policy.getJsonStr(), headerMap);
+				statusCode = originResponse.getStatusLine().getStatusCode();
 				odm9ResponseContent = EntityUtils.toString(originResponse.getEntity(), "UTF-8");
 				if (statusCode >= 200 && statusCode < 300) {
 					logger.info("odm9 SUCCESS with policyNo: {}, status code: {}", policy.getPolicy_no(), statusCode);
@@ -283,12 +290,13 @@ public class VersionComparingService {
 					logger.info("odm9 FAIL with policyNo: {}, status code: {}, return body: {}", policy.getPolicy_no(), statusCode,  odm9ResponseContent);
 				}
 			} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException | IOException e) {
-				e.printStackTrace();
+				logger.info("呼叫 ODM 9 發生錯誤: {}", e.getMessage());
+				logger.info("statusCode: {}, responseBody: {}", statusCode, odm9ResponseContent);
 			}
 			
 			// g. 取得 response 的 核保碼 (noteCode)列表
-			List<String> nodeCode8 = null;
-			List<String> nodeCode9 = null;
+			nodeCode8 = null;
+			nodeCode9 = null;
 			try {
 				
 				if (target.equals("nb")) {
@@ -306,7 +314,7 @@ public class VersionComparingService {
 			}
 			
 			// h. 開始比對
-			StringBuilder eachRowSb = new StringBuilder();
+			eachRowSb = new StringBuilder();
 			String status = "";
 	    	String diff = "";
 	    	
