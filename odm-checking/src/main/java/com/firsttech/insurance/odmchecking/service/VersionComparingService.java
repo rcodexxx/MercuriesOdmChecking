@@ -244,7 +244,7 @@ public class VersionComparingService {
 		
 		HttpUtil httpUtil = new HttpUtil();
 		ObjectMapper mapper = new ObjectMapper();
-		HttpResponse originResponse = null;
+		HttpResponse odmResponse = null;
 		Optional<Policy> caseOutPolicy = null;
 		List<String> nodeCode8 = null;
 		List<String> nodeCode9 = null;
@@ -264,7 +264,7 @@ public class VersionComparingService {
 			// 	原本的設計沒有 caseIn 對應 到 caseOut的 key, 已詢問 Elvis 就按照時間順序
 			// 	in 的第一筆對應到 out找到的第一筆即可
 			// e. 找到對應的OUT結果JSON資料
-			originResponse = null;
+			odmResponse = null;
 			caseOutPolicy = caseOutList.stream()
                     .filter(outPolicy -> outPolicy.getMappingKey().equals(policy.getMappingKey()))
                     .findFirst();
@@ -299,10 +299,10 @@ public class VersionComparingService {
 		            request.setHeader(key, headerMap.get(key));
 		        }
 		        request.setEntity(new StringEntity(policy.getJsonStr(), ContentType.APPLICATION_JSON));
-		        originResponse = httpClient.execute(request, httpContext);
+		        odmResponse = httpClient.execute(request, httpContext);
 		        
-				statusCode = originResponse.getStatusLine().getStatusCode();
-				odm9ResponseContent = EntityUtils.toString(originResponse.getEntity(), "UTF-8");
+				statusCode = odmResponse.getStatusLine().getStatusCode();
+				odm9ResponseContent = EntityUtils.toString(odmResponse.getEntity(), "UTF-8");
 				
 				if (statusCode >= 200 && statusCode < 300) {
 					logger.info("odm9 SUCCESS with policyNo: {}, status code: {}", policy.getPolicy_no(), statusCode);
