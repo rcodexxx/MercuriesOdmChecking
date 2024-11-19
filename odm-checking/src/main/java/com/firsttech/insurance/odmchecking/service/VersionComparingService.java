@@ -31,6 +31,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firsttech.insurance.odmchecking.domain.Policy;
 import com.firsttech.insurance.odmchecking.service.utils.DateUtil;
@@ -272,7 +273,7 @@ public class VersionComparingService {
         
 		// d. 讀取今日測試IN案例
 		for (Policy policy : caseInList) {
-			
+			eachRowSb = new StringBuilder();
 			// 20241118 modify by Peter : 改讀取 caseOut table
 			// 	原本的設計沒有 caseIn 對應 到 caseOut的 key, 已詢問 Elvis 就按照時間順序
 			// 	in 的第一筆對應到 out找到的第一筆即可
@@ -319,6 +320,7 @@ public class VersionComparingService {
 				statusCode = odmResponse.getStatusLine().getStatusCode();
 				odm9ResponseContent = EntityUtils.toString(odmResponse.getEntity(), "UTF-8");
 				
+				
 //				if (statusCode >= 200 && statusCode < 300) {
 //					logger.info("odm9 SUCCESS with policyNo: {}, status code: {}", policy.getPolicy_no(), statusCode);
 //				} else {
@@ -335,17 +337,34 @@ public class VersionComparingService {
 				}
 			}
 			
+			if (odm9ResponseContent == null) {
+				eachRowSb.append("NEW ODM no response with status: ").append(statusCode);
+				bodyList.add(eachRowSb.toString());
+				logger.info("=====> NEW ODM no response with status: {}", statusCode);
+				continue;
+			}
+			
+			if (odm8ResponseContent == null) {
+				eachRowSb.append("DB caseOut no output result");
+				bodyList.add(eachRowSb.toString());
+				logger.info("=====> DB caseOut no output result, {}", policy.toString());
+				continue;
+			}
+			
 			// g. 取得 response 的 核保碼 (noteCode)列表
 			nodeCode8 = null;
 			nodeCode9 = null;
+			JsonNode jNode8 = null;
+			JsonNode jNode9 = null;
 			try {
-				
+				jNode8 = mapper.readTree(odm8ResponseContent);
+				jNode9 = mapper.readTree(odm9ResponseContent);
 				if (target.equals("nb")) {
-        			nodeCode8 = mapper.readTree(odm8ResponseContent).path("outParam").path("resultItem").findValuesAsText("noteCode");
-        			nodeCode9 = mapper.readTree(odm9ResponseContent).path("outParam").path("resultItem").findValuesAsText("noteCode");
+        			nodeCode8 = jNode8.path("outParam").path("resultItem").findValuesAsText("noteCode");
+        			nodeCode9 = jNode9.path("outParam").path("resultItem").findValuesAsText("noteCode");
         		} else {
-        			nodeCode8 = mapper.readTree(odm8ResponseContent).path("VerifyResult").path("resultItem").findValuesAsText("noteCode");
-        			nodeCode9 = mapper.readTree(odm9ResponseContent).path("VerifyResult").path("resultItem").findValuesAsText("noteCode");
+        			nodeCode8 = jNode8.path("VerifyResult").path("resultItem").findValuesAsText("noteCode");
+        			nodeCode9 = jNode9.path("VerifyResult").path("resultItem").findValuesAsText("noteCode");
         		}
 				
 			} catch (JsonMappingException e) {
@@ -355,16 +374,19 @@ public class VersionComparingService {
 			}
 			
 			// h. 開始比對
-			eachRowSb = new StringBuilder();
 			String status = "";
 	    	String diff = "";
 	    	
 	    	if (nodeCode8.isEmpty() || nodeCode8 == null) {
-	    		logger.info("nodeCode8 is empty or null, odm8ResponseContent: {}", odm8ResponseContent);
+	    		String outStr = target.equals("nb") ? 
+	    				jNode8.path("outParam").asText(): jNode8.path("VerifyResult").asText();
+	    		logger.info("nodeCode8 is empty or null, odm8ResponseContent: {}", outStr);
 	    		status = "ERROR";
 	    		diff = "Origin 發生錯誤.";
 			} else if (nodeCode9.isEmpty() || nodeCode9 == null) {
-				logger.info("nodeCode9 is empty or null, odm9ResponseContent: {}", odm9ResponseContent);
+				String outStr = target.equals("nb") ? 
+						jNode9.path("outParam").asText(): jNode9.path("VerifyResult").asText();
+				logger.info("nodeCode9 is empty or null, odm9ResponseContent: {}", outStr);
 				status = "ERROR";
 				diff = "new 發生錯誤.";
 			} else {
