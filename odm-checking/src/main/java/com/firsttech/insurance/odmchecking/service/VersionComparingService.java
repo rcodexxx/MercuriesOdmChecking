@@ -18,6 +18,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -236,6 +241,7 @@ public class VersionComparingService {
 		headerMap.put("Content-type", "application/json");
 //		String odm8CheckUrl = target.equals("nb") ? reqUrlMap.get(ODM8_CHECK_NB_URL_KEY) : reqUrlMap.get(ODM8_CHECK_TA_URL_KEY);
 		String odm9CheckUrl = target.equals("nb") ? reqUrlMap.get(ODM9_CHECK_NB_URL_KEY) : reqUrlMap.get(ODM9_CHECK_TA_URL_KEY);
+		
 		HttpUtil httpUtil = new HttpUtil();
 		ObjectMapper mapper = new ObjectMapper();
 		HttpResponse originResponse = null;
@@ -243,7 +249,14 @@ public class VersionComparingService {
 		List<String> nodeCode8 = null;
 		List<String> nodeCode9 = null;
 		StringBuilder eachRowSb = null;
-		
+		CloseableHttpClient httpClient = null;
+		try {
+			httpClient = httpUtil.getHttpClient();
+		} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
+			logger.info("getHttpClient 無法建立呼叫 api 連線: {}", e.getMessage());
+		}
+        HttpClientContext httpContext = HttpClientContext.create();
+        HttpPost request = null;
 		// d. 讀取今日測試IN案例
 		for (Policy policy : caseInList) {
 			
@@ -281,15 +294,22 @@ public class VersionComparingService {
 			int statusCode = 0;
 			// f. 呼叫 升級後 ODM9
 			try {
-				originResponse = httpUtil.httpRequestPost(odm9CheckUrl, policy.getJsonStr(), headerMap);
+				request = new HttpPost(odm9CheckUrl);
+		        for (String key : headerMap.keySet()) {
+		            request.setHeader(key, headerMap.get(key));
+		        }
+		        request.setEntity(new StringEntity(policy.getJsonStr(), ContentType.APPLICATION_JSON));
+		        originResponse = httpClient.execute(request, httpContext);
+		        
 				statusCode = originResponse.getStatusLine().getStatusCode();
 				odm9ResponseContent = EntityUtils.toString(originResponse.getEntity(), "UTF-8");
+				
 				if (statusCode >= 200 && statusCode < 300) {
 					logger.info("odm9 SUCCESS with policyNo: {}, status code: {}", policy.getPolicy_no(), statusCode);
 				} else {
 					logger.info("odm9 FAIL with policyNo: {}, status code: {}, return body: {}", policy.getPolicy_no(), statusCode,  odm9ResponseContent);
 				}
-			} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException | IOException e) {
+			} catch (IOException e) {
 				logger.info("呼叫 ODM 9 發生錯誤: {}", e.getMessage());
 				logger.info("statusCode: {}, responseBody: {}", statusCode, odm9ResponseContent);
 			}

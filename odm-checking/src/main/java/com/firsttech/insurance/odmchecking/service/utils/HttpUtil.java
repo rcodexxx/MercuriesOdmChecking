@@ -56,7 +56,7 @@ public final class HttpUtil {
         return httpClient.execute(request, httpContext);
     }
 
-    private Registry<ConnectionSocketFactory> getRegistry()
+    public Registry<ConnectionSocketFactory> getRegistry()
         throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
         SSLContext sslContext = null;
         sslContext = SSLContexts.custom().loadTrustMaterial(null, new TrustStrategy() {
@@ -75,7 +75,7 @@ public final class HttpUtil {
             .register("https", sslConnectionSocketFactory).build();
     }
 
-    private CloseableHttpClient getHttpClient() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+    public CloseableHttpClient getHttpClient() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
         PoolingHttpClientConnectionManager clientConnectionManager = new PoolingHttpClientConnectionManager(getRegistry());
         clientConnectionManager.setMaxTotal(1000);
         clientConnectionManager.setDefaultMaxPerRoute(20);
