@@ -53,7 +53,9 @@ public final class HttpUtil {
 
         CloseableHttpClient httpClient = getHttpClient();
         HttpClientContext httpContext = HttpClientContext.create();
-        return httpClient.execute(request, httpContext);
+        HttpResponse response = httpClient.execute(request, httpContext);
+        httpClient.close();
+        return response;
     }
 
     public Registry<ConnectionSocketFactory> getRegistry()
