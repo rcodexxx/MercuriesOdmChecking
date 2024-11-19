@@ -317,11 +317,11 @@ public class VersionComparingService {
 				statusCode = odmResponse.getStatusLine().getStatusCode();
 				odm9ResponseContent = EntityUtils.toString(odmResponse.getEntity(), "UTF-8");
 				
-				if (statusCode >= 200 && statusCode < 300) {
+//				if (statusCode >= 200 && statusCode < 300) {
 //					logger.info("odm9 SUCCESS with policyNo: {}, status code: {}", policy.getPolicy_no(), statusCode);
-				} else {
-					logger.info("odm9 FAIL with policyNo: {}, status code: {}, return body: {}", policy.getPolicy_no(), statusCode,  odm9ResponseContent);
-				}
+//				} else {
+//					logger.info("odm9 FAIL with policyNo: {}, status code: {}, return body: {}", policy.getPolicy_no(), statusCode,  odm9ResponseContent);
+//				}
 			} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException | IOException e) {
 				logger.info("呼叫 ODM 9 發生錯誤: {}", e.getMessage());
 				logger.info("statusCode: {}, responseBody: {}", statusCode, odm9ResponseContent);
