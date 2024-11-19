@@ -357,9 +357,11 @@ public class VersionComparingService {
 			}
 			
 	    	// i. 組合報告body 加入list
-			eachRowSb.append(policy.getPolicy_no()).append(", ")
-				  .append(status).append(", ")
-				  .append(diff);
+			eachRowSb.append(policy.getTrans_no()).append(", ")
+					 .append(policy.getPolicy_no()).append(", ")
+					 .append(DateUtil.formatDateToString("yyyy-MM-dd hh:mm:ss", policy.getKeep_date_time())).append(", ")
+					 .append(status).append(", ")
+					 .append(diff);
 			
 			bodyList.add(eachRowSb.toString());
 		}

@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import com.firsttech.insurance.odmchecking.service.VersionComparingService;
 
@@ -15,8 +16,16 @@ public class OdmVersionComparingJob {
 	@Autowired
 	private VersionComparingService versionComparingService;
 	
+	@Autowired
+	private Environment environment;
+	
 	@Scheduled(cron = "0 0 13 * * ?")
 	public void doComparing() {
+		String isActivated = environment.getProperty("cron.version.comparing");
+		if (isActivated == null || !isActivated.equals("Y")) {
+			logger.info("[CRON JOB] 不執行, 因為未在設定檔中啟動版本比對排程 cron.version.comparing: {}", isActivated);
+			return;
+		}
 		
 		DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyyMMdd");
 		LocalDate today = LocalDate.now();
