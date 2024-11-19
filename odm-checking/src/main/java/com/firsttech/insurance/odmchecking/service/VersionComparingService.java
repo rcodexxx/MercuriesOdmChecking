@@ -193,6 +193,15 @@ public class VersionComparingService {
 		return map;
 	}
 	
+	private Map<String, Policy> convertCaseOutListToMap (List<Policy> caseOutList) {
+		Map<String, Policy> map = new HashMap<>();
+		for (Policy p : caseOutList) {
+			String key = p.getMappingKey();
+			map.put(key, p);
+		}
+		return map;
+	}
+	
 	/**
 	 * a. DB 取得驗測案例 IN
 	 * b. DB 取得驗測案例 OUT
@@ -228,6 +237,7 @@ public class VersionComparingService {
 		String caseOutColumnName = target.equals("nb") ? "nb_json_out" : "ta_json_out";
         String caseOutSql = this.getTestDataSQL(reqUrlMap.get(DB_SCHEMA_KEY), caseOutTableName, caseOutColumnName, startDate, endDate);
         List<Policy> caseOutList = this.getCaseFromDB(target, "out", caseOutSql, reqUrlMap);
+        Map<String, Policy> caseOutMap = this.convertCaseOutListToMap(caseOutList);
         int CaseOutNum = caseOutList.size();
 		logger.info("DB CaseOut 取出資料總比數為: {}" + CaseOutNum);
 		
@@ -245,18 +255,20 @@ public class VersionComparingService {
 		HttpUtil httpUtil = new HttpUtil();
 		ObjectMapper mapper = new ObjectMapper();
 		HttpResponse odmResponse = null;
-		Optional<Policy> caseOutPolicy = null;
+		Policy caseOutPolicy = null;
 		List<String> nodeCode8 = null;
 		List<String> nodeCode9 = null;
 		StringBuilder eachRowSb = null;
 		CloseableHttpClient httpClient = null;
-		try {
-			httpClient = httpUtil.getHttpClient();
-		} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
-			logger.info("getHttpClient 無法建立呼叫 api 連線: {}", e.getMessage());
-		}
-        HttpClientContext httpContext = HttpClientContext.create();
-        HttpPost request = null;
+//		CloseableHttpClient httpClient = null;
+//		try {
+//			httpClient = httpUtil.getHttpClient();
+//		} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
+//			logger.info("getHttpClient 無法建立呼叫 api 連線: {}", e.getMessage());
+//		}
+//        HttpClientContext httpContext = HttpClientContext.create();
+//        HttpPost request = null;
+        
 		// d. 讀取今日測試IN案例
 		for (Policy policy : caseInList) {
 			
@@ -265,12 +277,10 @@ public class VersionComparingService {
 			// 	in 的第一筆對應到 out找到的第一筆即可
 			// e. 找到對應的OUT結果JSON資料
 			odmResponse = null;
-			caseOutPolicy = caseOutList.stream()
-                    .filter(outPolicy -> outPolicy.getMappingKey().equals(policy.getMappingKey()))
-                    .findFirst();
+			caseOutPolicy = caseOutMap.get(policy.getMappingKey());
 			String odm8ResponseContent = null;
-			if (caseOutPolicy.isPresent()) {
-				odm8ResponseContent = caseOutPolicy.get().getJsonStr();
+			if (caseOutPolicy != null) {
+				odm8ResponseContent = caseOutPolicy.getJsonStr();
 			} else {
 				logger.info("無法在 caseOut 找到對應資料: {}", policy.toString());
 			}
@@ -290,11 +300,14 @@ public class VersionComparingService {
 //				e.printStackTrace();
 //			}
 			
+			// f. 呼叫 升級後 ODM9
 			String odm9ResponseContent = null;
 			int statusCode = 0;
-			// f. 呼叫 升級後 ODM9
+			
 			try {
-				request = new HttpPost(odm9CheckUrl);
+				httpClient = httpUtil.getHttpClient();
+				HttpClientContext httpContext = HttpClientContext.create();
+				HttpPost request = new HttpPost(odm9CheckUrl);
 		        for (String key : headerMap.keySet()) {
 		            request.setHeader(key, headerMap.get(key));
 		        }
@@ -309,9 +322,15 @@ public class VersionComparingService {
 				} else {
 					logger.info("odm9 FAIL with policyNo: {}, status code: {}, return body: {}", policy.getPolicy_no(), statusCode,  odm9ResponseContent);
 				}
-			} catch (IOException e) {
+			} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException | IOException e) {
 				logger.info("呼叫 ODM 9 發生錯誤: {}", e.getMessage());
 				logger.info("statusCode: {}, responseBody: {}", statusCode, odm9ResponseContent);
+			} finally {
+				try {
+					httpClient.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 			
 			// g. 取得 response 的 核保碼 (noteCode)列表
