@@ -91,12 +91,12 @@ public class VersionComparingService {
 		rptTotalList.add("");
 		rptTotalList.add(
 				FileUtil.formatString("TransNo", 22, "CENTER")
-				+ FileUtil.formatString("PolicyNo", 14, "CENTER")
-				+ FileUtil.formatString("KeepDateTime", 20, "CENTER")
+				+ FileUtil.formatString("PolicyNo", 15, "CENTER")
+				+ FileUtil.formatString("KeepDateTime", 23, "CENTER")
 				+ FileUtil.formatString("Status", 8, "CENTER")
 				+ FileUtil.formatString("Diff", 12, "CENTER")
 		);
-		rptTotalList.add("=================================================================================");
+		rptTotalList.add("=============================================================================================");
 		
 		// 3. 建立 Report Body: Elvis說 ETS不需要測試, 只測NB和TA
 		List<String> reportBody = new ArrayList<>();
@@ -108,7 +108,7 @@ public class VersionComparingService {
 		rptTotalList.addAll(reportBody);
 		
 		// 4. 建立 Report Footer
-		rptTotalList.add("=================================================================================");
+		rptTotalList.add("=============================================================================================");
 		int iPass = 0;
 		int iFail = 0;
 		int iError = 0;
@@ -258,7 +258,6 @@ public class VersionComparingService {
 		Map<String, String> headerMap = new HashMap<>();
 		headerMap.put("Accept", "application/json");
 		headerMap.put("Content-type", "application/json");
-//		String odm8CheckUrl = target.equals("nb") ? reqUrlMap.get(ODM8_CHECK_NB_URL_KEY) : reqUrlMap.get(ODM8_CHECK_TA_URL_KEY);
 		String odm9CheckUrl = target.equals("nb") ? reqUrlMap.get(ODM9_CHECK_NB_URL_KEY) : reqUrlMap.get(ODM9_CHECK_TA_URL_KEY);
 		
 		HttpResponse odmResponse = null;
@@ -267,12 +266,6 @@ public class VersionComparingService {
 		List<String> nodeCode9 = null;
 		StringBuilder eachRowSb = null;
 		CloseableHttpClient httpClient = null;
-//		CloseableHttpClient httpClient = null;
-//		try {
-//			httpClient = httpUtil.getHttpClient();
-//		} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
-//			logger.info("getHttpClient 無法建立呼叫 api 連線: {}", e.getMessage());
-//		}
         HttpClientContext httpContext = HttpClientContext.create();
         HttpPost request = null;
         
@@ -289,30 +282,17 @@ public class VersionComparingService {
 			if (caseOutPolicy != null) {
 				odm8ResponseContent = caseOutPolicy.getJsonStr();
 			} else {
-				logger.info("無法在 caseOut 找到對應資料: {}", policy.toString());
+				eachRowSb.append("DB caseOut no output result: " + policy.toString());
+				bodyList.add(eachRowSb.toString());
+				logger.info("=====> DB caseOut no output result, {}", policy.toString());
+				continue;
 			}
-			
-//			String odm8ResponseContent = null;
-//			// 呼叫 現行 ODM8
-//			try {
-//				HttpResponse originResponse = httpUtil.httpRequestPost(odm8CheckUrl, policy.getJsonStr(), headerMap);
-//				int statusCode = originResponse.getStatusLine().getStatusCode();
-//				odm8ResponseContent = EntityUtils.toString(originResponse.getEntity(), "UTF-8");
-//				if (statusCode >= 200 && statusCode < 300) {
-//					logger.info("odm8 SUCCESS with policyNo: {}, status code: {}", policy.getPolicy_no(), statusCode);
-//				} else {
-//					logger.info("odm8 FAIL with policyNo: {}, status code: {}, return body: {}", policy.getPolicy_no(), statusCode,  odm8ResponseContent);
-//				}
-//			} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException | IOException e) {
-//				e.printStackTrace();
-//			}
 			
 			// f. 呼叫 升級後 ODM9
 			String odm9ResponseContent = null;
 			int statusCode = 0;
 			
 			try {
-//				odmResponse = httpUtil.httpRequestPost(odm9CheckUrl, policy.getJsonStr(), headerMap);
 				request = new HttpPost(odm9CheckUrl);
 		        for (String key : headerMap.keySet()) {
 		            request.setHeader(key, headerMap.get(key));
@@ -320,20 +300,14 @@ public class VersionComparingService {
 		        request.setEntity(new StringEntity(policy.getJsonStr(), ContentType.APPLICATION_JSON));
 
 		        httpClient = httpUtil.getHttpClient();
-//		        HttpClientContext httpContext = HttpClientContext.create();
 		        odmResponse = httpClient.execute(request, httpContext);
 				statusCode = odmResponse.getStatusLine().getStatusCode();
 				odm9ResponseContent = EntityUtils.toString(odmResponse.getEntity(), "UTF-8");
 				
 				
-//				if (statusCode >= 200 && statusCode < 300) {
-//					logger.info("odm9 SUCCESS with policyNo: {}, status code: {}", policy.getPolicy_no(), statusCode);
-//				} else {
-//					logger.info("odm9 FAIL with policyNo: {}, status code: {}, return body: {}", policy.getPolicy_no(), statusCode,  odm9ResponseContent);
-//				}
+				
 			} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException | IOException e) {
 				logger.info("呼叫 ODM 9 發生錯誤: {}", e.getMessage());
-//				logger.info("statusCode: {}, responseBody: {}", statusCode, odm9ResponseContent);
 			} finally {
 				try {
 					httpClient.close();
@@ -342,17 +316,10 @@ public class VersionComparingService {
 				}
 			}
 			
-			if (odm9ResponseContent == null) {
+			if (statusCode != 200) {
 				eachRowSb.append("NEW ODM no response with status: ").append(statusCode);
 				bodyList.add(eachRowSb.toString());
 				logger.info("=====> NEW ODM no response with status: {}", statusCode);
-				continue;
-			}
-			
-			if (odm8ResponseContent == null) {
-				eachRowSb.append("DB caseOut no output result: " + policy.toString());
-				bodyList.add(eachRowSb.toString());
-				logger.info("=====> DB caseOut no output result, {}", policy.toString());
 				continue;
 			}
 			
@@ -382,26 +349,34 @@ public class VersionComparingService {
 			String status = "";
 	    	String diff = "";
 	    	
-	    	if (nodeCode8.isEmpty() || nodeCode8 == null) {
-	    		String outStr = target.equals("nb") ? 
-	    				jNode8.path("outParam").asText(): jNode8.path("VerifyResult").asText();
-	    		logger.info("nodeCode8 is empty or null, odm8ResponseContent: {}", outStr);
-	    		status = "ERROR";
-	    		diff = "Origin 發生錯誤.";
-			} else if (nodeCode9.isEmpty() || nodeCode9 == null) {
-				String outStr = target.equals("nb") ? 
-						jNode9.path("outParam").asText(): jNode9.path("VerifyResult").asText();
-				logger.info("nodeCode9 is empty or null, odm9ResponseContent: {}", outStr);
-				status = "ERROR";
-				diff = "new 發生錯誤.";
+//	    	if (nodeCode8.isEmpty() || nodeCode8 == null) {
+//	    		String outStr = target.equals("nb") ? 
+//	    				jNode8.path("outParam").asText(): jNode8.path("VerifyResult").asText();
+//	    		logger.info("nodeCode8 is empty or null, odm8ResponseContent: {}", outStr);
+//	    		status = "ERROR";
+//	    		diff = "Origin 發生錯誤.";
+//			} else if (nodeCode9.isEmpty() || nodeCode9 == null) {
+//				String outStr = target.equals("nb") ? 
+//						jNode9.path("outParam").asText(): jNode9.path("VerifyResult").asText();
+//				logger.info("nodeCode9 is empty or null, odm9ResponseContent: {}", outStr);
+//				status = "ERROR";
+//				diff = "new 發生錯誤.";
+//			} else {
+//				if (this.isEqual(nodeCode8, nodeCode9)) {
+//					status = "PASS";
+//					diff ="NoteCode is same.";
+//				} else {
+//					status = "FAIL";
+//					diff = this.getDiffCodes(nodeCode8, nodeCode9);
+//				}
+//			}
+	    	
+	    	if (this.isEqual(nodeCode8, nodeCode9)) {
+				status = "PASS";
+				diff ="NoteCode is same.";
 			} else {
-				if (this.isEqual(nodeCode8, nodeCode9)) {
-					status = "PASS";
-					diff ="NoteCode is same.";
-				} else {
-					status = "FAIL";
-					diff = this.getDiffCodes(nodeCode8, nodeCode9);
-				}
+				status = "FAIL";
+				diff = this.getDiffCodes(nodeCode8, nodeCode9);
 			}
 			
 	    	// i. 組合報告body 加入list
@@ -495,8 +470,13 @@ public class VersionComparingService {
 	}
 	
 	private boolean isEqual(List<String> nodeCode1, List<String> nodeCode2) {
-		if (nodeCode1.equals(nodeCode2))
+		if (nodeCode1 == null && nodeCode2 == null) {
 			return true;
+		}
+		
+		if (nodeCode1.equals(nodeCode2)) {
+			return true;
+		}
 		return false;
 	}
 
