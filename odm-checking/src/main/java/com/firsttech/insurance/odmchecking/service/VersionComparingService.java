@@ -43,9 +43,10 @@ public class VersionComparingService {
 	private final String ODM9_CHECK_NB_URL_KEY = "odm9CheckNBUrl";
 	private final String ODM8_CHECK_TA_URL_KEY = "odm8CheckTAUrl";
 	private final String ODM9_CHECK_TA_URL_KEY = "odm9CheckTAUrl";
+	private final String DB_SCHEMA_KEY = "dbSchema";
 	private final String DB_URL_KEY = "dbUrl";
-	private final String DB_USERNAME = "dbUsername";
-	private final String DB_PASSWORD = "dbPassword";
+	private final String DB_USERNAME_KEY = "dbUsername";
+	private final String DB_PASSWORD_KEY = "dbPassword";
 	private final String ENV = "ENV";
 	
 	/**
@@ -143,9 +144,10 @@ public class VersionComparingService {
 			map.put(ODM8_CHECK_TA_URL_KEY, environment.getProperty("odm.sit.ta.origin"));
 			map.put(ODM9_CHECK_TA_URL_KEY, environment.getProperty("odm.sit.ta.new"));
 			map.put(ENV, "sit");
+			map.put(DB_SCHEMA_KEY, "SITODMDB");
 			map.put(DB_URL_KEY, environment.getProperty("db.sit.url"));
-			map.put(DB_USERNAME, environment.getProperty("db.sit.username"));
-			map.put(DB_PASSWORD, environment.getProperty("db.sit.password"));
+			map.put(DB_USERNAME_KEY, environment.getProperty("db.sit.username"));
+			map.put(DB_PASSWORD_KEY, environment.getProperty("db.sit.password"));
 		// UAT
 		} else if (currentIP.startsWith("172.16.18")) {
 			map.put(ODM8_CHECK_NB_URL_KEY, environment.getProperty("odm.uat.nb.origin"));
@@ -153,9 +155,10 @@ public class VersionComparingService {
 			map.put(ODM8_CHECK_TA_URL_KEY, environment.getProperty("odm.uat.ta.origin"));
 			map.put(ODM9_CHECK_TA_URL_KEY, environment.getProperty("odm.uat.ta.new"));
 			map.put(ENV, "uat");
+			map.put(DB_SCHEMA_KEY, "UATODMDB");
 			map.put(DB_URL_KEY, environment.getProperty("db.uat.url"));
-			map.put(DB_USERNAME, environment.getProperty("db.uat.username"));
-			map.put(DB_PASSWORD, environment.getProperty("db.uat.password"));
+			map.put(DB_USERNAME_KEY, environment.getProperty("db.uat.username"));
+			map.put(DB_PASSWORD_KEY, environment.getProperty("db.uat.password"));
 		// PROD1
 		} else if (currentIP.equals("172.16.9.92")) {
 			map.put(ODM8_CHECK_NB_URL_KEY, environment.getProperty("odm.prod1.nb.origin"));
@@ -163,9 +166,10 @@ public class VersionComparingService {
 			map.put(ODM8_CHECK_TA_URL_KEY, environment.getProperty("odm.prod1.ta.origin"));
 			map.put(ODM9_CHECK_TA_URL_KEY, environment.getProperty("odm.prod1.ta.new"));
 			map.put(ENV, "prod1");
+			map.put(DB_SCHEMA_KEY, "PRODODMDB");
 			map.put(DB_URL_KEY, environment.getProperty("db.prod.url"));
-			map.put(DB_USERNAME, environment.getProperty("db.prod.username"));
-			map.put(DB_PASSWORD, environment.getProperty("db.prod.password"));
+			map.put(DB_USERNAME_KEY, environment.getProperty("db.prod.username"));
+			map.put(DB_PASSWORD_KEY, environment.getProperty("db.prod.password"));
 		// PROD2
 		} else if (currentIP.equals("172.16.9.93")) {
 			map.put(ODM8_CHECK_NB_URL_KEY, environment.getProperty("odm.prod2.nb.origin"));
@@ -173,9 +177,10 @@ public class VersionComparingService {
 			map.put(ODM8_CHECK_TA_URL_KEY, environment.getProperty("odm.prod2.ta.origin"));
 			map.put(ODM9_CHECK_TA_URL_KEY, environment.getProperty("odm.prod2.ta.new"));
 			map.put(ENV, "prod2");
+			map.put(DB_SCHEMA_KEY, "PRODODMDB");
 			map.put(DB_URL_KEY, environment.getProperty("db.prod.url"));
-			map.put(DB_USERNAME, environment.getProperty("db.prod.username"));
-			map.put(DB_PASSWORD, environment.getProperty("db.prod.password"));
+			map.put(DB_USERNAME_KEY, environment.getProperty("db.prod.username"));
+			map.put(DB_PASSWORD_KEY, environment.getProperty("db.prod.password"));
 		} else {
 			logger.info("沒有找到本機IP資訊無法對應到正確的 ODM URL");
 		}
@@ -354,7 +359,7 @@ public class VersionComparingService {
 		sqlSb.append(" 		SELECT ");
 		sqlSb.append(" 			CAST(ROW_NUMBER() OVER (PARTITION BY trans_no, policy_no ORDER BY keep_date_time ASC) AS VARCHAR(5)) AS rowRank,");
 		sqlSb.append(" 			trans_no, policy_no, keep_date_time, ").append(columnName);
-		sqlSb.append(" 		FROM SITODMDB.dbo.").append(tableName);
+		sqlSb.append(" 		FROM ").append(DB_SCHEMA_KEY).append(".dbo.").append(tableName);
 		sqlSb.append(" 		WHERE keep_date_time BETWEEN '").append(startDateStr).append("' AND '").append(endDateStr).append("' ");
 		sqlSb.append(" ) data ");
 		sqlSb.append(" ORDER BY keep_date_time ");
@@ -365,8 +370,8 @@ public class VersionComparingService {
 	// 取得 caseIn or caseOut 資料
 	private List<Policy> getCaseFromDB(String target, String inOut, String sql, Map<String, String> reqUrlMap) {
 		String url = reqUrlMap.get(DB_URL_KEY);
-		String username = reqUrlMap.get(DB_USERNAME);
-		String password = reqUrlMap.get(DB_PASSWORD);
+		String username = reqUrlMap.get(DB_USERNAME_KEY);
+		String password = reqUrlMap.get(DB_PASSWORD_KEY);
 
 		logger.info("DB connection info: url: {}", url);
 
