@@ -282,9 +282,9 @@ public class VersionComparingService {
 			if (caseOutPolicy != null) {
 				odm8ResponseContent = caseOutPolicy.getJsonStr();
 			} else {
-				eachRowSb.append("DB caseOut no output result: " + policy.toString());
+				eachRowSb.append("DB caseOut no output result");
 				bodyList.add(eachRowSb.toString());
-				logger.info("=====> DB caseOut no output result, {}", policy.toString());
+				logger.info("DB caseOut no output result, {}", policy.toString());
 				continue;
 			}
 			
@@ -319,7 +319,7 @@ public class VersionComparingService {
 			if (statusCode != 200) {
 				eachRowSb.append("NEW ODM no response with status: ").append(statusCode);
 				bodyList.add(eachRowSb.toString());
-				logger.info("=====> NEW ODM no response with status: {}", statusCode);
+				logger.info("NEW ODM no response with status: {}", statusCode);
 				continue;
 			}
 			
