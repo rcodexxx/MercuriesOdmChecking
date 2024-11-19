@@ -212,7 +212,8 @@ public class VersionComparingService {
 		// a. DB 取得驗測案例 IN
 		String caseInTableName = target.equals("nb") ? "nb_case_in" : "ta_case_in";
 		String caseInColumnName = target.equals("nb") ? "nb_json_in" : "ta_json_in";
-        String caseInSql = this.getTestDataSQL(caseInTableName, caseInColumnName, startDate, endDate);
+		
+        String caseInSql = this.getTestDataSQL(reqUrlMap.get(DB_SCHEMA_KEY), caseInTableName, caseInColumnName, startDate, endDate);
         List<Policy> caseInList = this.getCaseFromDB(target, "in", caseInSql, reqUrlMap);
         int CaseInNum = caseInList.size();
 		logger.info("DB CaseIn 取出資料總比數為: {}" + CaseInNum);
@@ -220,7 +221,7 @@ public class VersionComparingService {
 		// b. DB 取得驗測案例 OUT
 		String caseOutTableName = target.equals("nb") ? "nb_case_out" : "ta_case_out";
 		String caseOutColumnName = target.equals("nb") ? "nb_json_out" : "ta_json_out";
-        String caseOutSql = this.getTestDataSQL(caseOutTableName, caseOutColumnName, startDate, endDate);
+        String caseOutSql = this.getTestDataSQL(reqUrlMap.get(DB_SCHEMA_KEY), caseOutTableName, caseOutColumnName, startDate, endDate);
         List<Policy> caseOutList = this.getCaseFromDB(target, "out", caseOutSql, reqUrlMap);
         int CaseOutNum = caseOutList.size();
 		logger.info("DB CaseOut 取出資料總比數為: {}" + CaseOutNum);
@@ -346,7 +347,7 @@ public class VersionComparingService {
 	 * @param endDate: yyyyMMdd
 	 * @return
 	 */
-	private String getTestDataSQL(String tableName, String columnName, String startDate, String endDate) {
+	private String getTestDataSQL(String schemaName, String tableName, String columnName, String startDate, String endDate) {
 		DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyyMMdd");
 		String startDateStr = LocalDate.parse(startDate, f).format(f).toString() + " 00:00:00";	
 		String endDateStr =	LocalDate.parse(endDate, f).format(f).toString() + " 23:59:59";
@@ -359,7 +360,7 @@ public class VersionComparingService {
 		sqlSb.append(" 		SELECT ");
 		sqlSb.append(" 			CAST(ROW_NUMBER() OVER (PARTITION BY trans_no, policy_no ORDER BY keep_date_time ASC) AS VARCHAR(5)) AS rowRank,");
 		sqlSb.append(" 			trans_no, policy_no, keep_date_time, ").append(columnName);
-		sqlSb.append(" 		FROM ").append(DB_SCHEMA_KEY).append(".dbo.").append(tableName);
+		sqlSb.append(" 		FROM ").append(schemaName).append(".dbo.").append(tableName);
 		sqlSb.append(" 		WHERE keep_date_time BETWEEN '").append(startDateStr).append("' AND '").append(endDateStr).append("' ");
 		sqlSb.append(" ) data ");
 		sqlSb.append(" ORDER BY keep_date_time ");
