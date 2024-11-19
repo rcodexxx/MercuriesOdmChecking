@@ -306,7 +306,16 @@ public class VersionComparingService {
 			int statusCode = 0;
 			
 			try {
-				odmResponse = httpUtil.httpRequestPost(odm9CheckUrl, policy.getJsonStr(), headerMap);
+//				odmResponse = httpUtil.httpRequestPost(odm9CheckUrl, policy.getJsonStr(), headerMap);
+				request = new HttpPost(odm9CheckUrl);
+		        for (String key : headerMap.keySet()) {
+		            request.setHeader(key, headerMap.get(key));
+		        }
+		        request.setEntity(new StringEntity(policy.getJsonStr(), ContentType.APPLICATION_JSON));
+
+		        httpClient = httpUtil.getHttpClient();
+//		        HttpClientContext httpContext = HttpClientContext.create();
+		        odmResponse = httpClient.execute(request, httpContext);
 				statusCode = odmResponse.getStatusLine().getStatusCode();
 				odm9ResponseContent = EntityUtils.toString(odmResponse.getEntity(), "UTF-8");
 				

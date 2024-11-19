@@ -54,7 +54,6 @@ public final class HttpUtil {
         CloseableHttpClient httpClient = getHttpClient();
         HttpClientContext httpContext = HttpClientContext.create();
         HttpResponse response = httpClient.execute(request, httpContext);
-        httpClient.close();
         return response;
     }
 
