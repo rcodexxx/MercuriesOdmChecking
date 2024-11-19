@@ -77,7 +77,7 @@ public final class HttpUtil {
 
     public CloseableHttpClient getHttpClient() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
         PoolingHttpClientConnectionManager clientConnectionManager = new PoolingHttpClientConnectionManager(getRegistry());
-        clientConnectionManager.setMaxTotal(1000);
+        clientConnectionManager.setMaxTotal(10000);
         clientConnectionManager.setDefaultMaxPerRoute(20);
         return HttpClients.custom().setConnectionManager(clientConnectionManager)
             .setRedirectStrategy(new LaxRedirectStrategy()).build();
