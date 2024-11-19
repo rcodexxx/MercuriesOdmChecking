@@ -22,7 +22,7 @@ public class OdmVersionComparingJob {
 		LocalDate today = LocalDate.now();
 		String todayStr = today.format(f);
 		String tomorrowStr = today.plusDays(1).format(f);
-		todayStr = "20240815";
+		todayStr = "20241015";
 		tomorrowStr = "20241115";
 		logger.info("[CRON JOB] start to do version comparing: {} ~ {}", todayStr, tomorrowStr);
 		versionComparingService.doComparing(todayStr, tomorrowStr);
