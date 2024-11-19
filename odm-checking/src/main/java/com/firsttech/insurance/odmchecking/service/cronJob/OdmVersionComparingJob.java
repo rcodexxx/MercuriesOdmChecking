@@ -19,7 +19,7 @@ public class OdmVersionComparingJob {
 	@Autowired
 	private Environment environment;
 	
-	@Scheduled(cron = "0 0 13 * * ?")
+	@Scheduled(cron = "0 0 22 * * ?")
 	public void doComparing() {
 		String isActivated = environment.getProperty("cron.version.comparing");
 		if (isActivated == null || !isActivated.equals("Y")) {

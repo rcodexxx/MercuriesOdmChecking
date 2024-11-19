@@ -65,4 +65,44 @@ public class FileUtil {
 		
 		return map;
 	}
+	
+	public static String formatString(String inputStr, int length, String alignment) {
+        if (inputStr == null) {
+            inputStr = "";
+        }
+
+        // 截斷字符串如果他超過指定長度
+        if (inputStr.length() > length) {
+            inputStr = inputStr.substring(0, length);
+        }
+
+        int paddingSize = length - inputStr.length();
+        StringBuilder result = new StringBuilder(length);
+
+        if ("LEFT".equalsIgnoreCase(alignment)) {
+            result.append(inputStr);
+            for (int i = 0; i < paddingSize; i++) {
+                result.append(' ');
+            }
+        } else if ("CENTER".equalsIgnoreCase(alignment)) {
+            int paddingLeft = paddingSize / 2;
+            int paddingRight = paddingSize - paddingLeft;
+            for (int i = 0; i < paddingLeft; i++) {
+                result.append(' ');
+            }
+            result.append(inputStr);
+            for (int i = 0; i < paddingRight; i++) {
+                result.append(' ');
+            }
+        } else if ("RIGHT".equalsIgnoreCase(alignment)) {
+            for (int i = 0; i < paddingSize; i++) {
+                result.append(' ');
+            }
+            result.append(inputStr);
+        } else {
+            throw new IllegalArgumentException("Invalid alignment: " + alignment);
+        }
+
+        return result.toString();
+    }
 }

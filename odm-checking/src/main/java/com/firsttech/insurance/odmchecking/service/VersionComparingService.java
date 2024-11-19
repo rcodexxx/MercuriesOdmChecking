@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
@@ -345,7 +344,7 @@ public class VersionComparingService {
 			}
 			
 			if (odm8ResponseContent == null) {
-				eachRowSb.append("DB caseOut no output result");
+				eachRowSb.append("DB caseOut no output result: " + policy.toString());
 				bodyList.add(eachRowSb.toString());
 				logger.info("=====> DB caseOut no output result, {}", policy.toString());
 				continue;
@@ -400,10 +399,11 @@ public class VersionComparingService {
 			}
 			
 	    	// i. 組合報告body 加入list
+	    	String keepDateTime = DateUtil.formatDateToString("yyyy-MM-dd hh:mm:ss", policy.getKeep_date_time());
 			eachRowSb.append(policy.getTrans_no()).append(", ")
-					 .append(policy.getPolicy_no()).append(", ")
-					 .append(DateUtil.formatDateToString("yyyy-MM-dd hh:mm:ss", policy.getKeep_date_time())).append(", ")
-					 .append(status).append(", ")
+					 .append(FileUtil.formatString(policy.getPolicy_no(), 14, "LEFT")).append(", ")
+					 .append(FileUtil.formatString(keepDateTime, 20, "LEFT")).append(", ")
+					 .append(FileUtil.formatString(status, 8, "CENTER")).append(", ")
 					 .append(diff);
 			
 			bodyList.add(eachRowSb.toString());
