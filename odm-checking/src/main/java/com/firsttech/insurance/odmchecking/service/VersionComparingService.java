@@ -89,8 +89,14 @@ public class VersionComparingService {
 		rptTotalList.add("ODM CHECK NEW TA URL: " + reqUrlMap.get(ODM9_CHECK_TA_URL_KEY));
 		rptTotalList.add("Test Date Time: " + DateUtil.formatDateToString("yyyy-MM-dd hh:mm:ss", today));
 		rptTotalList.add("");
-		rptTotalList.add("PolicyNo, Status, Diff");
-		rptTotalList.add("======================================================");
+		rptTotalList.add(
+				FileUtil.formatString("TransNo", 22, "CENTER")
+				+ FileUtil.formatString("PolicyNo", 14, "CENTER")
+				+ FileUtil.formatString("KeepDateTime", 20, "CENTER")
+				+ FileUtil.formatString("Status", 8, "CENTER")
+				+ FileUtil.formatString("Diff", 12, "CENTER")
+		);
+		rptTotalList.add("=================================================================================");
 		
 		// 3. 建立 Report Body: Elvis說 ETS不需要測試, 只測NB和TA
 		List<String> reportBody = new ArrayList<>();
@@ -102,7 +108,7 @@ public class VersionComparingService {
 		rptTotalList.addAll(reportBody);
 		
 		// 4. 建立 Report Footer
-		rptTotalList.add("======================================================");
+		rptTotalList.add("=================================================================================");
 		int iPass = 0;
 		int iFail = 0;
 		int iError = 0;
@@ -113,7 +119,7 @@ public class VersionComparingService {
 				iPass += 1;
 			} else if (eachRecord.contains("FAIL")) {
 				iFail += 1;
-			} else if (eachRecord.contains("ERROR")) {
+			} else {
 				iError += 1;
 			} 
 		}
