@@ -59,8 +59,8 @@ public class VersionComparingService {
 	 * Main
 	 * 1. 取得 properties 和 IPInfo.txt 資訊
 	 * 2. 建立 Report Header
-	 * 3. 建立 Report Body
-	 * 4. 建立 Report Footer
+	 * 3. 建立 Report Body 比對新舊版本 ODM 結果
+	 * 4. 建立 Report Footer 統計案件結果
 	 * 5. 匯出 Report
 	 * 
 	 * @param startDateTime: 民國年月日時分秒 yyyMMddhhmmss
@@ -245,7 +245,7 @@ public class VersionComparingService {
 	}
 	
 	/**
-	 * 比對新舊版本 ODM 結果
+	 * 3. 建立 Report Body 比對新舊版本 ODM 結果
 	 * a. DB 取得驗測案例 IN
 	 * b. DB 取得驗測案例 OUT
 	 * c. 準備 api 發送和比對所需資料

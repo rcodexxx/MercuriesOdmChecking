@@ -1,8 +1,6 @@
 package com.firsttech.insurance.odmchecking.service.cronJob;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import org.apache.http.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import com.firsttech.insurance.odmchecking.service.VersionComparingService;
+import com.firsttech.insurance.odmchecking.service.utils.DateUtil;
 
 public class OdmVersionComparingJob {
 	
@@ -21,7 +20,8 @@ public class OdmVersionComparingJob {
 	@Autowired
 	private Environment environment;
 	
-	@Scheduled(cron = "0 5 * * * ?") // 每小時的五分執行
+//	@Scheduled(cron = "0 5 * * * ?") // 每小時的五分執行
+	@Scheduled(cron = "0 0/3 * * * ?")
 	public void doComparing() throws ParseException, IOException {
 		String isActivated = environment.getProperty("cron.version.comparing");
 		if (isActivated == null || !isActivated.equals("Y")) {
@@ -29,28 +29,10 @@ public class OdmVersionComparingJob {
 			return;
 		}
 		
-		String startRocDateTime = this.getROCDateTime("START");
-		String endRocDateTime = this.getROCDateTime("END");
+		String startRocDateTime = DateUtil.getROCDateTime("START");
+		String endRocDateTime = DateUtil.getROCDateTime("END");
 		logger.info("[CRON JOB] start to do version comparing: {} ~ {}", startRocDateTime, endRocDateTime);
 		versionComparingService.doComparing(startRocDateTime, endRocDateTime);
 	}
 	
-	/**
-	 * 
-	 * @param tag: START | END
-	 * @return 民國年月日時分秒 yyyMMddhhmmss
-	 */
-	private String getROCDateTime(String tag) {
-		LocalDate localDate = LocalDate.now();
-        LocalTime localTime = LocalTime.now();
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(localDate.getYear() - 1911)
-          .append(localDate.getMonthValue())
-          .append(localDate.getDayOfMonth());
-        sb.append(localTime.getHour());
-        sb.append(tag.equals("START") ? "0000" : "5959");
-
-        return sb.toString();
-    }
 }
