@@ -25,9 +25,6 @@ public class SmsService {
 
     private final static Logger logger = LoggerFactory.getLogger(SmsService.class);
 
-//    @Value("${spring.sms.isEnabled}")
-//    private String isEnabled;
-
     @Value("${spring.sms.username}")
     private String userName;
 

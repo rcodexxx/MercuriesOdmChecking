@@ -10,13 +10,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.firsttech.insurance.odmchecking.service.utils.FileUtil;
-import com.firsttech.insurance.odmchecking.service.utils.HttpUtil;
-
 //import org.thymeleaf.context.Context;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
@@ -25,18 +22,12 @@ import javax.mail.internet.MimeMessage;
 public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
-
-//    @Value("${spring.mail.isEnabled}")
-//    private String isEnabled;
     
     @Value("${spring.mail.host}")
     private String mailHost;
 
     @Value("${spring.mail.sender}")
     private String sender;
-
-//    @Value("${spring.mail.alert.recipients}")
-//    private String recipients;
     
     @Value("${current.ip.info}")
     private String infoFilePath;
