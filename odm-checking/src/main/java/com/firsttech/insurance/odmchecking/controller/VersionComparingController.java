@@ -1,6 +1,5 @@
 package com.firsttech.insurance.odmchecking.controller;
 
-import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +19,13 @@ public class VersionComparingController {
 	private VersionComparingService versionComparingService;
 	
     @GetMapping("/versionComparing")
-    public boolean callODMResultChecking(@RequestBody DateRange dateRange) throws BadRequestException {
+    public boolean callODMResultChecking(@RequestBody DateRange dateRange) {
     	logger.info("[API] start to do version comparing: {}", dateRange.show());
     	if (dateRange == null 
     			|| DateUtil.isGoodRocDateTime(dateRange.getStartDate()) 
     			|| DateUtil.isGoodRocDateTime(dateRange.getEndDate())) {
-    		throw new BadRequestException("輸入日期不符, 應為民國年 + 月 + 日 + 時 + 分 + 秒 (yyyMMddhhmmss)");
+    		logger.info("輸入日期不符, 應為民國年 + 月 + 日 + 時 + 分 + 秒 (yyyMMddhhmmss)");
+    		return false;
     	}
     	
     	return versionComparingService.doComparing(dateRange.getStartDate(), dateRange.getEndDate());
