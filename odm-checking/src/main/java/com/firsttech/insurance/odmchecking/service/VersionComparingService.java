@@ -124,7 +124,7 @@ public class VersionComparingService {
 			} 
 		}
 		
-		rptTotalList.add("ODM Testing Result PASS: " + iPass + ", FAIL: " + iFail + ", ERROR: " + iError);
+		rptTotalList.add("ODM Testing Result PASS: " + iPass + ", FAIL: " + iFail + ", OTHER: " + iError);
 		
 		// 5. 匯出 Report
 		String rptOutputPath = environment.getProperty("output.path") 
