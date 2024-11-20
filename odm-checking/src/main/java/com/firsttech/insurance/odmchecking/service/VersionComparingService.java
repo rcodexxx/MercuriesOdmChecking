@@ -232,7 +232,7 @@ public class VersionComparingService {
 	        odmResponse = httpClient.execute(request, httpContext);
 			
 		} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException | IOException e) {
-			logger.info("呼叫 ODM 9 發生錯誤: {}", e.getMessage());
+			logger.info("呼叫 ODM 發生錯誤: {}", e.getMessage());
 		} finally {
 			try {
 				httpClient.close();
@@ -326,16 +326,20 @@ public class VersionComparingService {
 					continue;
 				}
 			} else {
+				
 				odm8Response = this.callOdm(odm8CheckUrl, policy.getJsonStr(), httpContext, headerMap);
-				if (odm8Response == null || odm8Response.getStatusLine().getStatusCode() != 200) {
+				int statusCode8 = odm8Response.getStatusLine().getStatusCode();
+				if (odm8Response == null || statusCode8 != 200) {
 					bodyList.add("呼叫 ODM 8 發生錯誤");
-					logger.info("呼叫 ODM 8 發生錯誤, {}", policy.toString());
+					logger.info("呼叫 ODM 8 發生錯誤, status code: {}, json: {}", statusCode8, policy.toString());
 					continue;
 				}
 				
 				try {
 					odm8ResponseContent = EntityUtils.toString(odm8Response.getEntity(), "UTF-8");
 				} catch (IOException e) {
+					logger.info("statusCode8: {}", statusCode8);
+					logger.info("odm8Response.getEntity(): {}", odm8Response.getEntity());
 					bodyList.add("取得 ODM8 response body content 發生錯誤");
 					logger.info("取得 ODM8 response body content 發生錯誤");
 					continue;
