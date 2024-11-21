@@ -352,15 +352,28 @@ public class VersionComparingService {
 			}
 			
 			if (policy.getTrans_no().equals("1131114103129608000020")) {
-				logger.info("===================================");
-				logger.info("===================================");
-				logger.info("===================================");
-				logger.info("===================================");
+				logger.info("***********************************");
+				logger.info("***********************************");
+				logger.info("***********************************");
+				logger.info("***********************************");
 				logger.info(odm9ResponseContent);
-				logger.info("===================================");
-				logger.info("===================================");
-				logger.info("===================================");
-				logger.info("===================================");
+				logger.info("***********************************");
+				logger.info("***********************************");
+				logger.info("***********************************");
+				logger.info("***********************************");
+				int i = -1;
+				try {
+					i = mapper.readTree(odm9ResponseContent).path("outParam").path("resultItem").findValuesAsText("noteCode").size();
+				} catch (JsonMappingException e) {
+					i = -2;
+				} catch (JsonProcessingException e) {
+					i = -3;
+				}
+				logger.info("amount: {}", i);
+				logger.info("***********************************");
+				logger.info("***********************************");
+				logger.info("***********************************");
+				logger.info("***********************************");
 			}
 			
 			// g. 取得 responseContent 的 核保碼 (noteCode)列表
@@ -395,6 +408,7 @@ public class VersionComparingService {
 					sb8.append(str8).append("; ");
 				}
 				logger.info(sb8.toString());
+				
 				StringBuilder sb9 = new StringBuilder();
 				for (String str9 : nodeCode9) {
 					sb8.append(str9).append("; ");
