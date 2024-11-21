@@ -39,10 +39,10 @@ import com.firsttech.insurance.odmchecking.service.utils.HttpUtil;
 public class VersionComparingService {
 
 	private final static Logger logger = LoggerFactory.getLogger(VersionComparingService.class);
-	
+
 	@Autowired
 	private Environment environment;
-	
+
 	private HttpUtil httpUtil = new HttpUtil();
 	private ObjectMapper mapper = new ObjectMapper();
 	private final String ODM8_CHECK_NB_URL_KEY = "odm8CheckNBUrl";
@@ -54,29 +54,25 @@ public class VersionComparingService {
 	private final String DB_USERNAME_KEY = "dbUsername";
 	private final String DB_PASSWORD_KEY = "dbPassword";
 	private final String ENV = "ENV";
-	
+
 	/**
-	 * Main
-	 * 1. 取得 properties 和 IPInfo.txt 資訊
-	 * 2. 建立 Report Header
-	 * 3. 建立 Report Body 比對新舊版本 ODM 結果
-	 * 4. 建立 Report Footer 統計案件結果
-	 * 5. 匯出 Report
+	 * Main 1. 取得 properties 和 IPInfo.txt 資訊 2. 建立 Report Header 3. 建立 Report Body
+	 * 比對新舊版本 ODM 結果 4. 建立 Report Footer 統計案件結果 5. 匯出 Report
 	 * 
 	 * @param startDateTime: 民國年月日時分秒 yyyMMddhhmmss
-	 * @param endDateTime: 民國年月日時分秒 yyyMMddhhmmss
+	 * @param endDateTime:   民國年月日時分秒 yyyMMddhhmmss
 	 * @return
-	 * @throws IOException 
-	 * @throws ParseException 
+	 * @throws IOException
+	 * @throws ParseException
 	 */
-	public boolean doComparing (String startDateTime, String endDateTime) {
+	public boolean doComparing(String startDateTime, String endDateTime) {
 		// 1. 取得 properties 和 IPInfo.txt 資訊
 		String infoFilePath = environment.getProperty("current.ip.info");
 		Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
 		String currentIP = infoMap.get("local.ip");
 		logger.info("取得當下IP: " + currentIP);
 		Map<String, String> reqUrlMap = this.getODMRequestUrlMap(currentIP);
-		
+
 		// 2. 建立 Report Header
 		List<String> rptTotalList = new ArrayList<>();
 		rptTotalList.add("ODM Comparing Test Start from " + startDateTime + " to " + endDateTime);
@@ -88,30 +84,28 @@ public class VersionComparingService {
 		rptTotalList.add("ODM CHECK NEW TA URL: " + reqUrlMap.get(ODM9_CHECK_TA_URL_KEY));
 		rptTotalList.add("Test Date Time: " + DateUtil.formatDateToString("yyyy-MM-dd hh:mm:ss", new Date()));
 		rptTotalList.add("");
-		rptTotalList.add(
-				FileUtil.formatString("TransNo", 22, "CENTER")
-				+ FileUtil.formatString("PolicyNo", 15, "CENTER")
-				+ FileUtil.formatString("KeepDateTime", 23, "CENTER")
-				+ FileUtil.formatString("Status", 8, "CENTER")
-				+ FileUtil.formatString("Diff", 12, "CENTER")
-		);
-		rptTotalList.add("=============================================================================================");
-		
+		rptTotalList.add(FileUtil.formatString("TransNo", 22, "CENTER")
+				+ FileUtil.formatString("PolicyNo", 15, "CENTER") + FileUtil.formatString("KeepDateTime", 23, "CENTER")
+				+ FileUtil.formatString("Status", 8, "CENTER") + FileUtil.formatString("Diff", 12, "CENTER"));
+		rptTotalList
+				.add("=============================================================================================");
+
 		// 3. 建立 Report Body: Elvis說 ETS不需要測試, 只測NB和TA
 		List<String> reportBody = new ArrayList<>();
-		List<String> nbTestResult = this.comparingNewOldByCaseIn ("nb", reqUrlMap, startDateTime, endDateTime);
-		List<String> taTestResult = this.comparingNewOldByCaseIn ("ta", reqUrlMap, startDateTime, endDateTime);
-		
+		List<String> nbTestResult = this.comparingNewOldByCaseIn("nb", reqUrlMap, startDateTime, endDateTime);
+		List<String> taTestResult = this.comparingNewOldByCaseIn("ta", reqUrlMap, startDateTime, endDateTime);
+
 		reportBody.addAll(nbTestResult);
 		reportBody.addAll(taTestResult);
 		rptTotalList.addAll(reportBody);
-		
+
 		// 4. 建立 Report Footer
-		rptTotalList.add("=============================================================================================");
+		rptTotalList
+				.add("=============================================================================================");
 		int iPass = 0;
 		int iFail = 0;
 		int iError = 0;
-		
+
 		// 統計
 		for (String eachRecord : reportBody) {
 			if (eachRecord.contains("PASS")) {
@@ -120,32 +114,29 @@ public class VersionComparingService {
 				iFail += 1;
 			} else {
 				iError += 1;
-			} 
+			}
 		}
-		
+
 		rptTotalList.add("ODM Testing Result PASS: " + iPass + ", FAIL: " + iFail + ", OTHER: " + iError);
-		
+
 		// 5. 匯出 Report
-		String rptOutputPath = environment.getProperty("output.path") 
-				+ "\\ODM9_testing_report_" 
-				+ reqUrlMap.get(ENV) + "_"
-				+ endDateTime 
-				+ ".csv";
+		String rptOutputPath = environment.getProperty("output.path") + "\\ODM9_testing_report_" + reqUrlMap.get(ENV)
+				+ "_" + endDateTime + ".csv";
 		logger.info("匯出報告路徑: {}", rptOutputPath);
 		boolean isSuccess = FileUtil.writeToFile(rptTotalList, rptOutputPath);
 		logger.info("比對報告產生結果: " + (isSuccess ? "SUCCESSFUL" : "FAIL"));
 		return isSuccess;
-		
+
 	}
-	
+
 	/**
 	 * 依照現行IP來取得 ODM 要測試新舊機器的URL連結
+	 * 
 	 * @param currentIP: 當前機器的 IP
-	 * @return keys
-	 * 		ODM8_CHECK_NB_URL_KEY | ODM9_CHECK_NB_URL_KEY
-	 * 		ODM8_CHECK_TA_URL_KEY | ODM9_CHECK_TA_URL_KEY
-	 * 		DB_SCHEMA_KEY | DB_URL_KEY | DB_USERNAME_KEY | DB_PASSWORD_KEY
-	 * 		ENV: sit, uat, prod1, prod2
+	 * @return keys ODM8_CHECK_NB_URL_KEY | ODM9_CHECK_NB_URL_KEY
+	 *         ODM8_CHECK_TA_URL_KEY | ODM9_CHECK_TA_URL_KEY DB_SCHEMA_KEY |
+	 *         DB_URL_KEY | DB_USERNAME_KEY | DB_PASSWORD_KEY ENV: sit, uat, prod1,
+	 *         prod2
 	 */
 	private Map<String, String> getODMRequestUrlMap(String currentIP) {
 		Map<String, String> map = new HashMap<>();
@@ -160,7 +151,7 @@ public class VersionComparingService {
 			map.put(DB_URL_KEY, environment.getProperty("db.sit.url"));
 			map.put(DB_USERNAME_KEY, environment.getProperty("db.sit.username"));
 			map.put(DB_PASSWORD_KEY, environment.getProperty("db.sit.password"));
-		// UAT
+			// UAT
 		} else if (currentIP.startsWith("172.16.18")) {
 			map.put(ODM8_CHECK_NB_URL_KEY, environment.getProperty("odm.uat.nb.origin"));
 			map.put(ODM9_CHECK_NB_URL_KEY, environment.getProperty("odm.uat.nb.new"));
@@ -171,7 +162,7 @@ public class VersionComparingService {
 			map.put(DB_URL_KEY, environment.getProperty("db.uat.url"));
 			map.put(DB_USERNAME_KEY, environment.getProperty("db.uat.username"));
 			map.put(DB_PASSWORD_KEY, environment.getProperty("db.uat.password"));
-		// PROD1
+			// PROD1
 		} else if (currentIP.equals("172.16.9.92")) {
 			map.put(ODM8_CHECK_NB_URL_KEY, environment.getProperty("odm.prod1.nb.origin"));
 			map.put(ODM9_CHECK_NB_URL_KEY, environment.getProperty("odm.prod1.nb.new"));
@@ -182,7 +173,7 @@ public class VersionComparingService {
 			map.put(DB_URL_KEY, environment.getProperty("db.prod.url"));
 			map.put(DB_USERNAME_KEY, environment.getProperty("db.prod.username"));
 			map.put(DB_PASSWORD_KEY, environment.getProperty("db.prod.password"));
-		// PROD2
+			// PROD2
 		} else if (currentIP.equals("172.16.9.93")) {
 			map.put(ODM8_CHECK_NB_URL_KEY, environment.getProperty("odm.prod2.nb.origin"));
 			map.put(ODM9_CHECK_NB_URL_KEY, environment.getProperty("odm.prod2.nb.new"));
@@ -199,9 +190,9 @@ public class VersionComparingService {
 
 		return map;
 	}
-	
+
 	// 將 caseOut的資料轉換成 map 方便後續比對取得
-	private Map<String, Policy> convertCaseOutListToMap (List<Policy> caseOutList) {
+	private Map<String, Policy> convertCaseOutListToMap(List<Policy> caseOutList) {
 		Map<String, Policy> map = new HashMap<>();
 		for (Policy p : caseOutList) {
 			String key = p.getMappingKey();
@@ -212,34 +203,36 @@ public class VersionComparingService {
 
 	/**
 	 * 呼叫 api
+	 * 
 	 * @param odmCheckUrl
 	 * @param postBody
 	 * @param httpContext
 	 * @param headerMap
 	 * @return
 	 */
-	private String callOdm (String odmCheckUrl, String postBody, HttpClientContext httpContext, Map<String, String> headerMap) {
+	private String callOdm(String odmCheckUrl, String postBody, HttpClientContext httpContext,
+			Map<String, String> headerMap) {
 		CloseableHttpClient httpClient = null;
 		HttpResponse odmResponse = null;
 		String odmResponseContent = null;
-		
+
 		try {
 			HttpPost request = new HttpPost(odmCheckUrl);
-	        for (String key : headerMap.keySet()) {
-	            request.setHeader(key, headerMap.get(key));
-	        }
-	        request.setEntity(new StringEntity(postBody, ContentType.APPLICATION_JSON));
+			for (String key : headerMap.keySet()) {
+				request.setHeader(key, headerMap.get(key));
+			}
+			request.setEntity(new StringEntity(postBody, ContentType.APPLICATION_JSON));
 
-	        httpClient = httpUtil.getHttpClient();
-	        odmResponse = httpClient.execute(request, httpContext);
-	        int statusCode = odmResponse.getStatusLine().getStatusCode();
-	        if (statusCode == 200) {
-	        	odmResponseContent = EntityUtils.toString(odmResponse.getEntity(), "UTF-8");
+			httpClient = httpUtil.getHttpClient();
+			odmResponse = httpClient.execute(request, httpContext);
+			int statusCode = odmResponse.getStatusLine().getStatusCode();
+			if (statusCode == 200) {
+				odmResponseContent = EntityUtils.toString(odmResponse.getEntity(), "UTF-8");
 //	        	logger.info("call ODM success with 200, odmResponseContent: {}", odmResponseContent);
-	        } else {
-	        	logger.info("呼叫ODM發生錯誤 回傳 status code: {}", statusCode);
-	        }
-			
+			} else {
+				logger.info("呼叫ODM發生錯誤 回傳 status code: {}", statusCode);
+			}
+
 		} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException | IOException e) {
 			logger.info("呼叫 ODM 發生錯誤: {}", e.getMessage());
 		} finally {
@@ -249,79 +242,74 @@ public class VersionComparingService {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return odmResponseContent;
 	}
-	
+
 	/**
-	 * 3. 建立 Report Body 比對新舊版本 ODM 結果
-	 * a. DB 取得驗測案例 IN
-	 * b. DB 取得驗測案例 OUT
-	 * c. 準備 api 發送和比對所需資料
-	 * d. 逐筆讀取今日測試IN案例
-	 * e. 呼叫 升級前 ODM8 或 正式環境找對應的caseOut json 
-	 * f. 呼叫 升級後 ODM9
-	 * g. 取得 responseContent 的 核保碼 (noteCode)列表
-	 * h. 開始比對
-	 * i. 組合報告body 加入report list
+	 * 3. 建立 Report Body 比對新舊版本 ODM 結果 a. DB 取得驗測案例 IN b. DB 取得驗測案例 OUT c. 準備 api
+	 * 發送和比對所需資料 d. 逐筆讀取今日測試IN案例 e. 呼叫 升級前 ODM8 或 正式環境找對應的caseOut json f. 呼叫 升級後
+	 * ODM9 g. 取得 responseContent 的 核保碼 (noteCode)列表 h. 開始比對 i. 組合報告body 加入report
+	 * list
 	 * 
-	 * @param target: nb | ta
+	 * @param target:        nb | ta
 	 * @param startDateTime: 民國年月日時分秒 yyyMMddhhmmss
-	 * @param endDateTime: 民國年月日時分秒 yyyMMddhhmmss
+	 * @param endDateTime:   民國年月日時分秒 yyyMMddhhmmss
 	 * @return
-	 * @throws IOException 
-	 * @throws ParseException 
+	 * @throws IOException
+	 * @throws ParseException
 	 */
-	private List<String> comparingNewOldByCaseIn (
-			String target, Map<String, String> reqUrlMap, 
-			String startDateTime, String endDateTime) {
+	private List<String> comparingNewOldByCaseIn(String target, Map<String, String> reqUrlMap, String startDateTime,
+			String endDateTime) {
 		logger.info("---------------------------------------------------------");
 		logger.info("開始比對目標: {} ", target);
 		List<String> bodyList = new ArrayList<>();
-		
+
 		// a. DB 取得驗測案例 IN
-        List<Policy> caseInList = this.getCaseInDataFromDB(target, startDateTime, endDateTime, reqUrlMap);
-		
+		List<Policy> caseInList = this.getCaseInDataFromDB(target, startDateTime, endDateTime, reqUrlMap);
+
 		// b. DB 取得驗測案例 OUT
 		List<Policy> caseOutList = this.getCaseOutDataFromDB(target, startDateTime, endDateTime, reqUrlMap);
-        
-        int CaseInNum = caseInList.size();
-        int CaseOutNum = caseOutList.size();
+
+		int CaseInNum = caseInList.size();
+		int CaseOutNum = caseOutList.size();
 		if (CaseInNum != CaseOutNum) {
 			logger.info("比對目標 CaseIn 與 CaseOut 數量不符, CaseIn: {} and CaseOut: {}", CaseInNum, CaseOutNum);
 		} else {
 			logger.info("比對目標 CaseIn 與 CaseOut 數量相符, CaseIn: {} and CaseOut: {}", CaseInNum, CaseOutNum);
 		}
-		
+
 		// c. 準備 api 發送和比對所需資料
 		// request header
 		Map<String, String> headerMap = new HashMap<>();
 		headerMap.put("Accept", "application/json");
 		headerMap.put("Content-type", "application/json");
-		
+
 		// caseOutMap
 		Map<String, Policy> caseOutMap = this.convertCaseOutListToMap(caseOutList);
-		
+
 		// odm url
-		String odm8CheckUrl = target.equals("nb") ? reqUrlMap.get(ODM8_CHECK_NB_URL_KEY) : reqUrlMap.get(ODM8_CHECK_TA_URL_KEY);
-		String odm9CheckUrl = target.equals("nb") ? reqUrlMap.get(ODM9_CHECK_NB_URL_KEY) : reqUrlMap.get(ODM9_CHECK_TA_URL_KEY);
+		String odm8CheckUrl = target.equals("nb") ? reqUrlMap.get(ODM8_CHECK_NB_URL_KEY)
+				: reqUrlMap.get(ODM8_CHECK_TA_URL_KEY);
+		String odm9CheckUrl = target.equals("nb") ? reqUrlMap.get(ODM9_CHECK_NB_URL_KEY)
+				: reqUrlMap.get(ODM9_CHECK_TA_URL_KEY);
 		logger.info("odm8CheckUrl: {}", odm8CheckUrl);
 		logger.info("odm9CheckUrl: {}", odm9CheckUrl);
-		
+
 		// 參數宣告
 		StringBuilder eachRowSb = null;
 		Policy caseOutPolicy = null;
 		List<String> nodeCode8 = null;
 		List<String> nodeCode9 = null;
-        String currentEnv = reqUrlMap.get(ENV);
-        HttpClientContext httpContext = HttpClientContext.create();
-        
+		String currentEnv = reqUrlMap.get(ENV);
+		HttpClientContext httpContext = HttpClientContext.create();
+
 		// d. 讀取今日測試IN案例
 		for (Policy policy : caseInList) {
-//			logger.info("===> " + policy.toStringWithoutJson());
+			logger.info("===> " + policy.toStringWithoutJson());
 			eachRowSb = new StringBuilder();
-			
-			// e. 呼叫 升級前 ODM8 或 正式環境找對應的caseOut json 
+
+			// e. 呼叫 升級前 ODM8 或 正式環境找對應的caseOut json
 			String odm8ResponseContent = null;
 			if (currentEnv.equals("prod1") || currentEnv.equals("prod2")) {
 				caseOutPolicy = caseOutMap.get(policy.getMappingKey());
@@ -334,7 +322,7 @@ public class VersionComparingService {
 					continue;
 				}
 			} else {
-				
+
 				odm8ResponseContent = this.callOdm(odm8CheckUrl, policy.getJsonStr(), httpContext, headerMap);
 				if (odm8ResponseContent == null) {
 					bodyList.add("呼叫 ODM 8 發生錯誤");
@@ -342,7 +330,7 @@ public class VersionComparingService {
 					continue;
 				}
 			}
-			
+
 			// f. 呼叫 升級後 ODM9
 			String odm9ResponseContent = this.callOdm(odm9CheckUrl, policy.getJsonStr(), httpContext, headerMap);
 			if (odm9ResponseContent == null) {
@@ -350,136 +338,141 @@ public class VersionComparingService {
 				logger.info("呼叫 ODM 9 發生錯誤, {}", policy.toString());
 				continue;
 			}
-			
+
 			// g. 取得 responseContent 的 核保碼 (noteCode)列表
 			nodeCode8 = null;
 			nodeCode9 = null;
 			try {
 				if (target.equals("nb")) {
-        			nodeCode8 = mapper.readTree(odm8ResponseContent).path("outParam").path("resultItem").findValuesAsText("noteCode");
-        			nodeCode9 = mapper.readTree(odm9ResponseContent).path("outParam").path("resultItem").findValuesAsText("noteCode");
-        		} else {
-        			nodeCode8 = mapper.readTree(odm8ResponseContent).path("VerifyResult").path("resultItem").findValuesAsText("noteCode");
-        			nodeCode9 = mapper.readTree(odm9ResponseContent).path("VerifyResult").path("resultItem").findValuesAsText("noteCode");
-        		}
-				
+					nodeCode8 = mapper.readTree(odm8ResponseContent).path("outParam").path("resultItem")
+							.findValuesAsText("noteCode");
+					nodeCode9 = mapper.readTree(odm9ResponseContent).path("outParam").path("resultItem")
+							.findValuesAsText("noteCode");
+				} else {
+					nodeCode8 = mapper.readTree(odm8ResponseContent).path("VerifyResult").path("resultItem")
+							.findValuesAsText("noteCode");
+					nodeCode9 = mapper.readTree(odm9ResponseContent).path("VerifyResult").path("resultItem")
+							.findValuesAsText("noteCode");
+				}
+
 			} catch (JsonMappingException e) {
 				e.printStackTrace();
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 			}
-			
+
 			// h. 開始比對
 			String status = "";
-	    	String diff = "";
-	    	
-	    	if (nodeCode8 == null && nodeCode9 == null) {
-	    		status = "PASS";
-				diff ="Both are No NoteCode.";
-	    	} else if (nodeCode8 == null && nodeCode9 != null) {
-	    		status = "FAIL";
-				diff ="ODM 8 has no nodeCode.";
-	    	} else if (nodeCode8 != null && nodeCode9 == null) {
-	    		status = "FAIL";
-				diff ="ODM 9 has no nodeCode.";
-	    	} else if (nodeCode8.equals(nodeCode9)) {
-	    		status = "PASS";
-				diff ="NoteCode is same.";
-	    	} else {
-	    		if (policy.getTrans_no().equals("1131114103110929000016")) {
-					this.printStirngList(nodeCode8);
-					logger.info("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
-					this.printStirngList(nodeCode9);
-				}
-	    		
-	    		if (policy.getTrans_no().equals("1131114103129608000020")) {
-					this.printStirngList(nodeCode8);
-					logger.info("BBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-					this.printStirngList(nodeCode9);
-				}
-	    		
-	    		status = "FAIL";
+			String diff = "";
+
+			if (nodeCode8 == null && nodeCode9 == null) {
+				status = "PASS";
+				diff = "Both are No NoteCode.";
+			} else if (nodeCode8 == null && nodeCode9 != null) {
+				status = "FAIL";
+				diff = "ODM 8 has no nodeCode.";
+			} else if (nodeCode8 != null && nodeCode9 == null) {
+				status = "FAIL";
+				diff = "ODM 9 has no nodeCode.";
+			} else if (nodeCode8.equals(nodeCode9)) {
+				status = "PASS";
+				diff = "NoteCode is same.";
+			} else {
+				logger.info("BBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+				this.printStirngList(nodeCode8);
+				logger.info("BBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+				this.printStirngList(nodeCode9);
+				logger.info("BBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+				status = "FAIL";
 				diff = this.getDiffCodes(nodeCode8, nodeCode9);
-	    	}
-			
-	    	// i. 組合報告body 加入list
-	    	String keepDateTime = DateUtil.formatDateToString("yyyy-MM-dd hh:mm:ss", policy.getKeep_date_time());
+			}
+
+			// i. 組合報告body 加入list
+			String keepDateTime = DateUtil.formatDateToString("yyyy-MM-dd hh:mm:ss", policy.getKeep_date_time());
 			eachRowSb.append(policy.getTrans_no()).append(", ")
-					 .append(FileUtil.formatString(policy.getPolicy_no(), 14, "LEFT")).append(", ")
-					 .append(FileUtil.formatString(keepDateTime, 20, "LEFT")).append(", ")
-					 .append(FileUtil.formatString(status, 8, "CENTER")).append(", ")
-					 .append(diff);
-			
+					.append(FileUtil.formatString(policy.getPolicy_no(), 14, "LEFT")).append(", ")
+					.append(FileUtil.formatString(keepDateTime, 20, "LEFT")).append(", ")
+					.append(FileUtil.formatString(status, 8, "CENTER")).append(", ").append(diff);
+
 			bodyList.add(eachRowSb.toString());
 		}
-		
+
 		return bodyList;
 	}
-	
+
 	/**
 	 * a. DB 取得驗測案例 IN
-	 * @param target: nb | ta
+	 * 
+	 * @param target:        nb | ta
 	 * @param startDateTime: 民國年月日時分秒 (yyyMMddhhmmss)
-	 * @param endDateTime: 民國年月日時分秒 (yyyMMddhhmmss)
+	 * @param endDateTime:   民國年月日時分秒 (yyyMMddhhmmss)
 	 * @param reqUrlMap
 	 * @return
 	 */
-	private List<Policy> getCaseInDataFromDB(String target, String startDateTime, String endDateTime, Map<String, String> reqUrlMap) {
+	private List<Policy> getCaseInDataFromDB(String target, String startDateTime, String endDateTime,
+			Map<String, String> reqUrlMap) {
 		String caseInTableName = target.equals("nb") ? "nb_case_in" : "ta_case_in";
 		String caseInColumnName = target.equals("nb") ? "nb_json_in" : "ta_json_in";
 
-		String caseInSql = this.getTestDataSQL(
-				reqUrlMap.get(DB_SCHEMA_KEY), caseInTableName, caseInColumnName,
+		String caseInSql = this.getTestDataSQL(reqUrlMap.get(DB_SCHEMA_KEY), caseInTableName, caseInColumnName,
 				startDateTime, endDateTime);
-		
+
 		List<Policy> caseInList = this.getCaseFromDB(target, "in", caseInSql, reqUrlMap);
 		return caseInList;
 	}
-	
+
 	/**
 	 * b. DB 取得驗測案例 OUT
-	 * @param target: nb | ta
+	 * 
+	 * @param target:        nb | ta
 	 * @param startDateTime: 民國年月日時分秒 (yyyMMddhhmmss)
-	 * @param endDateTime: 民國年月日時分秒 (yyyMMddhhmmss)
+	 * @param endDateTime:   民國年月日時分秒 (yyyMMddhhmmss)
 	 * @param reqUrlMap
 	 * @return
 	 */
-	public List<Policy> getCaseOutDataFromDB (String target, String startDateTime, String endDateTime, Map<String, String> reqUrlMap) {
+	public List<Policy> getCaseOutDataFromDB(String target, String startDateTime, String endDateTime,
+			Map<String, String> reqUrlMap) {
 		String caseOutTableName = target.equals("nb") ? "nb_case_out" : "ta_case_out";
 		String caseOutColumnName = target.equals("nb") ? "nb_json_out" : "ta_json_out";
-        String caseOutSql = this.getTestDataSQL(reqUrlMap.get(DB_SCHEMA_KEY), caseOutTableName, caseOutColumnName, startDateTime, endDateTime);
-        List<Policy> caseOutList = this.getCaseFromDB(target, "out", caseOutSql, reqUrlMap);
-        return caseOutList;
+		String caseOutSql = this.getTestDataSQL(reqUrlMap.get(DB_SCHEMA_KEY), caseOutTableName, caseOutColumnName,
+				startDateTime, endDateTime);
+		List<Policy> caseOutList = this.getCaseFromDB(target, "out", caseOutSql, reqUrlMap);
+		return caseOutList;
 	}
-	
+
 	/**
-	 * 因為caseIn和caseOut當初沒有設計對應key值, 所以SQL用trans_no和policy_no GROUP 對相同群組內的資料依據時間排序1,2,3
-	 * @param tableName : nb_case_in | ta_case_in | nb_case_out | ta_case_out
+	 * 因為caseIn和caseOut當初沒有設計對應key值, 所以SQL用trans_no和policy_no GROUP
+	 * 對相同群組內的資料依據時間排序1,2,3
+	 * 
+	 * @param tableName   : nb_case_in | ta_case_in | nb_case_out | ta_case_out
 	 * @param columnName: nb_json_in | ta_json_in | nb_json_out | ta_json_out
-	 * @param startDate: 民國年月日時分秒 yyyMMddhhmmss
-	 * @param endDate: 民國年月日時分秒 yyyMMddhhmmss
+	 * @param startDate:  民國年月日時分秒 yyyMMddhhmmss
+	 * @param endDate:    民國年月日時分秒 yyyMMddhhmmss
 	 * @return
 	 */
-	private String getTestDataSQL(String schemaName, String tableName, String columnName, String startDateTime, String endDateTime) {
-		
+	private String getTestDataSQL(String schemaName, String tableName, String columnName, String startDateTime,
+			String endDateTime) {
+
 		StringBuilder sqlSb = new StringBuilder();
 		sqlSb.append(" SELECT ");
 		sqlSb.append(" 		trans_no + policy_no + RowRank AS mappingKey, ");
 		sqlSb.append(" 		transDateTime, trans_no, policy_no, keep_date_time, ").append(columnName);
 		sqlSb.append(" FROM ( ");
 		sqlSb.append(" 		SELECT ");
-		sqlSb.append(" 			CAST(ROW_NUMBER() OVER (PARTITION BY trans_no, policy_no ORDER BY keep_date_time ASC) AS VARCHAR(5)) AS rowRank,");
+		sqlSb.append(
+				" 			CAST(ROW_NUMBER() OVER (PARTITION BY trans_no, policy_no ORDER BY keep_date_time ASC) AS VARCHAR(5)) AS rowRank,");
 		sqlSb.append(" 			SUBSTRING(trans_no, 1, 13) AS transDateTime, ");
 		sqlSb.append(" 			trans_no, policy_no, keep_date_time, ").append(columnName);
 		sqlSb.append(" 		FROM ").append(schemaName).append(".dbo.").append(tableName);
 		sqlSb.append(" ) data ");
-		sqlSb.append(" WHERE transDateTime BETWEEN '").append(startDateTime).append("' AND '").append(endDateTime).append("' ");
+		sqlSb.append(" WHERE transDateTime BETWEEN '").append(startDateTime).append("' AND '").append(endDateTime)
+				.append("' ");
 		sqlSb.append(" ORDER BY transDateTime ");
-		
+
 		logger.info("Query DB SQL: {}", sqlSb.toString());
 		return sqlSb.toString();
 	}
-	
+
 	// 取得 caseIn or caseOut 資料
 	private List<Policy> getCaseFromDB(String target, String inOut, String sql, Map<String, String> reqUrlMap) {
 		String url = reqUrlMap.get(DB_URL_KEY);
@@ -526,28 +519,28 @@ public class VersionComparingService {
 
 		return list;
 	}
-	
+
 	private boolean isEqual(List<String> nodeCode1, List<String> nodeCode2) {
 		// 如果 新舊結果都沒有出核保碼 也算比對符合
 		if (nodeCode1 == null && nodeCode2 == null) {
 			return true;
 		}
-		
+
 		if (nodeCode1 == null && nodeCode2 != null) {
 			logger.info("nodeCode1 is null");
 			return false;
 		}
-		
+
 		if (nodeCode1 != null && nodeCode2 == null) {
 			logger.info("nodeCode2 is null");
 			return false;
-		} 
-		
+		}
+
 		// 內容相符
 		if (nodeCode1.equals(nodeCode2)) {
 			return true;
 		}
-		
+
 		// 其他不符
 		return false;
 	}
@@ -584,8 +577,8 @@ public class VersionComparingService {
 
 		return sb.toString();
 	}
-	
-	private void printStirngList (List<String> list) {
+
+	private void printStirngList(List<String> list) {
 		for (String line : list) {
 			logger.info(line);
 		}
