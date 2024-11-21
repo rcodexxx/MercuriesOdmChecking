@@ -361,15 +361,14 @@ public class VersionComparingService {
 				logger.info("***********************************");
 				logger.info("***********************************");
 				logger.info("***********************************");
-				int i = -1;
+				List<String> code9 = null;
 				try {
-					i = mapper.readTree(odm9ResponseContent).path("outParam").path("resultItem").findValuesAsText("noteCode").size();
-				} catch (JsonMappingException e) {
-					i = -2;
+					code9 = mapper.readTree(odm9ResponseContent).path("outParam").path("resultItem").findValuesAsText("noteCode");
 				} catch (JsonProcessingException e) {
-					i = -3;
 				}
-				logger.info("amount: {}", i);
+				for (String code : code9) {
+					logger.info(code);
+				}
 				logger.info("***********************************");
 				logger.info("***********************************");
 				logger.info("***********************************");
@@ -548,6 +547,16 @@ public class VersionComparingService {
 		if (nodeCode1 == null && nodeCode2 == null) {
 			return true;
 		}
+		
+		if (nodeCode1 == null && nodeCode2 != null) {
+			logger.info("nodeCode1 is null");
+			return false;
+		}
+		
+		if (nodeCode1 != null && nodeCode2 == null) {
+			logger.info("nodeCode2 is null");
+			return false;
+		} 
 		
 		// 內容相符
 		if (nodeCode1.equals(nodeCode2)) {
