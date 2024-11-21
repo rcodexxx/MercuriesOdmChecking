@@ -55,4 +55,11 @@ public class Policy {
 				+ "keep_date_time: " + keep_date_time + ", "
 				+ "jsonStr: " + jsonStr;
 	}
+	
+	public String toStringWithoutJson() {
+		return "mappingKey: " + mappingKey + ", "
+				+ "trans_no: " + trans_no + ", "
+				+ "policy_no: " + policy_no + ", "
+				+ "keep_date_time: " + keep_date_time;
+	}
 }

@@ -235,6 +235,7 @@ public class VersionComparingService {
 	        int statusCode = odmResponse.getStatusLine().getStatusCode();
 	        if (statusCode == 200) {
 	        	odmResponseContent = EntityUtils.toString(odmResponse.getEntity(), "UTF-8");
+	        	logger.info("call ODM success with 200, odmResponseContent: {}", odmResponseContent);
 	        } else {
 	        	logger.info("呼叫ODM發生錯誤 回傳 status code: {}", statusCode);
 	        }
@@ -304,6 +305,8 @@ public class VersionComparingService {
 		// odm url
 		String odm8CheckUrl = target.equals("nb") ? reqUrlMap.get(ODM8_CHECK_NB_URL_KEY) : reqUrlMap.get(ODM8_CHECK_TA_URL_KEY);
 		String odm9CheckUrl = target.equals("nb") ? reqUrlMap.get(ODM9_CHECK_NB_URL_KEY) : reqUrlMap.get(ODM9_CHECK_TA_URL_KEY);
+		logger.info("odm8CheckUrl: {}", odm8CheckUrl);
+		logger.info("odm9CheckUrl: {}", odm9CheckUrl);
 		
 		// 參數宣告
 		StringBuilder eachRowSb = null;
@@ -315,6 +318,7 @@ public class VersionComparingService {
         
 		// d. 讀取今日測試IN案例
 		for (Policy policy : caseInList) {
+			logger.info("===> " + policy.toStringWithoutJson());
 			eachRowSb = new StringBuilder();
 			
 			// e. 呼叫 升級前 ODM8 或 正式環境找對應的caseOut json 

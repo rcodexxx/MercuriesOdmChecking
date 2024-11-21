@@ -22,12 +22,14 @@ public class VersionComparingController {
     public boolean callODMResultChecking(@RequestBody DateRange dateRange) {
     	logger.info("[API] start to do version comparing: {}", dateRange.show());
     	
-    	if (DateUtil.isGoodRocDateTime(dateRange.getStartDate())) {
+    	if (!DateUtil.isGoodRocDateTime(dateRange.getStartDate())) {
     		logger.info("[起始日期時間]格式不符, 應為民國年 + 月 + 日 + 時 + 分 + 秒 (yyyMMddhhmmss): {}", dateRange.getStartDate());
+    		return false;
     	}
     	
-    	if (DateUtil.isGoodRocDateTime(dateRange.getEndDate())) {
+    	if (!DateUtil.isGoodRocDateTime(dateRange.getEndDate())) {
     		logger.info("[結束日期時間]格式不符, 應為民國年 + 月 + 日 + 時 + 分 + 秒 (yyyMMddhhmmss): {}", dateRange.getStartDate());
+    		return false;
     	}
     	
     	return versionComparingService.doComparing(dateRange.getStartDate(), dateRange.getEndDate());
