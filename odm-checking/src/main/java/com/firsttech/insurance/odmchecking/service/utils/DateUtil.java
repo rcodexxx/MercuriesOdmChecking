@@ -2,7 +2,9 @@ package com.firsttech.insurance.odmchecking.service.utils;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class DateUtil {
@@ -42,18 +44,19 @@ public class DateUtil {
 	 * @return 民國年月日時分秒 yyyMMddhhmmss
 	 */
 	public static String getROCDateTime(String tag) {
-		LocalDate localDate = LocalDate.now();
-        LocalTime localTime = LocalTime.now();
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(localDate.getYear() - 1911)
-          .append(localDate.getMonthValue())
-          .append(localDate.getDayOfMonth());
-        sb.append(localTime.getHour());
-        sb.append(tag.equals("START") ? "0000" : "5959");
-
-        return sb.toString();
+		// 檢查前一小時的案件
+		LocalDateTime localDateTime = LocalDateTime.now().minusHours(1);
+		
+		if (tag.equals("START")) {
+			localDateTime = localDateTime.withMinute(0).withSecond(0).withNano(0);
+		} else {
+			localDateTime = localDateTime.withMinute(59).withSecond(59).withNano(999999999);
+		}
+		
+		// 格式化
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+		String rocYear = String.valueOf(localDateTime.getYear() - 1911);
+		String result = rocYear + localDateTime.format(formatter).substring(4);
+        return result;
     }
-	
-
 }
