@@ -351,6 +351,18 @@ public class VersionComparingService {
 				continue;
 			}
 			
+			if (policy.getPolicy_no().equals("1131114103129608000020")) {
+				logger.info("===================================");
+				logger.info("===================================");
+				logger.info("===================================");
+				logger.info("===================================");
+				logger.info(odm9ResponseContent);
+				logger.info("===================================");
+				logger.info("===================================");
+				logger.info("===================================");
+				logger.info("===================================");
+			}
+			
 			// g. 取得 responseContent 的 核保碼 (noteCode)列表
 			nodeCode8 = null;
 			nodeCode9 = null;
