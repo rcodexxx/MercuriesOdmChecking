@@ -318,7 +318,7 @@ public class VersionComparingService {
         
 		// d. 讀取今日測試IN案例
 		for (Policy policy : caseInList) {
-			logger.info("===> " + policy.toStringWithoutJson());
+//			logger.info("===> " + policy.toStringWithoutJson());
 			eachRowSb = new StringBuilder();
 			
 			// e. 呼叫 升級前 ODM8 或 正式環境找對應的caseOut json 
@@ -386,9 +386,16 @@ public class VersionComparingService {
 	    		status = "PASS";
 				diff ="NoteCode is same.";
 	    	} else {
+	    		if (policy.getTrans_no().equals("1131114103110929000016")) {
+					this.printStirngList(nodeCode8);
+					logger.info("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
+					this.printStirngList(nodeCode9);
+				}
+	    		
 	    		if (policy.getTrans_no().equals("1131114103129608000020")) {
-					logger.info("111111111111=> ", nodeCode8.size());
-					logger.info("222222222222=> ", nodeCode9.size());
+					this.printStirngList(nodeCode8);
+					logger.info("BBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+					this.printStirngList(nodeCode9);
 				}
 	    		
 	    		status = "FAIL";
@@ -576,5 +583,11 @@ public class VersionComparingService {
 		}
 
 		return sb.toString();
+	}
+	
+	private void printStirngList (List<String> list) {
+		for (String line : list) {
+			logger.info(line);
+		}
 	}
 }
