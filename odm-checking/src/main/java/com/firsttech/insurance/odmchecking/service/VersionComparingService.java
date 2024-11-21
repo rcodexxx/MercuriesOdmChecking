@@ -218,9 +218,11 @@ public class VersionComparingService {
 	 * @param headerMap
 	 * @return
 	 */
-	private HttpResponse callOdm (String odmCheckUrl, String postBody, HttpClientContext httpContext, Map<String, String> headerMap) {
+	private String callOdm (String odmCheckUrl, String postBody, HttpClientContext httpContext, Map<String, String> headerMap) {
 		CloseableHttpClient httpClient = null;
 		HttpResponse odmResponse = null;
+		String odmResponseContent = null;
+		
 		try {
 			HttpPost request = new HttpPost(odmCheckUrl);
 	        for (String key : headerMap.keySet()) {
@@ -230,6 +232,12 @@ public class VersionComparingService {
 
 	        httpClient = httpUtil.getHttpClient();
 	        odmResponse = httpClient.execute(request, httpContext);
+	        int statusCode = odmResponse.getStatusLine().getStatusCode();
+	        if (statusCode == 200) {
+	        	odmResponseContent = EntityUtils.toString(odmResponse.getEntity(), "UTF-8");
+	        } else {
+	        	logger.info("呼叫ODM發生錯誤 回傳 status code: {}", statusCode);
+	        }
 			
 		} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException | IOException e) {
 			logger.info("呼叫 ODM 發生錯誤: {}", e.getMessage());
@@ -241,7 +249,7 @@ public class VersionComparingService {
 			}
 		}
 		
-		return odmResponse;
+		return odmResponseContent;
 	}
 	
 	/**
@@ -302,16 +310,12 @@ public class VersionComparingService {
 		Policy caseOutPolicy = null;
 		List<String> nodeCode8 = null;
 		List<String> nodeCode9 = null;
-		HttpResponse odm8Response = null;
-		HttpResponse odm9Response = null;
         String currentEnv = reqUrlMap.get(ENV);
         HttpClientContext httpContext = HttpClientContext.create();
         
 		// d. 讀取今日測試IN案例
 		for (Policy policy : caseInList) {
 			eachRowSb = new StringBuilder();
-			odm8Response = null;
-			odm9Response = null;
 			
 			// e. 呼叫 升級前 ODM8 或 正式環境找對應的caseOut json 
 			String odm8ResponseContent = null;
@@ -327,39 +331,19 @@ public class VersionComparingService {
 				}
 			} else {
 				
-				odm8Response = this.callOdm(odm8CheckUrl, policy.getJsonStr(), httpContext, headerMap);
-				int statusCode8 = odm8Response.getStatusLine().getStatusCode();
-				if (odm8Response == null || statusCode8 != 200) {
+				odm8ResponseContent = this.callOdm(odm8CheckUrl, policy.getJsonStr(), httpContext, headerMap);
+				if (odm8ResponseContent == null) {
 					bodyList.add("呼叫 ODM 8 發生錯誤");
-					logger.info("呼叫 ODM 8 發生錯誤, status code: {}, json: {}", statusCode8, policy.toString());
-					continue;
-				}
-				
-				try {
-					odm8ResponseContent = EntityUtils.toString(odm8Response.getEntity(), "UTF-8");
-				} catch (IOException e) {
-					logger.info("statusCode8: {}", statusCode8);
-					logger.info("odm8Response.getEntity(): {}", odm8Response.getEntity());
-					bodyList.add("取得 ODM8 response body content 發生錯誤");
-					logger.info("取得 ODM8 response body content 發生錯誤");
+					logger.info("呼叫 ODM 8 發生錯誤, json: {}", policy.toString());
 					continue;
 				}
 			}
 			
 			// f. 呼叫 升級後 ODM9
-			String odm9ResponseContent = null;
-			odm9Response = this.callOdm(odm9CheckUrl, policy.getJsonStr(), httpContext, headerMap);
-			if (odm9Response == null || odm9Response.getStatusLine().getStatusCode() != 200) {
+			String odm9ResponseContent = this.callOdm(odm9CheckUrl, policy.getJsonStr(), httpContext, headerMap);
+			if (odm9ResponseContent == null) {
 				bodyList.add("呼叫 ODM 9 發生錯誤");
 				logger.info("呼叫 ODM 9 發生錯誤, {}", policy.toString());
-				continue;
-			}
-			
-			try {
-				odm9ResponseContent = EntityUtils.toString(odm9Response.getEntity(), "UTF-8");
-			} catch (IOException e) {
-				bodyList.add("取得 ODM9 response body content 發生錯誤");
-				logger.info("取得 ODM9 response body content 發生錯誤");
 				continue;
 			}
 			
