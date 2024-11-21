@@ -20,8 +20,8 @@ public class OdmVersionComparingJob {
 	@Autowired
 	private Environment environment;
 	
-//	@Scheduled(cron = "0 5 * * * ?") // 每小時的五分執行
-	@Scheduled(cron = "0 0/3 * * * ?")
+	@Scheduled(cron = "0 5 * * * ?") // 每小時的五分執行
+//	@Scheduled(cron = "0 0/3 * * * ?")
 	public void doComparing() throws ParseException, IOException {
 		String isActivated = environment.getProperty("cron.version.comparing");
 		if (isActivated == null || !isActivated.equals("Y")) {
