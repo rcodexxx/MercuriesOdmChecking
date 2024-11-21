@@ -373,17 +373,27 @@ public class VersionComparingService {
 			String status = "";
 	    	String diff = "";
 	    	
-	    	if (this.isEqual(nodeCode8, nodeCode9)) {
-				status = "PASS";
+	    	if (nodeCode8 == null && nodeCode9 == null) {
+	    		status = "PASS";
+				diff ="Both are No NoteCode.";
+	    	} else if (nodeCode8 == null && nodeCode9 != null) {
+	    		status = "FAIL";
+				diff ="ODM 8 has no nodeCode.";
+	    	} else if (nodeCode8 != null && nodeCode9 == null) {
+	    		status = "FAIL";
+				diff ="ODM 9 has no nodeCode.";
+	    	} else if (nodeCode8.equals(nodeCode9)) {
+	    		status = "PASS";
 				diff ="NoteCode is same.";
-			} else {
-				status = "FAIL";
-				if (policy.getTrans_no().equals("1131114103129608000020")) {
+	    	} else {
+	    		if (policy.getTrans_no().equals("1131114103129608000020")) {
 					logger.info("111111111111=> ", nodeCode8.size());
 					logger.info("222222222222=> ", nodeCode9.size());
 				}
+	    		
+	    		status = "FAIL";
 				diff = this.getDiffCodes(nodeCode8, nodeCode9);
-			}
+	    	}
 			
 	    	// i. 組合報告body 加入list
 	    	String keepDateTime = DateUtil.formatDateToString("yyyy-MM-dd hh:mm:ss", policy.getKeep_date_time());
