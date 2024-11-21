@@ -378,11 +378,11 @@ public class VersionComparingService {
 				status = "PASS";
 				diff = "NoteCode is same.";
 			} else {
-				logger.info("BBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-				this.printStirngList(nodeCode8);
-				logger.info("BBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-				this.printStirngList(nodeCode9);
-				logger.info("BBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+//				logger.info("BBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+//				this.printStirngList(nodeCode8);
+//				logger.info("BBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+//				this.printStirngList(nodeCode9);
+//				logger.info("BBBBBBBBBBBBBBBBBBBBBBBBBBBB");
 				status = "FAIL";
 				diff = this.getDiffCodes(nodeCode8, nodeCode9);
 			}
@@ -520,67 +520,38 @@ public class VersionComparingService {
 		return list;
 	}
 
-	private boolean isEqual(List<String> nodeCode1, List<String> nodeCode2) {
-		// 如果 新舊結果都沒有出核保碼 也算比對符合
-		if (nodeCode1 == null && nodeCode2 == null) {
-			return true;
-		}
-
-		if (nodeCode1 == null && nodeCode2 != null) {
-			logger.info("nodeCode1 is null");
-			return false;
-		}
-
-		if (nodeCode1 != null && nodeCode2 == null) {
-			logger.info("nodeCode2 is null");
-			return false;
-		}
-
-		// 內容相符
-		if (nodeCode1.equals(nodeCode2)) {
-			return true;
-		}
-
-		// 其他不符
-		return false;
+	private String getDiffCodes(List<String> originCodeList, List<String> newCodeList) {
+		Map<String, Integer> map = new HashMap<>();
+        for (String newCode : newCodeList) {
+        	if (map.containsKey(newCode)) {
+        		map.put(newCode, map.get(newCode) + 1);
+        	} else {
+        		map.put(newCode, 1);
+        	}
+        }
+		
+        for (String originCode : originCodeList) {
+        	if (map.containsKey(originCode)) {
+        		map.put(originCode, map.get(originCode) - 1);
+        	} else {
+        		map.put(originCode, -1);
+        	}
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        for (String key : map.keySet()) {
+        	int times = map.get(key);
+        	if (times == 0) {
+        		continue;
+        	} else if (times > 0) {
+        		sb.append("[多]").append(key).append("; ");
+        	} else {
+        		sb.append("[少]").append(key).append("; ");
+        	}
+        	
+        }
+        
+        return sb.toString();
 	}
 
-	private String getDiffCodes(List<String> nodeCode1, List<String> nodeCode2) {
-		StringBuilder sb = new StringBuilder();
-		for (String code1 : nodeCode1) {
-			boolean isDuplicated = false;
-			for (String code2 : nodeCode2) {
-				if (code1.equals(code2)) {
-					isDuplicated = true;
-					break;
-				}
-			}
-
-			if (isDuplicated == false) {
-				sb.append("[少] " + code1).append("; ");
-			}
-		}
-
-		for (String code2 : nodeCode2) {
-			boolean isDuplicated = false;
-			for (String code1 : nodeCode1) {
-				if (code2.equals(code1)) {
-					isDuplicated = true;
-					break;
-				}
-			}
-
-			if (isDuplicated == false) {
-				sb.append("[多] " + code2).append("; ");
-			}
-		}
-
-		return sb.toString();
-	}
-
-	private void printStirngList(List<String> list) {
-		for (String line : list) {
-			logger.info(line);
-		}
-	}
 }
