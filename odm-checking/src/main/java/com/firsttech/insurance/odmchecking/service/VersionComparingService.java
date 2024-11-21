@@ -351,7 +351,7 @@ public class VersionComparingService {
 				continue;
 			}
 			
-			if (policy.getPolicy_no().equals("1131114103129608000020")) {
+			if (policy.getTrans_no().equals("1131114103129608000020")) {
 				logger.info("===================================");
 				logger.info("===================================");
 				logger.info("===================================");
