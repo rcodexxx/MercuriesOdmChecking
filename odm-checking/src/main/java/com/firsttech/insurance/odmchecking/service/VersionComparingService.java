@@ -351,30 +351,6 @@ public class VersionComparingService {
 				continue;
 			}
 			
-			if (policy.getTrans_no().equals("1131114103129608000020")) {
-				logger.info("***********************************");
-				logger.info("***********************************");
-				logger.info("***********************************");
-				logger.info("***********************************");
-				logger.info(odm9ResponseContent);
-				logger.info("***********************************");
-				logger.info("***********************************");
-				logger.info("***********************************");
-				logger.info("***********************************");
-				List<String> code9 = null;
-				try {
-					code9 = mapper.readTree(odm9ResponseContent).path("outParam").path("resultItem").findValuesAsText("noteCode");
-				} catch (JsonProcessingException e) {
-				}
-				for (String code : code9) {
-					logger.info(code);
-				}
-				logger.info("***********************************");
-				logger.info("***********************************");
-				logger.info("***********************************");
-				logger.info("***********************************");
-			}
-			
 			// g. 取得 responseContent 的 核保碼 (noteCode)列表
 			nodeCode8 = null;
 			nodeCode9 = null;
@@ -402,18 +378,10 @@ public class VersionComparingService {
 				diff ="NoteCode is same.";
 			} else {
 				status = "FAIL";
-				StringBuilder sb8 = new StringBuilder();
-				for (String str8 : nodeCode8) {
-					sb8.append(str8).append("; ");
+				if (policy.getTrans_no().equals("1131114103129608000020")) {
+					logger.info("111111111111=> ", nodeCode8.size());
+					logger.info("222222222222=> ", nodeCode9.size());
 				}
-				logger.info(sb8.toString());
-				
-				StringBuilder sb9 = new StringBuilder();
-				for (String str9 : nodeCode9) {
-					sb8.append(str9).append("; ");
-				}
-				logger.info(sb9.toString());
-				
 				diff = this.getDiffCodes(nodeCode8, nodeCode9);
 			}
 			
