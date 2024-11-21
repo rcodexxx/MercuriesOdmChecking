@@ -21,7 +21,7 @@ public class VersionComparingController {
     @GetMapping("/versionComparing")
     public boolean callODMResultChecking(@RequestBody DateRange dateRange) {
     	logger.info("[API] start to do version comparing: {}", dateRange.show());
-    	if (dateRange == null 
+    	if (dateRange != null 
     			|| DateUtil.isGoodRocDateTime(dateRange.getStartDate()) 
     			|| DateUtil.isGoodRocDateTime(dateRange.getEndDate())) {
     		logger.info("輸入日期不符, 應為民國年 + 月 + 日 + 時 + 分 + 秒 (yyyMMddhhmmss)");
