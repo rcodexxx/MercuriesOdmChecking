@@ -235,7 +235,7 @@ public class VersionComparingService {
 	        int statusCode = odmResponse.getStatusLine().getStatusCode();
 	        if (statusCode == 200) {
 	        	odmResponseContent = EntityUtils.toString(odmResponse.getEntity(), "UTF-8");
-	        	logger.info("call ODM success with 200, odmResponseContent: {}", odmResponseContent);
+//	        	logger.info("call ODM success with 200, odmResponseContent: {}", odmResponseContent);
 	        } else {
 	        	logger.info("呼叫ODM發生錯誤 回傳 status code: {}", statusCode);
 	        }
@@ -378,6 +378,17 @@ public class VersionComparingService {
 				diff ="NoteCode is same.";
 			} else {
 				status = "FAIL";
+				StringBuilder sb8 = new StringBuilder();
+				for (String str8 : nodeCode8) {
+					sb8.append(str8).append("; ");
+				}
+				logger.info(sb8.toString());
+				StringBuilder sb9 = new StringBuilder();
+				for (String str9 : nodeCode9) {
+					sb8.append(str9).append("; ");
+				}
+				logger.info(sb9.toString());
+				
 				diff = this.getDiffCodes(nodeCode8, nodeCode9);
 			}
 			
