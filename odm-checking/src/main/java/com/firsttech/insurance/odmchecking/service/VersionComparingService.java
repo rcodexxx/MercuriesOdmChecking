@@ -43,8 +43,8 @@ public class VersionComparingService {
 	@Autowired
 	private Environment environment;
 
-	private HttpUtil httpUtil = new HttpUtil();
-	private ObjectMapper mapper = new ObjectMapper();
+	private final HttpUtil httpUtil = new HttpUtil();
+	private final ObjectMapper mapper = new ObjectMapper();
 	private final String ODM8_CHECK_NB_URL_KEY = "odm8CheckNBUrl";
 	private final String ODM9_CHECK_NB_URL_KEY = "odm9CheckNBUrl";
 	private final String ODM8_CHECK_TA_URL_KEY = "odm8CheckTAUrl";
@@ -163,7 +163,7 @@ public class VersionComparingService {
 			map.put(DB_USERNAME_KEY, environment.getProperty("db.uat.username"));
 			map.put(DB_PASSWORD_KEY, environment.getProperty("db.uat.password"));
 			// PROD1
-		} else if (currentIP.equals("172.16.9.92")) {
+		} else if (currentIP.startsWith("172.16.9")) {
 			map.put(ODM8_CHECK_NB_URL_KEY, environment.getProperty("odm.prod1.nb.origin"));
 			map.put(ODM9_CHECK_NB_URL_KEY, environment.getProperty("odm.prod1.nb.new"));
 			map.put(ODM8_CHECK_TA_URL_KEY, environment.getProperty("odm.prod1.ta.origin"));
@@ -174,16 +174,16 @@ public class VersionComparingService {
 			map.put(DB_USERNAME_KEY, environment.getProperty("db.prod.username"));
 			map.put(DB_PASSWORD_KEY, environment.getProperty("db.prod.password"));
 			// PROD2
-		} else if (currentIP.equals("172.16.9.93")) {
-			map.put(ODM8_CHECK_NB_URL_KEY, environment.getProperty("odm.prod2.nb.origin"));
-			map.put(ODM9_CHECK_NB_URL_KEY, environment.getProperty("odm.prod2.nb.new"));
-			map.put(ODM8_CHECK_TA_URL_KEY, environment.getProperty("odm.prod2.ta.origin"));
-			map.put(ODM9_CHECK_TA_URL_KEY, environment.getProperty("odm.prod2.ta.new"));
-			map.put(ENV, "prod2");
-			map.put(DB_SCHEMA_KEY, "PRODODMDB");
-			map.put(DB_URL_KEY, environment.getProperty("db.prod.url"));
-			map.put(DB_USERNAME_KEY, environment.getProperty("db.prod.username"));
-			map.put(DB_PASSWORD_KEY, environment.getProperty("db.prod.password"));
+//		} else if (currentIP.equals("172.16.9.93")) {
+//			map.put(ODM8_CHECK_NB_URL_KEY, environment.getProperty("odm.prod2.nb.origin"));
+//			map.put(ODM9_CHECK_NB_URL_KEY, environment.getProperty("odm.prod2.nb.new"));
+//			map.put(ODM8_CHECK_TA_URL_KEY, environment.getProperty("odm.prod2.ta.origin"));
+//			map.put(ODM9_CHECK_TA_URL_KEY, environment.getProperty("odm.prod2.ta.new"));
+//			map.put(ENV, "prod2");
+//			map.put(DB_SCHEMA_KEY, "PRODODMDB");
+//			map.put(DB_URL_KEY, environment.getProperty("db.prod.url"));
+//			map.put(DB_USERNAME_KEY, environment.getProperty("db.prod.username"));
+//			map.put(DB_PASSWORD_KEY, environment.getProperty("db.prod.password"));
 		} else {
 			logger.info("沒有找到本機IP資訊無法對應到正確的 ODM URL");
 		}
@@ -318,7 +318,7 @@ public class VersionComparingService {
 				} else {
 					eachRowSb.append("DB caseOut no output result");
 					bodyList.add(eachRowSb.toString());
-					logger.info("DB caseOut no output result, {}", policy.toString());
+					logger.info("DB caseOut no output result, {}", policy);
 					continue;
 				}
 			} else {
@@ -326,7 +326,7 @@ public class VersionComparingService {
 				odm8ResponseContent = this.callOdm(odm8CheckUrl, policy.getJsonStr(), httpContext, headerMap);
 				if (odm8ResponseContent == null) {
 					bodyList.add("呼叫 ODM 8 發生錯誤");
-					logger.info("呼叫 ODM 8 發生錯誤, json: {}", policy.toString());
+					logger.info("呼叫 ODM 8 發生錯誤, json: {}", policy);
 					continue;
 				}
 			}
@@ -335,7 +335,7 @@ public class VersionComparingService {
 			String odm9ResponseContent = this.callOdm(odm9CheckUrl, policy.getJsonStr(), httpContext, headerMap);
 			if (odm9ResponseContent == null) {
 				bodyList.add("呼叫 ODM 9 發生錯誤");
-				logger.info("呼叫 ODM 9 發生錯誤, {}", policy.toString());
+				logger.info("呼叫 ODM 9 發生錯誤, {}", policy);
 				continue;
 			}
 
@@ -469,7 +469,7 @@ public class VersionComparingService {
 				.append("' ");
 		sqlSb.append(" ORDER BY transDateTime ");
 
-		logger.info("Query DB SQL: {}", sqlSb.toString());
+		logger.info("Query DB SQL: {}", sqlSb);
 		return sqlSb.toString();
 	}
 

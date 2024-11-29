@@ -32,7 +32,7 @@ public class OdmHealthCheckJob {
 	@Autowired
 	private EmailService emailService;
 	
-	private HttpUtil httpUtil = new HttpUtil();
+	private final HttpUtil httpUtil = new HttpUtil();
 		
 	@Scheduled(cron = "0 0/5 * * * ?")
 	public void odmHealthChecking() {

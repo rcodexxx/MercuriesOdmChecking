@@ -11,6 +11,7 @@ import com.firsttech.insurance.odmchecking.service.utils.FileUtil;
 import com.firsttech.insurance.odmchecking.service.utils.HttpUtil;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -37,7 +38,7 @@ public class SmsService {
     @Value("${current.ip.info}")
     private String infoFilePath;
     
-    private HttpUtil httpUtil = new HttpUtil();
+    private final HttpUtil httpUtil = new HttpUtil();
     
     public void sendSMS () {
     	// 取得設定檔資訊
@@ -75,7 +76,7 @@ public class SmsService {
     				smsUrl + this.getParamsUrl(phoneNum), 
     				phoneNum, 
     				this.getSMSHeaderMap());
-    		String returnBody = IOUtils.toString(response.getEntity().getContent(), "UTF-8");
+    		String returnBody = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
 			int statusCode = response.getStatusLine().getStatusCode();
 			
 			logger.info("SMS sending response => statusCode: {}, body: {}", statusCode, returnBody);
@@ -97,12 +98,11 @@ public class SmsService {
     }
     
     private String getParamsUrl (String phoneNum) throws UnsupportedEncodingException {
-    	StringBuilder sb = new StringBuilder();
-    	sb.append("&username=").append(userName);
-    	sb.append("&password=").append(password);
-    	sb.append("&dstaddr=").append(phoneNum);
-    	sb.append("&smbody=").append(this.getODMNotWorkingSmsContent());
-    	return sb.toString();
+        String sb = "&username=" + userName +
+                "&password=" + password +
+                "&dstaddr=" + phoneNum +
+                "&smbody=" + this.getODMNotWorkingSmsContent();
+    	return sb;
     }
     
     private Map<String, String> getSMSHeaderMap(){
@@ -116,11 +116,10 @@ public class SmsService {
         String currentDateTimeStr = dateFormat.format(new Date());
         Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
 		String currentIP = infoMap.get("local.ip");
-        
-        StringBuilder sb = new StringBuilder();
-        sb.append("親愛的ODM管理者您好，從").append(currentIP).append("監控排程於").append(currentDateTimeStr)
-                .append("發現ODM有異常無法連通狀況，請盡快協助確認處理，謝謝");
-        return URLEncoder.encode(sb.toString(), "UTF-8");
+
+        String sb = "親愛的ODM管理者您好，從" + currentIP + "監控排程於" + currentDateTimeStr +
+                "發現ODM有異常無法連通狀況，請盡快協助確認處理，謝謝";
+        return URLEncoder.encode(sb, "UTF-8");
     }
 
 }

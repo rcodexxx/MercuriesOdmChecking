@@ -85,10 +85,9 @@ public class EmailService {
         String currentDateTimeStr = dateFormat.format(new Date());
         Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
 		String currentIP = infoMap.get("local.ip");
-        
-        StringBuilder sb = new StringBuilder();
-        sb.append("親愛的ODM管理者 您好, 從").append(currentIP).append("監控排程於").append(currentDateTimeStr)
-                .append("發現 ODM 有異常無法連通狀況，請盡快協助確認處理，謝謝");
-        return sb.toString();
+
+        String sb = "親愛的ODM管理者 您好, 從" + currentIP + "監控排程於" + currentDateTimeStr +
+                "發現 ODM 有異常無法連通狀況，請盡快協助確認處理，謝謝";
+        return sb;
     }
 }
