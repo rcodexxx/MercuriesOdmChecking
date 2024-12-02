@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- The contents of this file will be loaded for each web application -->
+<Context>
+
+    <!-- Default set of monitored resources. If one of these changes, the    -->
+    <!-- web application will be reloaded.                                   -->
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+    <WatchedResource>WEB-INF/tomcat-web.xml</WatchedResource>
+    <WatchedResource>${catalina.base}/conf/web.xml</WatchedResource>
+	
+	<Resource
+	name="jdbc/ifmx"
+    type="javax.sql.DataSource"
+	factory="nl.wimvanhaaren.tomcat.secured.EncryptedDataSourceFactory"
+    validationQuery="select * from systables"
+    url="jdbc:informix-sqli://172.25.21.2:1528/life:informixserver=hp_tn;NEWCODESET=MS950,big5,57352;DB_LOCALE=zh_TW.big5;CLIENT_LOCALE=zh_TW.big5;DBLANG=zh_TW.big5;IFX_USE_STRENC=true"  
+    username="odmrule"
+	password="162e633163714af4f75e26a92a4980e0"
+    driverClassName="com.informix.jdbc.IfxDriver"
+    maxTotal="50"
+    maxWaitMillis="30000"
+	removeAbandoned="true"
+	removeAbandonedTimeout="30"
+	logAbandoned="true"
+	testOnBorrow="true"
+    maxIdle="30" />
+	
+	<Resource
+	name="jdbc/midifmx"
+    type="javax.sql.DataSource"
+	factory="nl.wimvanhaaren.tomcat.secured.EncryptedDataSourceFactory"
+    validationQuery="select * from systables"
+    url="jdbc:informix-sqli://172.25.21.2:1528/mid_life:informixserver=hp_tn;NEWCODESET=MS950,big5,57352;DB_LOCALE=zh_TW.big5;CLIENT_LOCALE=zh_TW.big5;DBLANG=zh_TW.big5;IFX_USE_STRENC=true"  
+    username="odmrule"
+	password="162e633163714af4f75e26a92a4980e0"
+    driverClassName="com.informix.jdbc.IfxDriver"
+	removeAbandoned="true"
+	removeAbandonedTimeout="30"
+	logAbandoned="true"
+	testOnBorrow="true"
+    maxTotal="50"
+    maxWaitMillis="30000"
+    maxIdle="30" />
+	
+	<Resource
+	name="jdbc/mssql"
+	factory="nl.wimvanhaaren.tomcat.secured.EncryptedDataSourceFactory"
+    type="javax.sql.DataSource"
+    url="jdbc:sqlserver://172.16.18.140:1433;databaseName=UATODMDB"
+    password="0f9dc395d2a9ca934d94f63115e21751"
+    driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+	removeAbandoned="true"
+	removeAbandonedTimeout="30"
+	testOnBorrow="true"
+	validationQuery="SELECT 1"
+    maxTotal="100"
+	maxActive="100"
+    maxWaitMillis="30000"
+    maxIdle="50"
+    username="odmadm"/>
+    <!-- Uncomment this to disable session persistence across Tomcat restarts -->
+    <!--
+    <Manager pathname="" />
+    -->
+</Context>
