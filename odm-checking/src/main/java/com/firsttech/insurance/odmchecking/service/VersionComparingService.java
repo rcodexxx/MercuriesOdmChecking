@@ -163,7 +163,7 @@ public class VersionComparingService {
 			map.put(DB_USERNAME_KEY, environment.getProperty("db.uat.username"));
 			map.put(DB_PASSWORD_KEY, environment.getProperty("db.uat.password"));
 			// PROD1
-		} else if (currentIP.equals("172.16.9.92")) {
+		} else if (currentIP.startsWith("172.16.9")) {
 			map.put(ODM8_CHECK_NB_URL_KEY, environment.getProperty("odm.prod1.nb.origin"));
 			map.put(ODM9_CHECK_NB_URL_KEY, environment.getProperty("odm.prod1.nb.new"));
 			map.put(ODM8_CHECK_TA_URL_KEY, environment.getProperty("odm.prod1.ta.origin"));
@@ -173,18 +173,34 @@ public class VersionComparingService {
 			map.put(DB_URL_KEY, environment.getProperty("db.prod.url"));
 			map.put(DB_USERNAME_KEY, environment.getProperty("db.prod.username"));
 			map.put(DB_PASSWORD_KEY, environment.getProperty("db.prod.password"));
-			// PROD2
-		} else if (currentIP.equals("172.16.9.93")) {
-			map.put(ODM8_CHECK_NB_URL_KEY, environment.getProperty("odm.prod2.nb.origin"));
-			map.put(ODM9_CHECK_NB_URL_KEY, environment.getProperty("odm.prod2.nb.new"));
-			map.put(ODM8_CHECK_TA_URL_KEY, environment.getProperty("odm.prod2.ta.origin"));
-			map.put(ODM9_CHECK_TA_URL_KEY, environment.getProperty("odm.prod2.ta.new"));
-			map.put(ENV, "prod2");
-			map.put(DB_SCHEMA_KEY, "PRODODMDB");
-			map.put(DB_URL_KEY, environment.getProperty("db.prod.url"));
-			map.put(DB_USERNAME_KEY, environment.getProperty("db.prod.username"));
-			map.put(DB_PASSWORD_KEY, environment.getProperty("db.prod.password"));
-		} else {
+			
+		} 
+		
+		/**
+		 * 20241203 removed by Peter: 已和Elvis確認, 正式環境一次只測試打一台
+		 * 確認過正式環境連結的DB連線資訊及網段是 16.18
+		 * db.prod.url=jdbc:sqlserver://172.16.18.141:1433;dbName=PRODODMDB
+		 * db.prod.username=odmadm
+		 * db.prod.password=Odm@dm123
+		 * 也 double check ODM 連線資訊和port號
+		 * odm.prod1.nb.new=http://172.16.9.115:9082/DecisionService/rest/NBRulesApp/NBRulesRuleset
+		 * odm.prod1.ta.new=http://172.16.9.115:9082/DecisionService/rest/TARulesApp/TARulesRuleset
+		 * 
+		 */
+		
+		// PROD2	
+//		else if (currentIP.equals("172.16.9.93")) {
+//			map.put(ODM8_CHECK_NB_URL_KEY, environment.getProperty("odm.prod2.nb.origin"));
+//			map.put(ODM9_CHECK_NB_URL_KEY, environment.getProperty("odm.prod2.nb.new"));
+//			map.put(ODM8_CHECK_TA_URL_KEY, environment.getProperty("odm.prod2.ta.origin"));
+//			map.put(ODM9_CHECK_TA_URL_KEY, environment.getProperty("odm.prod2.ta.new"));
+//			map.put(ENV, "prod2");
+//			map.put(DB_SCHEMA_KEY, "PRODODMDB");
+//			map.put(DB_URL_KEY, environment.getProperty("db.prod.url"));
+//			map.put(DB_USERNAME_KEY, environment.getProperty("db.prod.username"));
+//			map.put(DB_PASSWORD_KEY, environment.getProperty("db.prod.password"));
+//		} 
+		else {
 			logger.info("沒有找到本機IP資訊無法對應到正確的 ODM URL");
 		}
 
