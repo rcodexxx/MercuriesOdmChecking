@@ -169,7 +169,7 @@ public class VersionComparingService {
 			map.put(ODM8_CHECK_TA_URL_KEY, environment.getProperty("odm.prod1.ta.origin"));
 			map.put(ODM9_CHECK_TA_URL_KEY, environment.getProperty("odm.prod1.ta.new"));
 			map.put(ENV, "prod1");
-			map.put(DB_SCHEMA_KEY, "PRODODMDB");
+			map.put(DB_SCHEMA_KEY, "ODMDB");
 			map.put(DB_URL_KEY, environment.getProperty("db.prod.url"));
 			map.put(DB_USERNAME_KEY, environment.getProperty("db.prod.username"));
 			map.put(DB_PASSWORD_KEY, environment.getProperty("db.prod.password"));
