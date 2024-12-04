@@ -1,8 +1,6 @@
 package com.firsttech.insurance.odmchecking.service;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -340,12 +338,7 @@ public class VersionComparingService {
 					continue;
 				}
 			} else {
-				BigDecimal startTime = BigDecimal.valueOf(System.nanoTime()); // 記錄起始時間
 				odm8ResponseContent = this.callOdm(odm8CheckUrl, policy.getJsonStr(), httpContext, headerMap);
-				BigDecimal endTime = BigDecimal.valueOf(System.nanoTime()); // 記錄結束時間
-				BigDecimal duration = endTime.subtract(startTime).divide(new BigDecimal(1000000000), 4, RoundingMode.HALF_UP);
-				logger.info("odm8 呼叫耗時: {} 秒", duration.toString());
-				
 				if (odm8ResponseContent == null) {
 					bodyList.add("呼叫 ODM 8 發生錯誤");
 					logger.info("呼叫 ODM 8 發生錯誤, json: {}", policy.toString());
@@ -353,14 +346,8 @@ public class VersionComparingService {
 				}
 			}
 
-			BigDecimal startTime = BigDecimal.valueOf(System.nanoTime()); // 記錄起始時間
 			// f. 呼叫 升級後 ODM9
 			String odm9ResponseContent = this.callOdm(odm9CheckUrl, policy.getJsonStr(), httpContext, headerMap);
-			
-			BigDecimal endTime = BigDecimal.valueOf(System.nanoTime()); // 記錄結束時間
-			BigDecimal duration = endTime.subtract(startTime).divide(new BigDecimal(1000000000), 4, RoundingMode.HALF_UP);
-			logger.info("odm9 呼叫耗時: {} 秒", duration.toString());
-			
 			if (odm9ResponseContent == null) {
 				bodyList.add("呼叫 ODM 9 發生錯誤");
 				logger.info("呼叫 ODM 9 發生錯誤, {}", policy.toString());
