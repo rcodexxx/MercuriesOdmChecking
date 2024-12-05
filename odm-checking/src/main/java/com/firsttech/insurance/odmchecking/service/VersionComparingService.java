@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -338,8 +337,14 @@ public class VersionComparingService {
             // g. 取得 responseContent 的 核保碼 (noteCode)列表
             String[] nbJsonNode = {"outParam", "resultItem", "noteCode"};
             String[] taJsonNode = {"VerifyResult", "resultItem", "noteCode"};
-            nodeCode8 = getNodeCode(odm8ResponseContent, nbJsonNode);
-            nodeCode9 = getNodeCode(odm9ResponseContent, taJsonNode);
+            if (target.equals("nb")) {
+                nodeCode8 = getNodeCode(odm8ResponseContent, nbJsonNode);
+                nodeCode9 = getNodeCode(odm9ResponseContent, nbJsonNode);
+            } else {
+                nodeCode8 = getNodeCode(odm8ResponseContent, taJsonNode);
+                nodeCode9 = getNodeCode(odm9ResponseContent, taJsonNode);
+            }
+
 
             // h. 開始比對
             String status = null;
