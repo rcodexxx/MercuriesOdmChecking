@@ -92,9 +92,15 @@
 		    <artifactId>mssql-jdbc</artifactId>
 		    <version>6.4.0.jre9</version>
 		</dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
 
 
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<finalName>ODM_Check</finalName>
