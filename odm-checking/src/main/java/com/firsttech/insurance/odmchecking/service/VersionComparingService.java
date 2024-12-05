@@ -82,7 +82,7 @@ public class VersionComparingService {
                 + FileUtil.formatString("Status", 8, "CENTER")
                 + FileUtil.formatString("Diff", 12, "CENTER")
                 + FileUtil.formatString("ODM8 node code", 60, "LEFT")
-                + FileUtil.formatString("ODM9 node code", 12, "LEFT"));
+                + FileUtil.formatString("ODM9 node code", 60, "LEFT"));
         rptTotalList
                 .add("=============================================================================================");
 
@@ -301,7 +301,7 @@ public class VersionComparingService {
 
         // d. 讀取今日測試IN案例
         for (Policy policy : caseInList) {
-            logger.info("===> " + policy.toStringWithoutJson());
+//            logger.info("===> " + policy.toStringWithoutJson());
             eachRowSb = new StringBuilder();
 
             // e. 呼叫 升級前 ODM8 或 正式環境找對應的caseOut json
@@ -317,7 +317,6 @@ public class VersionComparingService {
                     continue;
                 }
             } else {
-
                 odm8ResponseContent = this.callOdm(odm8CheckUrl, policy.getJsonStr(), httpContext, headerMap);
                 if (odm8ResponseContent == null) {
                     bodyList.add("呼叫 ODM 8 發生錯誤");
@@ -345,6 +344,7 @@ public class VersionComparingService {
                 nodeCode9 = getNodeCode(odm9ResponseContent, taJsonNode);
             }
 
+            logger.info(nodeCode8.toString(), nodeCode9.toString());
 
             // h. 開始比對
             String status = null;
@@ -376,7 +376,6 @@ public class VersionComparingService {
                     .append(FileUtil.formatString(diff, 8, "CENTER")).append(", ")
                     .append(FileUtil.formatString(nodeCode8.toString(), 60, "LEFT")).append(", ")
                     .append(FileUtil.formatString(nodeCode9.toString(), 60, "LEFT")).append(", ");
-
             bodyList.add(eachRowSb.toString());
         }
 
