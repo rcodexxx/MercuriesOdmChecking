@@ -680,7 +680,7 @@ public class VersionComparingService {
  		
  		logger.info("start to export report for ETS");
  		String rptOutputPath = environment.getProperty("output.path") + "\\ODM9_ets_report_" + reqUrlMap.get(ENV)
- 		+ "_" + DateUtil.formatDateToString("yyyyMMddhhmmss", new Date()) + ".csv";
+ 		+ "_" + DateUtil.formatDateToString("yyyyMMddhhmmss", new Date()) + "xlsx";
  		
  		return this.generatingExcel(etsReportContents, rptOutputPath);
 // 		return FileUtil.writeToFile(exportRptList, rptOutputPath);
