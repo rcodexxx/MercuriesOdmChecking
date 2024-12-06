@@ -2,7 +2,9 @@ package com.firsttech.insurance.odmchecking.service;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firsttech.insurance.odmchecking.domain.Policy;
 import com.firsttech.insurance.odmchecking.service.utils.DateUtil;
@@ -588,13 +590,8 @@ public class VersionComparingService {
         return nodeCode;
     }
 
- // 20241206 add by Peter
+    // 20241206 add by Peter
  	public boolean doETSComparing() {
- 											  
- 																					 
- 												
- 						 
- 							  
 
  		String etsCsvPath = environment.getProperty("ets.csv.path");
  		if (etsCsvPath == null || etsCsvPath.equals("")) {
@@ -604,15 +601,9 @@ public class VersionComparingService {
  		if (csvList == null || csvList.size() == 0) {
  			return false;
  		}
- 							  
 
  		logger.info("ETS 比對作業 從CSV檔案中取得比數: {}", csvList.size());
- 																				
- 																	
- 						 
- 							  
 
- 		boolean isFinished = false;
  		HttpClientContext httpContext = HttpClientContext.create();
  		String infoFilePath = environment.getProperty("current.ip.info");
  		Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
@@ -646,13 +637,26 @@ public class VersionComparingService {
  				response9Content = "發生錯誤!!";
  			}
  			
- 			if (response8Content.equals(response9Content)) {
- 				isFinished = true;
- 			}
+ 			ObjectMapper objectMapper = new ObjectMapper();
+			try {
+				JsonNode rootNode = objectMapper.readTree(response8Content);
+				JsonNode outParamNode = rootNode.get("outParam");
+				response8Content = objectMapper.writeValueAsString(outParamNode);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				JsonNode rootNode = objectMapper.readTree(response9Content);
+				JsonNode outParamNode = rootNode.get("outParam");
+				response9Content = objectMapper.writeValueAsString(outParamNode);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
  			
- 			sb.append(line).append(", ").append(isFinished)
- 						   .append(", ").append(response8Content)
- 						   .append(", ").append(response9Content);
+ 			sb.append(line).append(", ").append(response8Content.equals(response9Content) ? "相符" : "不相符")
+ 						   .append(", ").append(this.putResponseJsonToCSV(response8Content))
+ 						   .append(", ").append(this.putResponseJsonToCSV(response9Content));
  			exportRptList.add(sb.toString());
  		}
  		
@@ -675,6 +679,10 @@ public class VersionComparingService {
  		ans = ans.replaceAll("\"\"", "\"");
  		
  		return ans;
+ 	}
+ 	
+ 	private String putResponseJsonToCSV (String jsonStr) {
+ 		return "\"" + jsonStr.replaceAll("\"", "\"\"") + "\"";
  	}
  	
  	private Policy getCaseOutPolicy (Policy caseInPolicy, List<Policy> caseOutList) {
