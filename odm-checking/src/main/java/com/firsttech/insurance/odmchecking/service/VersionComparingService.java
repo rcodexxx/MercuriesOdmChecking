@@ -346,20 +346,19 @@ public class VersionComparingService {
                 nodeCode9 = getNodeCode(odm9ResponseContent, taJsonNode);
             }
 
-            logger.info("odm 8 node code: {}", nodeCode8.toString());
-            logger.info("odm 9 node code: {}", nodeCode9.toString());
+            logger.info("Result: ODM8 node code: {}, ODM9 node code: {}", nodeCode8.toString(), nodeCode9.toString());
 
             // h. 開始比對
             String status = null;
             String diff = null;
 
-            if (nodeCode8 == null && nodeCode9 == null) {
+            if (nodeCode8.isEmpty() && nodeCode9.isEmpty()) {
                 status = "PASS";
                 diff = "Both are No NoteCode.";
-            } else if (nodeCode8 == null && nodeCode9 != null) {
+            } else if (nodeCode8.isEmpty()) {
                 status = "FAIL";
                 diff = "ODM 8 has no nodeCode.";
-            } else if (nodeCode8 != null && nodeCode9 == null) {
+            } else if (nodeCode9.isEmpty()) {
                 status = "FAIL";
                 diff = "ODM 9 has no nodeCode.";
             } else if (nodeCode8.equals(nodeCode9)) {
@@ -372,13 +371,6 @@ public class VersionComparingService {
 
             // i. 組合報告body 加入list
             String keepDateTime = DateUtil.formatDateToString("yyyy-MM-dd hh:mm:ss", policy.getKeep_date_time());
-//            eachRowSb.append(policy.getTrans_no()).append(", ")
-//                    .append(FileUtil.formatString(policy.getPolicy_no(), 14, "LEFT")).append(", ")
-//                    .append(FileUtil.formatString(keepDateTime, 20, "LEFT")).append(", ")
-//                    .append(FileUtil.formatString(status, 8, "CENTER")).append(", ")
-//                    .append(FileUtil.formatString(diff, 8, "CENTER")).append(", ")
-//                    .append(FileUtil.formatString(nodeCode8.toString(), 60, "LEFT")).append(", ")
-//                    .append(FileUtil.formatString(nodeCode9.toString(), 60, "LEFT")).append(", ");
             eachRowSb.append(policy.getTrans_no()).append(", ")
                     .append(policy.getPolicy_no()).append(", ")
                     .append(keepDateTime).append(", ")
