@@ -20,6 +20,7 @@ public class VersionComparingController {
 	
 	@GetMapping("/versionComparingETS")
 	public boolean callODMResultCheckingETS () {
+		logger.info("[API] start to do version comparing for ETS");
 		return versionComparingService.doETSComparing();
 	}
 	

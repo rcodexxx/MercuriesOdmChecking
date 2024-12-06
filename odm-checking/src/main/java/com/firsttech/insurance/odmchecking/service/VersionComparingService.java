@@ -619,14 +619,24 @@ public class VersionComparingService {
 		headerMap.put("Accept", "application/json");
 		headerMap.put("Content-type", "application/json");
 		List<String> exportRptList = new ArrayList<>();
+		exportRptList.add("original ETS ODM: " + odm8CheckUrl);
+		exportRptList.add("new ETS ODM: " + odm9CheckUrl);
+		exportRptList.add("pKey, jsonIn, time, date, isMatch, original response, new response");
 		StringBuilder sb = null;
 
 		for (String line : csvList) {
 			sb = new StringBuilder();
 			
 			String requestBody = line.split(",")[1];
+			logger.info(requestBody);
 			String response8Content = this.callOdm(odm8CheckUrl, requestBody, httpContext, headerMap);
+			if (response8Content == null) {
+				response8Content = "發生錯誤!!";
+			}
 			String response9Content = this.callOdm(odm9CheckUrl, requestBody, httpContext, headerMap);
+			if (response9Content == null) {
+				response9Content = "發生錯誤!!";
+			}
 			
 			if (response8Content.equals(response9Content)) {
 				isFinished = true;
@@ -638,6 +648,7 @@ public class VersionComparingService {
 			exportRptList.add(sb.toString());
 		}
 		
+		logger.info("start to export report for ETS");
 		String rptOutputPath = environment.getProperty("output.path") + "\\ODM9_ets_report_" + reqUrlMap.get(ENV)
 		+ "_" + DateUtil.formatDateToString("yyyyMMddhhmmss", new Date()) + ".csv";
 		
