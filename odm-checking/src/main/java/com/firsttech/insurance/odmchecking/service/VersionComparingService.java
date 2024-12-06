@@ -627,7 +627,7 @@ public class VersionComparingService {
 		for (String line : csvList) {
 			sb = new StringBuilder();
 			
-			String requestBody = line.split(",")[1];
+			String requestBody = this.getETSJsonFomrStr(line);
 			logger.info(requestBody);
 			String response8Content = this.callOdm(odm8CheckUrl, requestBody, httpContext, headerMap);
 			if (response8Content == null) {
@@ -654,5 +654,14 @@ public class VersionComparingService {
 		
 		return FileUtil.writeToFile(exportRptList, rptOutputPath);
 		
+	}
+	
+	private String getETSJsonFomrStr (String line) {
+		if (line == null || line.indexOf("{") == -1 || line.lastIndexOf("}") == -1) {
+			return null;
+		}
+		int start = line.indexOf("{") - 1;
+		int end = line.lastIndexOf("}") + 2;
+		return line.substring(start, end);
 	}
 }
