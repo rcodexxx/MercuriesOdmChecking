@@ -49,6 +49,8 @@ public class VersionComparingService {
 	private final String ODM9_CHECK_NB_URL_KEY = "odm9CheckNBUrl";
 	private final String ODM8_CHECK_TA_URL_KEY = "odm8CheckTAUrl";
 	private final String ODM9_CHECK_TA_URL_KEY = "odm9CheckTAUrl";
+	private final String ODM8_CHECK_ETS_URL_KEY = "odm8CheckETSUrl";
+	private final String ODM9_CHECK_ETS_URL_KEY = "odm9CheckETSUrl";
 	private final String DB_SCHEMA_KEY = "dbSchema";
 	private final String DB_URL_KEY = "dbUrl";
 	private final String DB_USERNAME_KEY = "dbUsername";
@@ -146,6 +148,8 @@ public class VersionComparingService {
 			map.put(ODM9_CHECK_NB_URL_KEY, environment.getProperty("odm.sit.nb.new"));
 			map.put(ODM8_CHECK_TA_URL_KEY, environment.getProperty("odm.sit.ta.origin"));
 			map.put(ODM9_CHECK_TA_URL_KEY, environment.getProperty("odm.sit.ta.new"));
+			map.put(ODM8_CHECK_ETS_URL_KEY, environment.getProperty("odm.sit.ets.origin"));
+			map.put(ODM9_CHECK_ETS_URL_KEY, environment.getProperty("odm.sit.ets.new"));
 			map.put(ENV, "sit");
 			map.put(DB_SCHEMA_KEY, "SITODMDB");
 			map.put(DB_URL_KEY, environment.getProperty("db.sit.url"));
@@ -157,6 +161,8 @@ public class VersionComparingService {
 			map.put(ODM9_CHECK_NB_URL_KEY, environment.getProperty("odm.uat.nb.new"));
 			map.put(ODM8_CHECK_TA_URL_KEY, environment.getProperty("odm.uat.ta.origin"));
 			map.put(ODM9_CHECK_TA_URL_KEY, environment.getProperty("odm.uat.ta.new"));
+			map.put(ODM8_CHECK_ETS_URL_KEY, environment.getProperty("odm.uat.ets.origin"));
+			map.put(ODM9_CHECK_ETS_URL_KEY, environment.getProperty("odm.uat.ets.new"));
 			map.put(ENV, "uat");
 			map.put(DB_SCHEMA_KEY, "UATODMDB");
 			map.put(DB_URL_KEY, environment.getProperty("db.uat.url"));
@@ -168,6 +174,8 @@ public class VersionComparingService {
 			map.put(ODM9_CHECK_NB_URL_KEY, environment.getProperty("odm.prod1.nb.new"));
 			map.put(ODM8_CHECK_TA_URL_KEY, environment.getProperty("odm.prod1.ta.origin"));
 			map.put(ODM9_CHECK_TA_URL_KEY, environment.getProperty("odm.prod1.ta.new"));
+			map.put(ODM8_CHECK_ETS_URL_KEY, environment.getProperty("odm.prod1.ets.origin"));
+			map.put(ODM9_CHECK_ETS_URL_KEY, environment.getProperty("odm.prod1.ets.new"));
 			map.put(ENV, "prod1");
 			map.put(DB_SCHEMA_KEY, "ODMDB");
 			map.put(DB_URL_KEY, environment.getProperty("db.prod.url"));
@@ -208,15 +216,26 @@ public class VersionComparingService {
 	}
 
 	// 將 caseOut的資料轉換成 map 方便後續比對取得
-	private Map<String, Policy> convertCaseOutListToMap(List<Policy> caseOutList) {
-		Map<String, Policy> map = new HashMap<>();
-		for (Policy p : caseOutList) {
-			String key = p.getMappingKey();
-			map.put(key, p);
-		}
-		return map;
-	}
+//	private Map<String, Policy> convertCaseOutListToMap(List<Policy>  ) {
+//		Map<String, Policy> map = new HashMap<>();
+//		for (Policy p : caseOutList) {
+//			String key = p.getMappingKey();
+//			map.put(key, p);
+//		}
+//		return map;
+//	}
 
+	private Policy getCaseOutPolicy (Policy caseInPolicy, List<Policy> caseOutList) {
+		Policy policy = null;
+		for (Policy caseOutPolicy : caseOutList) {
+			if (caseInPolicy.getTrans_no().equals(caseOutPolicy.getTrans_no()) 
+					&& caseInPolicy.getPolicy_no().equals(caseOutPolicy.getPolicy_no())) {
+				policy = caseOutPolicy;
+				break;
+			}
+		}
+		return policy;
+	}
 	/**
 	 * 呼叫 api
 	 * 
@@ -226,7 +245,7 @@ public class VersionComparingService {
 	 * @param headerMap
 	 * @return
 	 */
-	private String callOdm(String odmCheckUrl, String postBody, HttpClientContext httpContext,
+	public String callOdm(String odmCheckUrl, String postBody, HttpClientContext httpContext,
 			Map<String, String> headerMap) {
 		CloseableHttpClient httpClient = null;
 		HttpResponse odmResponse = null;
@@ -302,7 +321,7 @@ public class VersionComparingService {
 		headerMap.put("Content-type", "application/json");
 
 		// caseOutMap
-		Map<String, Policy> caseOutMap = this.convertCaseOutListToMap(caseOutList);
+//		Map<String, Policy> caseOutMap = this.convertCaseOutListToMap(caseOutList);
 
 		// odm url
 		String odm8CheckUrl = target.equals("nb") ? reqUrlMap.get(ODM8_CHECK_NB_URL_KEY)
@@ -328,7 +347,9 @@ public class VersionComparingService {
 			// e. 呼叫 升級前 ODM8 或 正式環境找對應的caseOut json
 			String odm8ResponseContent = null;
 			if (currentEnv.equals("prod1") || currentEnv.equals("prod2")) {
-				caseOutPolicy = caseOutMap.get(policy.getMappingKey());
+//				caseOutPolicy = caseOutMap.get(policy.getMappingKey());
+				caseOutPolicy = this.getCaseOutPolicy(policy, caseOutList);
+				
 				if (caseOutPolicy != null) {
 					odm8ResponseContent = caseOutPolicy.getJsonStr();
 				} else {
@@ -569,4 +590,58 @@ public class VersionComparingService {
         return sb.toString();
 	}
 
+	// 20241206 add by Peter
+	public boolean doETSComparing() {
+
+		String etsCsvPath = environment.getProperty("ets.csv.path");
+		if (etsCsvPath == null || etsCsvPath.equals("")) {
+			return false;
+		}
+		List<String> csvList = FileUtil.readLinesFromFile(etsCsvPath);
+		if (csvList == null || csvList.size() == 0) {
+			return false;
+		}
+
+		logger.info("ETS 比對作業 從CSV檔案中取得比數: {}", csvList.size());
+
+		boolean isFinished = false;
+		HttpClientContext httpContext = HttpClientContext.create();
+		String infoFilePath = environment.getProperty("current.ip.info");
+		Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
+		String currentIP = infoMap.get("local.ip");
+		logger.info("取得當下IP: " + currentIP);
+		Map<String, String> reqUrlMap = this.getODMRequestUrlMap(currentIP);
+		String odm8CheckUrl = reqUrlMap.get(ODM8_CHECK_ETS_URL_KEY);
+		String odm9CheckUrl = reqUrlMap.get(ODM9_CHECK_ETS_URL_KEY); 
+		
+		// request header
+		Map<String, String> headerMap = new HashMap<>();
+		headerMap.put("Accept", "application/json");
+		headerMap.put("Content-type", "application/json");
+		List<String> exportRptList = new ArrayList<>();
+		StringBuilder sb = null;
+
+		for (String line : csvList) {
+			sb = new StringBuilder();
+			
+			String requestBody = line.split(",")[1];
+			String response8Content = this.callOdm(odm8CheckUrl, requestBody, httpContext, headerMap);
+			String response9Content = this.callOdm(odm9CheckUrl, requestBody, httpContext, headerMap);
+			
+			if (response8Content.equals(response9Content)) {
+				isFinished = true;
+			}
+			
+			sb.append(line).append(", ").append(isFinished)
+						   .append(", ").append(response8Content)
+						   .append(", ").append(response9Content);
+			exportRptList.add(sb.toString());
+		}
+		
+		String rptOutputPath = environment.getProperty("output.path") + "\\ODM9_ets_report_" + reqUrlMap.get(ENV)
+		+ "_" + DateUtil.formatDateToString("yyyyMMddhhmmss", new Date()) + ".csv";
+		
+		return FileUtil.writeToFile(exportRptList, rptOutputPath);
+		
+	}
 }

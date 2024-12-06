@@ -18,6 +18,11 @@ public class VersionComparingController {
 	@Autowired
 	private VersionComparingService versionComparingService;
 	
+	@GetMapping("/versionComparingETS")
+	public boolean callODMResultCheckingETS () {
+		return versionComparingService.doETSComparing();
+	}
+	
     @GetMapping("/versionComparing")
     public boolean callODMResultChecking(@RequestBody DateRange dateRange) {
     	logger.info("[API] start to do version comparing: {}", dateRange.show());
