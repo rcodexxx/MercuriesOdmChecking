@@ -344,7 +344,8 @@ public class VersionComparingService {
                 nodeCode9 = getNodeCode(odm9ResponseContent, taJsonNode);
             }
 
-            logger.info(nodeCode8.toString(), nodeCode9.toString());
+            logger.info("odm 8 node code: {}", nodeCode8.toString());
+            logger.info("odm 9 node code: {}", nodeCode9.toString());
 
             // h. 開始比對
             String status = null;
