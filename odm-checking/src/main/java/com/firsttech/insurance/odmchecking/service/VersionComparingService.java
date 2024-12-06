@@ -668,10 +668,11 @@ public class VersionComparingService {
  		if (line == null || line.indexOf("{") == -1 || line.lastIndexOf("}") == -1) {
  			return null;
  		}
- 		int start = line.indexOf("{") - 1;
- 		int end = line.lastIndexOf("}") + 2;
+ 		int start = line.indexOf("{");
+ 		int end = line.lastIndexOf("}") + 1;
  		
  		String ans = line.substring(start, end);
+ 		ans = ans.replaceAll("\"\"", "\"");
  		
  		return ans;
  	}
