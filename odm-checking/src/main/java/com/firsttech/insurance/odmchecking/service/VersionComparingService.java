@@ -627,7 +627,7 @@ public class VersionComparingService {
 // 		exportRptList.add("original ETS ODM: " + odm8CheckUrl);
 // 		exportRptList.add("new ETS ODM: " + odm9CheckUrl);
 // 		exportRptList.add("pKey, jsonIn, time, date, isMatch, original response, new response");
- 		StringBuilder sb = null;
+// 		StringBuilder sb = null;
  		List<EtsReportContent> etsReportContents = new ArrayList<>();
  		EtsReportContent erc = null;
  		for (String line : csvList) {
@@ -680,8 +680,9 @@ public class VersionComparingService {
  		
  		logger.info("start to export report for ETS");
  		String rptOutputPath = environment.getProperty("output.path") + "\\ODM9_ets_report_" + reqUrlMap.get(ENV)
- 		+ "_" + DateUtil.formatDateToString("yyyyMMddhhmmss", new Date()) + "xlsx";
+ 		+ "_" + DateUtil.formatDateToString("yyyyMMddhhmmss", new Date()) + ".xlsx";
  		
+ 		logger.info("產出報表比數: {} 路徑為: {}", etsReportContents.size(), rptOutputPath);
  		return this.generatingExcel(etsReportContents, rptOutputPath);
 // 		return FileUtil.writeToFile(exportRptList, rptOutputPath);
  		
@@ -712,11 +713,11 @@ public class VersionComparingService {
 		return policy;
 	}
  	
- 	private boolean generatingExcel (List<EtsReportContent> EtsReportContents, String testResultPath) {
+ 	public boolean generatingExcel (List<EtsReportContent> EtsReportContents, String testResultPath) {
 		boolean isSuccess = false;
 		
 		Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Test Result");
+        Sheet sheet = workbook.createSheet("ETS Test Result");
 
         // Create header row
         Row header = sheet.createRow(0);
@@ -728,6 +729,7 @@ public class VersionComparingService {
         header.createCell(5).setCellValue("JSON out Origin");
         header.createCell(6).setCellValue("JSON out New");
         
+        logger.info("title setting ok ...");
         FileOutputStream fileOut = null;
         try {
 	        // Populate data rows
@@ -744,6 +746,8 @@ public class VersionComparingService {
 	            row.createCell(6).setCellValue(erc.getJsonOutNew() == null ? "" : erc.getJsonOutNew());
 	        }
 	
+	        logger.info("rowdata setting ok");
+	        
 	        // Write to file
 	        fileOut = new FileOutputStream(testResultPath);
             workbook.write(fileOut);
@@ -755,4 +759,5 @@ public class VersionComparingService {
         logger.info("產生 excel 檔案結果: {}", isSuccess);
 		return isSuccess;
 	}
+ 	
 }
