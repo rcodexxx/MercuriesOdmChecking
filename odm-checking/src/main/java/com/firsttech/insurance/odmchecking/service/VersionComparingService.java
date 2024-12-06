@@ -750,15 +750,7 @@ public class VersionComparingService {
             isSuccess = true;
         } catch (IOException e) {
         	logger.info("產生excel發生錯誤!!");
-        } finally {
-        	try {
-        		if (workbook != null)
-        			workbook.close();
-				if (fileOut != null)
-					fileOut.close();
-			} catch (IOException e) {
-			}
-        }
+        } 
 
         logger.info("產生 excel 檔案結果: {}", isSuccess);
 		return isSuccess;
