@@ -752,8 +752,10 @@ public class VersionComparingService {
         	logger.info("產生excel發生錯誤!!");
         } finally {
         	try {
-				workbook.close();
-				fileOut.close();
+        		if (workbook != null)
+        			workbook.close();
+				if (fileOut != null)
+					fileOut.close();
 			} catch (IOException e) {
 			}
         }
