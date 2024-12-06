@@ -76,13 +76,14 @@ public class VersionComparingService {
         rptTotalList.add("ODM CHECK NEW TA URL: " + reqUrlMap.get(ODM9_CHECK_TA_URL_KEY));
         rptTotalList.add("Test Date Time: " + DateUtil.formatDateToString("yyyy-MM-dd hh:mm:ss", new Date()));
         rptTotalList.add("");
-        rptTotalList.add(FileUtil.formatString("TransNo", 22, "CENTER")
-                + FileUtil.formatString("PolicyNo", 15, "CENTER")
-                + FileUtil.formatString("KeepDateTime", 23, "CENTER")
-                + FileUtil.formatString("Status", 8, "CENTER")
-                + FileUtil.formatString("Diff", 12, "CENTER")
-                + FileUtil.formatString("ODM8 node code", 60, "LEFT")
-                + FileUtil.formatString("ODM9 node code", 60, "LEFT"));
+//        rptTotalList.add(FileUtil.formatString("TransNo,", 22, "CENTER")
+//                + FileUtil.formatString("PolicyNo,", 15, "CENTER")
+//                + FileUtil.formatString("KeepDateTime,", 23, "CENTER")
+//                + FileUtil.formatString("Status,", 8, "CENTER")
+//                + FileUtil.formatString("Diff,", 12, "CENTER")
+//                + FileUtil.formatString("ODM8 node code,", 60, "LEFT")
+//                + FileUtil.formatString("ODM9 node code,", 60, "LEFT"));
+        rptTotalList.add("TransNo, PolicyNo, KeepDateTime, Status, Diff, ODM 8 node code, ODM 9 node code");
         rptTotalList
                 .add("=============================================================================================");
 
@@ -232,6 +233,7 @@ public class VersionComparingService {
             logger.info("呼叫 ODM 發生錯誤: {}", e.getMessage());
         } finally {
             try {
+                assert httpClient != null;
                 httpClient.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -288,8 +290,8 @@ public class VersionComparingService {
                 : reqUrlMap.get(ODM8_CHECK_TA_URL_KEY);
         String odm9CheckUrl = target.equals("nb") ? reqUrlMap.get(ODM9_CHECK_NB_URL_KEY)
                 : reqUrlMap.get(ODM9_CHECK_TA_URL_KEY);
-        logger.info("odm8CheckUrl: {}", odm8CheckUrl);
-        logger.info("odm9CheckUrl: {}", odm9CheckUrl);
+//        logger.info("odm8CheckUrl: {}", odm8CheckUrl);
+//        logger.info("odm9CheckUrl: {}", odm9CheckUrl);
 
         // 參數宣告
         StringBuilder eachRowSb = null;
@@ -370,13 +372,20 @@ public class VersionComparingService {
 
             // i. 組合報告body 加入list
             String keepDateTime = DateUtil.formatDateToString("yyyy-MM-dd hh:mm:ss", policy.getKeep_date_time());
+//            eachRowSb.append(policy.getTrans_no()).append(", ")
+//                    .append(FileUtil.formatString(policy.getPolicy_no(), 14, "LEFT")).append(", ")
+//                    .append(FileUtil.formatString(keepDateTime, 20, "LEFT")).append(", ")
+//                    .append(FileUtil.formatString(status, 8, "CENTER")).append(", ")
+//                    .append(FileUtil.formatString(diff, 8, "CENTER")).append(", ")
+//                    .append(FileUtil.formatString(nodeCode8.toString(), 60, "LEFT")).append(", ")
+//                    .append(FileUtil.formatString(nodeCode9.toString(), 60, "LEFT")).append(", ");
             eachRowSb.append(policy.getTrans_no()).append(", ")
-                    .append(FileUtil.formatString(policy.getPolicy_no(), 14, "LEFT")).append(", ")
-                    .append(FileUtil.formatString(keepDateTime, 20, "LEFT")).append(", ")
-                    .append(FileUtil.formatString(status, 8, "CENTER")).append(", ")
-                    .append(FileUtil.formatString(diff, 8, "CENTER")).append(", ")
-                    .append(FileUtil.formatString(nodeCode8.toString(), 60, "LEFT")).append(", ")
-                    .append(FileUtil.formatString(nodeCode9.toString(), 60, "LEFT")).append(", ");
+                    .append(policy.getPolicy_no()).append(", ")
+                    .append(keepDateTime).append(", ")
+                    .append(status).append(", ")
+                    .append(diff).append(", ")
+                    .append(nodeCode8.toString()).append(", ")
+                    .append(nodeCode9.toString()).append(", ");
             bodyList.add(eachRowSb.toString());
         }
 
