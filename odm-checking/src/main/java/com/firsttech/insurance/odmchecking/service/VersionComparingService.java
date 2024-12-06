@@ -662,15 +662,15 @@ public class VersionComparingService {
 				e.printStackTrace();
 			}
 			
-			int lastCommaIndex = line.lastIndexOf(',');
-			int lastSecondCommaIndex = line.lastIndexOf(',', lastCommaIndex - 1);
-			String remark1 = line.substring(lastSecondCommaIndex + 1, lastCommaIndex);
-			String remark2 = line.substring(line.lastIndexOf(",") + 1, line.length());
 			
-			erc.setpKey(line.substring(0, line.indexOf(",")));
+			
+			String[] arr = line.split(",");
+			logger.info("PKey: {} 比對結果為: {}", arr[0], (response8Content.equals(response9Content) ? "相符" : "不相符"));
+			
+			erc.setpKey(arr[0] == null ? "" : arr[0]);
 			erc.setJsonIn(requestBody);
-			erc.setString1(remark1);
-			erc.setString2(remark2);
+			erc.setString1(arr[arr.length - 2] == null ? "" : arr[arr.length - 2]);
+			erc.setString2(arr[arr.length - 1] == null ? "" : arr[arr.length - 1]);
  			erc.setIsMatched(response8Content.equals(response9Content) ? "相符" : "不相符");
  			erc.setJsonOutOrigin(response8Content);
  			erc.setJsonOutNew(response9Content);
@@ -749,13 +749,12 @@ public class VersionComparingService {
             workbook.write(fileOut);
             isSuccess = true;
         } catch (IOException e) {
-        	e.printStackTrace();
+        	logger.info("產生excel發生錯誤!!");
         } finally {
         	try {
 				workbook.close();
 				fileOut.close();
 			} catch (IOException e) {
-				e.printStackTrace();
 			}
         }
 
