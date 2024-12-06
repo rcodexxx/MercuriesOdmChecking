@@ -736,12 +736,12 @@ public class VersionComparingService {
 	        	
 	            Row row = sheet.createRow(rowNum++);
 	            row.createCell(0).setCellValue(rowNum - 1);
-	            row.createCell(1).setCellValue(erc.getpKey());
-	            row.createCell(2).setCellValue(erc.getJsonIn());
-	            row.createCell(3).setCellValue(erc.getString1());
-	            row.createCell(4).setCellValue(erc.getString2());
-	            row.createCell(5).setCellValue(erc.getJsonOutOrigin());
-	            row.createCell(6).setCellValue(erc.getJsonOutNew());
+	            row.createCell(1).setCellValue(erc.getpKey() == null ? "" : erc.getpKey());
+	            row.createCell(2).setCellValue(erc.getJsonIn() == null ? "" : erc.getJsonIn());
+	            row.createCell(3).setCellValue(erc.getString1() == null ? "" : erc.getString1());
+	            row.createCell(4).setCellValue(erc.getString2() == null ? "" : erc.getString2());
+	            row.createCell(5).setCellValue(erc.getJsonOutOrigin() == null ? "" : erc.getJsonOutOrigin());
+	            row.createCell(6).setCellValue(erc.getJsonOutNew() == null ? "" : erc.getJsonOutNew());
 	        }
 	
 	        // Write to file
