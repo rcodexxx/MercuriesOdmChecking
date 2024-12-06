@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.firsttech.insurance.odmchecking.domain.EtsReportContent;
 import com.firsttech.insurance.odmchecking.domain.Policy;
 import com.firsttech.insurance.odmchecking.service.utils.DateUtil;
 import com.firsttech.insurance.odmchecking.service.utils.FileUtil;
@@ -18,12 +19,17 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -617,14 +623,16 @@ public class VersionComparingService {
  		Map<String, String> headerMap = new HashMap<>();
  		headerMap.put("Accept", "application/json");
  		headerMap.put("Content-type", "application/json");
- 		List<String> exportRptList = new ArrayList<>();
- 		exportRptList.add("original ETS ODM: " + odm8CheckUrl);
- 		exportRptList.add("new ETS ODM: " + odm9CheckUrl);
- 		exportRptList.add("pKey, jsonIn, time, date, isMatch, original response, new response");
+// 		List<String> exportRptList = new ArrayList<>();
+// 		exportRptList.add("original ETS ODM: " + odm8CheckUrl);
+// 		exportRptList.add("new ETS ODM: " + odm9CheckUrl);
+// 		exportRptList.add("pKey, jsonIn, time, date, isMatch, original response, new response");
  		StringBuilder sb = null;
-
+ 		List<EtsReportContent> etsReportContents = new ArrayList<>();
+ 		EtsReportContent erc = null;
  		for (String line : csvList) {
- 			sb = new StringBuilder();
+ 			erc = new EtsReportContent();
+// 			sb = new StringBuilder();
  			
  			String requestBody = this.getETSJsonFomrStr(line);
  			logger.info(requestBody);
@@ -653,18 +661,29 @@ public class VersionComparingService {
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 			}
- 			
- 			sb.append(line).append(", ").append(response8Content.equals(response9Content) ? "相符" : "不相符")
- 						   .append(", ").append(this.putResponseJsonToCSV(response8Content))
- 						   .append(", ").append(this.putResponseJsonToCSV(response9Content));
- 			exportRptList.add(sb.toString());
+			
+			int lastCommaIndex = line.lastIndexOf(',');
+			int lastSecondCommaIndex = line.lastIndexOf(',', lastCommaIndex - 1);
+			String remark1 = line.substring(lastSecondCommaIndex + 1, lastCommaIndex);
+			String remark2 = line.substring(line.lastIndexOf(",") + 1, line.length());
+			
+			erc.setpKey(line.substring(0, line.indexOf(",")));
+			erc.setJsonIn(requestBody);
+			erc.setString1(remark1);
+			erc.setString2(remark2);
+ 			erc.setIsMatched(response8Content.equals(response9Content) ? "相符" : "不相符");
+ 			erc.setJsonOutOrigin(response8Content);
+ 			erc.setJsonOutNew(response9Content);
+ 			etsReportContents.add(erc);
+			
  		}
  		
  		logger.info("start to export report for ETS");
  		String rptOutputPath = environment.getProperty("output.path") + "\\ODM9_ets_report_" + reqUrlMap.get(ENV)
  		+ "_" + DateUtil.formatDateToString("yyyyMMddhhmmss", new Date()) + ".csv";
  		
- 		return FileUtil.writeToFile(exportRptList, rptOutputPath);
+ 		return this.generatingExcel(etsReportContents, rptOutputPath);
+// 		return FileUtil.writeToFile(exportRptList, rptOutputPath);
  		
  	}
  	
@@ -681,10 +700,6 @@ public class VersionComparingService {
  		return ans;
  	}
  	
- 	private String putResponseJsonToCSV (String jsonStr) {
- 		return "\"" + jsonStr.replaceAll("\"", "\"\"") + "\"";
- 	}
- 	
  	private Policy getCaseOutPolicy (Policy caseInPolicy, List<Policy> caseOutList) {
 		Policy policy = null;
 		for (Policy caseOutPolicy : caseOutList) {
@@ -695,5 +710,56 @@ public class VersionComparingService {
 			}
 		}
 		return policy;
+	}
+ 	
+ 	private boolean generatingExcel (List<EtsReportContent> EtsReportContents, String testResultPath) {
+		boolean isSuccess = false;
+		
+		Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Test Result");
+
+        // Create header row
+        Row header = sheet.createRow(0);
+        header.createCell(0).setCellValue("PKey");
+        header.createCell(1).setCellValue("JSON In");
+        header.createCell(2).setCellValue("Remark 1");
+        header.createCell(3).setCellValue("Remark 2");
+        header.createCell(4).setCellValue("isMatched");
+        header.createCell(5).setCellValue("JSON out Origin");
+        header.createCell(6).setCellValue("JSON out New");
+        
+        FileOutputStream fileOut = null;
+        try {
+	        // Populate data rows
+	        int rowNum = 1;
+	        for (EtsReportContent erc : EtsReportContents) {
+	        	
+	            Row row = sheet.createRow(rowNum++);
+	            row.createCell(0).setCellValue(rowNum - 1);
+	            row.createCell(1).setCellValue(erc.getpKey());
+	            row.createCell(2).setCellValue(erc.getJsonIn());
+	            row.createCell(3).setCellValue(erc.getString1());
+	            row.createCell(4).setCellValue(erc.getString2());
+	            row.createCell(5).setCellValue(erc.getJsonOutOrigin());
+	            row.createCell(6).setCellValue(erc.getJsonOutNew());
+	        }
+	
+	        // Write to file
+	        fileOut = new FileOutputStream(testResultPath);
+            workbook.write(fileOut);
+            isSuccess = true;
+        } catch (IOException e) {
+        	e.printStackTrace();
+        } finally {
+        	try {
+				workbook.close();
+				fileOut.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        }
+
+        logger.info("產生 excel 檔案結果: {}", isSuccess);
+		return isSuccess;
 	}
 }
