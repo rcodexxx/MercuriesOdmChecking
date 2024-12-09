@@ -10,6 +10,10 @@ import com.firsttech.insurance.odmchecking.domain.Policy;
 import com.firsttech.insurance.odmchecking.service.utils.DateUtil;
 import com.firsttech.insurance.odmchecking.service.utils.FileUtil;
 import com.firsttech.insurance.odmchecking.service.utils.HttpUtil;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
 import org.apache.http.client.methods.HttpPost;
@@ -23,6 +27,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -589,8 +596,117 @@ public class VersionComparingService {
         return nodeCode;
     }
 
+    
+    public boolean doETSComparing() {
+    	// 取得 ETS 要測試使用的檔案位置
+    	String etsCsvPath = environment.getProperty("ets.csv.path");
+ 		if (etsCsvPath == null || etsCsvPath.equals("")) {
+ 			return false;
+ 		}
+ 		
+ 		HttpClientContext httpContext = HttpClientContext.create();
+ 		String infoFilePath = environment.getProperty("current.ip.info");
+ 		Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
+ 		String currentIP = infoMap.get("local.ip");
+ 		logger.info("取得當下IP: " + currentIP);
+ 		
+ 		// 取得新舊 ETS ODM 呼叫網址
+ 		Map<String, String> reqUrlMap = this.getODMRequestUrlMap(currentIP);
+ 		String odm8CheckUrl = reqUrlMap.get(ODM8_CHECK_ETS_URL_KEY);
+ 		String odm9CheckUrl = reqUrlMap.get(ODM9_CHECK_ETS_URL_KEY); 
+ 		
+ 		// request header
+ 		Map<String, String> headerMap = new HashMap<>();
+ 		headerMap.put("Accept", "application/json");
+ 		headerMap.put("Content-type", "application/json");
+ 		
+ 		List<String[]> headerRptList = new ArrayList<>();
+ 		List<String[]> bodyRptList = new ArrayList<>();
+ 		
+ 		String[] title1 = {"original ETS ODM:", odm8CheckUrl,"","","","",""};
+ 		String[] title2 = {"new ETS ODM:", odm9CheckUrl,"","","","",""};
+ 		String[] title3 = {"pKey", "jsonIn", "remark1", "remark2", "isMatch", "original response", "new response"};
+ 		headerRptList.add(title1);
+ 		headerRptList.add(title2);
+ 		headerRptList.add(title3);
+ 		
+ 		// 逐行讀取 CSV
+ 		try (CSVReader reader = new CSVReader(new FileReader(etsCsvPath))) {
+            String[] nextLine;
+
+			while ((nextLine = reader.readNext()) != null) {
+				String pKey = nextLine[0] == null ? "" : nextLine[0];
+				String jsonIn = nextLine[1] == null ? "" : nextLine[1];
+				String remark1 = nextLine[2] == null ? "" : nextLine[2];
+				String remark2 = nextLine[3] == null ? "" : nextLine[3];
+				
+				// 呼叫 origin odm
+				String response8Content = this.callOdm(odm8CheckUrl, jsonIn, httpContext, headerMap);
+	 			if (response8Content == null) {
+	 				response8Content = "發生錯誤!!";
+	 			}
+	 			
+	 			// 呼叫 new odm
+	 			String response9Content = this.callOdm(odm9CheckUrl, jsonIn, httpContext, headerMap);
+	 			if (response9Content == null) {
+	 				response9Content = "發生錯誤!!";
+	 			}
+	 			
+	 			response8Content = this.getOutParamFromODM(response8Content);
+	 			response9Content = this.getOutParamFromODM(response9Content);
+				
+	 			String isMatched = response8Content.equals(response9Content) ? "相符" : "不相符";
+	 			
+	 			String[] thisLine = {pKey, jsonIn, remark1, remark2, isMatched, response8Content, response9Content};
+	 			bodyRptList.add(thisLine);
+			}
+
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+ 		
+ 		// 匯出報告
+ 		String rptOutputPath = environment.getProperty("output.path") + "\\ODM9_ets_report_" + reqUrlMap.get(ENV)
+ 		+ "_" + DateUtil.formatDateToString("yyyyMMddhhmmss", new Date()) + ".csv";
+ 		
+ 		return this.writeDataToCSV(rptOutputPath, headerRptList, bodyRptList);
+    }
+    
+    private boolean writeDataToCSV (String outputPath, List<String[]> headersList, List<String[]> bodysList) {
+    	boolean isSuccess = false;
+    	try (CSVWriter writer = new CSVWriter(new FileWriter(outputPath))) {
+            // 寫入 Header
+    		for (String[] header : headersList) {
+    			writer.writeNext(header);
+    		}
+
+            // 寫入資料列
+    		for (String[] body : bodysList) {
+    			writer.writeNext(body);
+    		}
+
+    		isSuccess = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    	return isSuccess;
+    }
+    
+    private String getOutParamFromODM (String responseContent) {
+    	ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			JsonNode rootNode = objectMapper.readTree(responseContent);
+			JsonNode outParamNode = rootNode.get("outParam");
+			responseContent = objectMapper.writeValueAsString(outParamNode);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return responseContent;
+    }
+    
+    
     // 20241206 add by Peter
- 	public boolean doETSComparing() {
+ 	public boolean doETSComparing3() {
 
  		String etsCsvPath = environment.getProperty("ets.csv.path");
  		if (etsCsvPath == null || etsCsvPath.equals("")) {
