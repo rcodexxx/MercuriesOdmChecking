@@ -2,6 +2,7 @@ package com.firsttech.insurance.odmchecking.service.utils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -34,6 +35,16 @@ public class FileUtil {
 	
 	// 寫檔
 	public static boolean writeToFile(List<String> contents, String fileName) {
+		// 檢查並創建目錄
+        File file = new File(fileName);
+        File parentDir = file.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            if (!parentDir.mkdirs()) {
+                System.err.println("目錄創建失敗：" + parentDir.getAbsolutePath());
+                return false;
+            }
+        }
+        
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
 			for (String line : contents) {
 				writer.write(line);
