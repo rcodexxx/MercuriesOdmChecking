@@ -22,6 +22,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -706,6 +707,11 @@ public class VersionComparingService {
 			JsonNode rootNode = objectMapper.readTree(responseContent);
 			JsonNode outParamNode = rootNode.get("outParam");
 			responseContent = objectMapper.writeValueAsString(outParamNode);
+			
+			// 處理CSV換行問題
+			JSONObject jsonObject = new JSONObject(responseContent);
+			responseContent = jsonObject.toString(); 
+			
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
