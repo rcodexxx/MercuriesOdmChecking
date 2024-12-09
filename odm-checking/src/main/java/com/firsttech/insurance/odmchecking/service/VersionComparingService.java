@@ -633,8 +633,11 @@ public class VersionComparingService {
  		// 逐行讀取 CSV
  		try (CSVReader reader = new CSVReader(new FileReader(etsCsvPath))) {
             String[] nextLine;
+            String[] thisLine;
 
 			while ((nextLine = reader.readNext()) != null) {
+				thisLine = new String[7];
+				
 				String pKey = nextLine[0] == null ? "" : nextLine[0];
 				String jsonIn = nextLine[1] == null ? "" : nextLine[1];
 				String remark1 = nextLine[2] == null ? "" : nextLine[2];
@@ -654,10 +657,15 @@ public class VersionComparingService {
 	 			
 	 			response8Content = this.getOutParamFromODM(response8Content);
 	 			response9Content = this.getOutParamFromODM(response9Content);
-				
-	 			String isMatched = response8Content.equals(response9Content) ? "相符" : "不相符";
 	 			
-	 			String[] thisLine = {pKey, jsonIn, remark1, remark2, isMatched, response8Content, response9Content};
+	 			thisLine[0] = pKey;
+	 			thisLine[1] = jsonIn;
+	 			thisLine[2] = remark1;
+	 			thisLine[3] = remark2;
+	 			thisLine[4] = response8Content.equals(response9Content) ? "相符" : "不相符";
+	 			thisLine[5] = response8Content;
+	 			thisLine[6] = response9Content;
+
 	 			bodyRptList.add(thisLine);
 			}
 
