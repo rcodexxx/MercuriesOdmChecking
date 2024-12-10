@@ -87,16 +87,8 @@ public class VersionComparingService {
         rptTotalList.add("ODM CHECK NEW TA URL: " + reqUrlMap.get(ODM9_CHECK_TA_URL_KEY));
         rptTotalList.add("Test Date Time: " + DateUtil.formatDateToString("yyyy-MM-dd hh:mm:ss", new Date()));
         rptTotalList.add("");
-//        rptTotalList.add(FileUtil.formatString("TransNo,", 22, "CENTER")
-//                + FileUtil.formatString("PolicyNo,", 15, "CENTER")
-//                + FileUtil.formatString("KeepDateTime,", 23, "CENTER")
-//                + FileUtil.formatString("Status,", 8, "CENTER")
-//                + FileUtil.formatString("Diff,", 12, "CENTER")
-//                + FileUtil.formatString("ODM8 node code,", 60, "LEFT")
-//                + FileUtil.formatString("ODM9 node code,", 60, "LEFT"));
         rptTotalList.add("TransNo, PolicyNo, KeepDateTime, Status, Diff, ODM 8 node code, ODM 9 node code");
-        rptTotalList
-                .add("=============================================================================================");
+        rptTotalList.add("=============================================================================================");
 
         // 3. 建立 Report Body: Elvis說 ETS不需要測試, 只測NB和TA
         List<String> reportBody = new ArrayList<>();
@@ -108,8 +100,7 @@ public class VersionComparingService {
         rptTotalList.addAll(reportBody);
 
         // 4. 建立 Report Footer
-        rptTotalList
-                .add("=============================================================================================");
+        rptTotalList.add("=============================================================================================");
         int iPass = 0;
         int iFail = 0;
         int iError = 0;
@@ -192,16 +183,6 @@ public class VersionComparingService {
 
         return map;
     }
-
-//    // 將 caseOut的資料轉換成 map 方便後續比對取得
-//    private Map<String, Policy> convertCaseOutListToMap(List<Policy> caseOutList) {
-//        Map<String, Policy> map = new HashMap<>();
-//        for (Policy p : caseOutList) {
-//            String key = p.getMappingKey();
-//            map.put(key, p);
-//        }
-//        return map;
-//    }
 
     /**
      * 呼叫 api
@@ -288,16 +269,11 @@ public class VersionComparingService {
         headerMap.put("Accept", "application/json");
         headerMap.put("Content-type", "application/json");
 
-        // caseOutMap
-//        Map<String, Policy> caseOutMap = this.convertCaseOutListToMap(caseOutList);
-
         // odm url
         String odm8CheckUrl = target.equals("nb") ? reqUrlMap.get(ODM8_CHECK_NB_URL_KEY)
                 : reqUrlMap.get(ODM8_CHECK_TA_URL_KEY);
         String odm9CheckUrl = target.equals("nb") ? reqUrlMap.get(ODM9_CHECK_NB_URL_KEY)
                 : reqUrlMap.get(ODM9_CHECK_TA_URL_KEY);
-//        logger.info("odm8CheckUrl: {}", odm8CheckUrl);
-//        logger.info("odm9CheckUrl: {}", odm9CheckUrl);
 
         // 參數宣告
         StringBuilder eachRowSb = null;
@@ -449,14 +425,12 @@ public class VersionComparingService {
         sqlSb.append(" 		transDateTime, trans_no, policy_no, keep_date_time, ").append(columnName);
         sqlSb.append(" FROM ( ");
         sqlSb.append(" 		SELECT ");
-        sqlSb.append(
-                " 			CAST(ROW_NUMBER() OVER (PARTITION BY trans_no, policy_no ORDER BY keep_date_time ASC) AS VARCHAR(5)) AS rowRank,");
+        sqlSb.append(" 			CAST(ROW_NUMBER() OVER (PARTITION BY trans_no, policy_no ORDER BY keep_date_time ASC) AS VARCHAR(5)) AS rowRank,");
         sqlSb.append(" 			SUBSTRING(trans_no, 1, 13) AS transDateTime, ");
         sqlSb.append(" 			trans_no, policy_no, keep_date_time, ").append(columnName);
         sqlSb.append(" 		FROM ").append(schemaName).append(".dbo.").append(tableName);
         sqlSb.append(" ) data ");
-        sqlSb.append(" WHERE transDateTime BETWEEN '").append(startDateTime).append("' AND '").append(endDateTime)
-                .append("' ");
+        sqlSb.append(" WHERE transDateTime BETWEEN '").append(startDateTime).append("' AND '").append(endDateTime).append("' ");
         sqlSb.append(" ORDER BY transDateTime ");
 
         logger.info("Query DB SQL: {}", sqlSb);
@@ -723,98 +697,7 @@ public class VersionComparingService {
 		}
 		return responseContent;
     }
-    
-    
-    // 20241206 add by Peter
-// 	public boolean doETSComparing3() {
-//
-// 		String etsCsvPath = environment.getProperty("ets.csv.path");
-// 		if (etsCsvPath == null || etsCsvPath.equals("")) {
-// 			return false;
-// 		}
-// 		List<String> csvList = FileUtil.readLinesFromFile(etsCsvPath);
-// 		if (csvList == null || csvList.size() == 0) {
-// 			return false;
-// 		}
-//
-// 		logger.info("ETS 比對作業 從CSV檔案中取得比數: {}", csvList.size());
-//
-// 		HttpClientContext httpContext = HttpClientContext.create();
-// 		String infoFilePath = environment.getProperty("current.ip.info");
-// 		Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
-// 		String currentIP = infoMap.get("local.ip");
-// 		logger.info("取得當下IP: " + currentIP);
-// 		Map<String, String> reqUrlMap = this.getODMRequestUrlMap(currentIP);
-// 		String odm8CheckUrl = reqUrlMap.get(ODM8_CHECK_ETS_URL_KEY);
-// 		String odm9CheckUrl = reqUrlMap.get(ODM9_CHECK_ETS_URL_KEY); 
-// 		
-// 		// request header
-// 		Map<String, String> headerMap = new HashMap<>();
-// 		headerMap.put("Accept", "application/json");
-// 		headerMap.put("Content-type", "application/json");
-// 		List<String> exportRptList = new ArrayList<>();
-// 		exportRptList.add("original ETS ODM: " + odm8CheckUrl);
-// 		exportRptList.add("new ETS ODM: " + odm9CheckUrl);
-// 		exportRptList.add("pKey, jsonIn, time, date, isMatch, original response, new response");
-// 		StringBuilder sb = null;
-// 		for (String line : csvList) {
-// 			sb = new StringBuilder();
-// 			
-// 			String requestBody = this.getETSJsonFomrStr(line);
-// 			logger.info(requestBody);
-// 			String response8Content = this.callOdm(odm8CheckUrl, requestBody, httpContext, headerMap);
-// 			if (response8Content == null) {
-// 				response8Content = "發生錯誤!!";
-// 			}
-// 			String response9Content = this.callOdm(odm9CheckUrl, requestBody, httpContext, headerMap);
-// 			if (response9Content == null) {
-// 				response9Content = "發生錯誤!!";
-// 			}
-// 			
-// 			ObjectMapper objectMapper = new ObjectMapper();
-//			try {
-//				JsonNode rootNode = objectMapper.readTree(response8Content);
-//				JsonNode outParamNode = rootNode.get("outParam");
-//				response8Content = objectMapper.writeValueAsString(outParamNode);
-//			} catch (JsonProcessingException e) {
-//				e.printStackTrace();
-//			}
-//			
-//			try {
-//				JsonNode rootNode = objectMapper.readTree(response9Content);
-//				JsonNode outParamNode = rootNode.get("outParam");
-//				response9Content = objectMapper.writeValueAsString(outParamNode);
-//			} catch (JsonProcessingException e) {
-//				e.printStackTrace();
-//			}
-//			
-//			sb.append(line).append(", ").append(response8Content.equals(response9Content) ? "相符" : "不相符")
-//			   .append(", \"").append(response8Content).append("\"")
-//			   .append(", \"").append(response9Content).append("\"");
-//			exportRptList.add(sb.toString());			
-// 		}
-// 		
-// 		logger.info("start to export report for ETS");
-// 		String rptOutputPath = environment.getProperty("output.path") + "\\ODM9_ets_report_" + reqUrlMap.get(ENV)
-// 		+ "_" + DateUtil.formatDateToString("yyyyMMddhhmmss", new Date()) + ".csv";
-// 		
-// 		return FileUtil.writeToFile(exportRptList, rptOutputPath);
-// 		
-// 	}
- 	
-// 	private String getETSJsonFomrStr (String line) {
-// 		if (line == null || line.indexOf("{") == -1 || line.lastIndexOf("}") == -1) {
-// 			return null;
-// 		}
-// 		int start = line.indexOf("{");
-// 		int end = line.lastIndexOf("}") + 1;
-// 		
-// 		String ans = line.substring(start, end);
-// 		ans = ans.replaceAll("\"\"", "\"");
-// 		
-// 		return ans;
-// 	}
- 	
+     	
  	private Policy getCaseOutPolicy (Policy caseInPolicy, List<Policy> caseOutList) {
 		Policy policy = null;
 		for (Policy caseOutPolicy : caseOutList) {
