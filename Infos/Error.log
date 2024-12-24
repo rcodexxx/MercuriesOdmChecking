@@ -1,0 +1,1064 @@
+[24/12/24 11:39:35][INFO][services.deployRuleAppService-42] 產生比對報表失敗
+[24/12/24 11:39:35][ERROR][services.deployRuleAppService-49] 差異清單和差異報表無法產生！
+[24/12/24 11:39:35][ERROR][services.deployRuleAppService-50] 聯絡 "https://172.16.16.6:9443/decisioncenter/servlet/SessionServlet" 時，發生 I/O 錯誤。
+ilog.rules.teamserver.model.IlrConnectException: 聯絡 "https://172.16.16.6:9443/decisioncenter/servlet/SessionServlet" 時，發生 I/O 錯誤。
+	at com.ibm.rules.decisioncenter.remoting.internal.RemoteSessionHttpExecutorBuilder.connect(RemoteSessionHttpExecutorBuilder.java:81)
+	at ilog.rules.teamserver.client.IlrRemoteSession.initHttpComponentsInvoker(IlrRemoteSession.java:134)
+	at ilog.rules.teamserver.client.IlrRemoteSession.<init>(IlrRemoteSession.java:83)
+	at ilog.rules.teamserver.client.IlrRemoteSessionFactory.connect(IlrRemoteSessionFactory.java:63)
+	at ilog.rules.teamserver.client.IlrRemoteSessionFactory.connect(IlrRemoteSessionFactory.java:43)
+	at baselinesdiff.Connection.connect(Connection.java:92)
+	at baselinesdiff.Connection.getSession(Connection.java:115)
+	at baselinesdiff.model.Baseline.<init>(Baseline.java:72)
+	at baselinesdiff.DifferenceBaseline.getActionRule(DifferenceBaseline.java:159)
+	at baselinesdiff.DifferenceBaseline.doMergeProject(DifferenceBaseline.java:108)
+	at services.deployRuleAppService.getRuleApp(deployRuleAppService.java:32)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory.lambda$static$0(ResourceMethodInvocationHandlerFactory.java:52)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:124)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:167)
+	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$ResponseOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:176)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:79)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:469)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:391)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:80)
+	at org.glassfish.jersey.server.ServerRuntime$1.run(ServerRuntime.java:253)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:248)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:244)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:292)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:274)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:244)
+	at org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:265)
+	at org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:232)
+	at org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:680)
+	at org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:394)
+	at org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:346)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:366)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:319)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:651)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:417)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:754)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1376)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:844)
+Caused by: ilog.rules.res.util.http.IlrConnectionException: 聯絡 "https://172.16.16.6:9443/decisioncenter/servlet/SessionServlet" 時，發生 I/O 錯誤。
+	at com.ibm.rules.decisioncenter.remoting.internal.RemoteSessionAuthClient.hasAccessGranted(RemoteSessionAuthClient.java:154)
+	at com.ibm.rules.decisioncenter.remoting.internal.RemoteSessionAuthClient.authenticate(RemoteSessionAuthClient.java:62)
+	at com.ibm.rules.decisioncenter.remoting.internal.RemoteSessionHttpExecutorBuilder.connect(RemoteSessionHttpExecutorBuilder.java:62)
+	... 58 more
+Caused by: javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: signature check failed
+	at java.base/sun.security.ssl.Alerts.getSSLException(Alerts.java:198)
+	at java.base/sun.security.ssl.SSLSocketImpl.fatal(SSLSocketImpl.java:1969)
+	at java.base/sun.security.ssl.Handshaker.fatalSE(Handshaker.java:345)
+	at java.base/sun.security.ssl.Handshaker.fatalSE(Handshaker.java:339)
+	at java.base/sun.security.ssl.ClientHandshaker.checkServerCerts(ClientHandshaker.java:1968)
+	at java.base/sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1777)
+	at java.base/sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:264)
+	at java.base/sun.security.ssl.Handshaker.processLoop(Handshaker.java:1092)
+	at java.base/sun.security.ssl.Handshaker.processRecord(Handshaker.java:1026)
+	at java.base/sun.security.ssl.SSLSocketImpl.processInputRecord(SSLSocketImpl.java:1137)
+	at java.base/sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:1074)
+	at java.base/sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:973)
+	at java.base/sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1402)
+	at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1429)
+	at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1413)
+	at org.apache.http.conn.ssl.SSLConnectionSocketFactory.createLayeredSocket(SSLConnectionSocketFactory.java:436)
+	at org.apache.http.conn.ssl.SSLConnectionSocketFactory.connectSocket(SSLConnectionSocketFactory.java:384)
+	at org.apache.http.impl.conn.DefaultHttpClientConnectionOperator.connect(DefaultHttpClientConnectionOperator.java:142)
+	at org.apache.http.impl.conn.PoolingHttpClientConnectionManager.connect(PoolingHttpClientConnectionManager.java:376)
+	at org.apache.http.impl.execchain.MainClientExec.establishRoute(MainClientExec.java:393)
+	at org.apache.http.impl.execchain.MainClientExec.execute(MainClientExec.java:236)
+	at org.apache.http.impl.execchain.ProtocolExec.execute(ProtocolExec.java:186)
+	at org.apache.http.impl.execchain.RetryExec.execute(RetryExec.java:89)
+	at org.apache.http.impl.execchain.RedirectExec.execute(RedirectExec.java:110)
+	at org.apache.http.impl.client.InternalHttpClient.doExecute(InternalHttpClient.java:185)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:83)
+	at com.ibm.rules.decisioncenter.remoting.internal.RemoteSessionAuthClient.hasAccessGranted(RemoteSessionAuthClient.java:128)
+	... 60 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: signature check failed
+	at java.base/sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:350)
+	at java.base/sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at java.base/sun.security.validator.Validator.validate(Validator.java:264)
+	at java.base/sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:343)
+	at java.base/sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:226)
+	at java.base/sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:133)
+	at java.base/sun.security.ssl.ClientHandshaker.checkServerCerts(ClientHandshaker.java:1947)
+	... 82 more
+Caused by: java.security.cert.CertPathValidatorException: signature check failed
+	at java.base/sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at java.base/sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at java.base/sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at java.base/sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.base/java.security.cert.CertPathValidator.validate(CertPathValidator.java:309)
+	at java.base/sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:345)
+	... 88 more
+Caused by: java.security.SignatureException: Signature does not match.
+	at java.base/sun.security.x509.X509CertImpl.verify(X509CertImpl.java:449)
+	at java.base/sun.security.provider.certpath.BasicChecker.verifySignature(BasicChecker.java:166)
+	at java.base/sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:147)
+	at java.base/sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 93 more
+[24/12/24 12:15:03][INFO][Function.ApiCaller-222] 呼叫部屬RuleApp保存檔API...
+[24/12/24 12:15:05][INFO][Function.ApiCaller-431] 部屬XOM檔案成功！
+[24/12/24 12:15:05][INFO][Function.ApiCaller-432] {
+  "succeeded" : true,
+  "resource" : {
+    "id" : "ETSXom.jar/1.0",
+    "uri" : "resuri://ETSXom.jar/1.0",
+    "name" : "ETSXom.jar",
+    "version" : "1.0",
+    "creationDate" : "2024-12-09T21:01:04.591Z",
+    "sha1" : "db29f628b54ba58979d28f0fbe21f8a05361b8d1"
+  }
+}
+[24/12/24 12:15:06][INFO][Function.ApiCaller-458] 更新RuleApp屬性成功！
+[24/12/24 12:15:06][INFO][Function.ApiCaller-459] {
+  "succeeded" : true,
+  "resource" : {
+    "id" : "ETSRulesApp_library/1.0",
+    "uri" : "reslib://ETSRulesApp_library/1.0",
+    "name" : "ETSRulesApp_library",
+    "version" : "1.0",
+    "creationDate" : "2024-12-17T17:01:59.158Z",
+    "content" : [ "resuri://ETSXom.jar/1.0" ]
+  }
+}
+[24/12/24 12:15:07][INFO][Function.ApiCaller-505] 測試部屬的RuleApp成功
+[24/12/24 12:15:07][INFO][Function.ApiCaller-350] 部屬RuleApp保存檔至UAT成功！
+[24/12/24 12:15:35][INFO][services.deployRuleAppService-42] 產生比對報表失敗
+[24/12/24 12:15:35][ERROR][services.deployRuleAppService-49] 差異清單和差異報表無法產生！
+[24/12/24 12:15:35][ERROR][services.deployRuleAppService-50] 聯絡 "https://172.16.16.6:9443/decisioncenter/servlet/SessionServlet" 時，發生 I/O 錯誤。
+ilog.rules.teamserver.model.IlrConnectException: 聯絡 "https://172.16.16.6:9443/decisioncenter/servlet/SessionServlet" 時，發生 I/O 錯誤。
+	at com.ibm.rules.decisioncenter.remoting.internal.RemoteSessionHttpExecutorBuilder.connect(RemoteSessionHttpExecutorBuilder.java:81)
+	at ilog.rules.teamserver.client.IlrRemoteSession.initHttpComponentsInvoker(IlrRemoteSession.java:134)
+	at ilog.rules.teamserver.client.IlrRemoteSession.<init>(IlrRemoteSession.java:83)
+	at ilog.rules.teamserver.client.IlrRemoteSessionFactory.connect(IlrRemoteSessionFactory.java:63)
+	at ilog.rules.teamserver.client.IlrRemoteSessionFactory.connect(IlrRemoteSessionFactory.java:43)
+	at baselinesdiff.Connection.connect(Connection.java:92)
+	at baselinesdiff.Connection.getSession(Connection.java:115)
+	at baselinesdiff.model.Baseline.<init>(Baseline.java:72)
+	at baselinesdiff.DifferenceBaseline.getActionRule(DifferenceBaseline.java:159)
+	at baselinesdiff.DifferenceBaseline.doMergeProject(DifferenceBaseline.java:108)
+	at services.deployRuleAppService.getRuleApp(deployRuleAppService.java:32)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory.lambda$static$0(ResourceMethodInvocationHandlerFactory.java:52)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:124)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:167)
+	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$ResponseOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:176)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:79)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:469)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:391)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:80)
+	at org.glassfish.jersey.server.ServerRuntime$1.run(ServerRuntime.java:253)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:248)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:244)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:292)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:274)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:244)
+	at org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:265)
+	at org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:232)
+	at org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:680)
+	at org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:394)
+	at org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:346)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:366)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:319)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:651)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:417)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:754)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1376)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:844)
+Caused by: ilog.rules.res.util.http.IlrConnectionException: 聯絡 "https://172.16.16.6:9443/decisioncenter/servlet/SessionServlet" 時，發生 I/O 錯誤。
+	at com.ibm.rules.decisioncenter.remoting.internal.RemoteSessionAuthClient.hasAccessGranted(RemoteSessionAuthClient.java:154)
+	at com.ibm.rules.decisioncenter.remoting.internal.RemoteSessionAuthClient.authenticate(RemoteSessionAuthClient.java:62)
+	at com.ibm.rules.decisioncenter.remoting.internal.RemoteSessionHttpExecutorBuilder.connect(RemoteSessionHttpExecutorBuilder.java:62)
+	... 58 more
+Caused by: javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: signature check failed
+	at java.base/sun.security.ssl.Alerts.getSSLException(Alerts.java:198)
+	at java.base/sun.security.ssl.SSLSocketImpl.fatal(SSLSocketImpl.java:1969)
+	at java.base/sun.security.ssl.Handshaker.fatalSE(Handshaker.java:345)
+	at java.base/sun.security.ssl.Handshaker.fatalSE(Handshaker.java:339)
+	at java.base/sun.security.ssl.ClientHandshaker.checkServerCerts(ClientHandshaker.java:1968)
+	at java.base/sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1777)
+	at java.base/sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:264)
+	at java.base/sun.security.ssl.Handshaker.processLoop(Handshaker.java:1092)
+	at java.base/sun.security.ssl.Handshaker.processRecord(Handshaker.java:1026)
+	at java.base/sun.security.ssl.SSLSocketImpl.processInputRecord(SSLSocketImpl.java:1137)
+	at java.base/sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:1074)
+	at java.base/sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:973)
+	at java.base/sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1402)
+	at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1429)
+	at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1413)
+	at org.apache.http.conn.ssl.SSLConnectionSocketFactory.createLayeredSocket(SSLConnectionSocketFactory.java:436)
+	at org.apache.http.conn.ssl.SSLConnectionSocketFactory.connectSocket(SSLConnectionSocketFactory.java:384)
+	at org.apache.http.impl.conn.DefaultHttpClientConnectionOperator.connect(DefaultHttpClientConnectionOperator.java:142)
+	at org.apache.http.impl.conn.PoolingHttpClientConnectionManager.connect(PoolingHttpClientConnectionManager.java:376)
+	at org.apache.http.impl.execchain.MainClientExec.establishRoute(MainClientExec.java:393)
+	at org.apache.http.impl.execchain.MainClientExec.execute(MainClientExec.java:236)
+	at org.apache.http.impl.execchain.ProtocolExec.execute(ProtocolExec.java:186)
+	at org.apache.http.impl.execchain.RetryExec.execute(RetryExec.java:89)
+	at org.apache.http.impl.execchain.RedirectExec.execute(RedirectExec.java:110)
+	at org.apache.http.impl.client.InternalHttpClient.doExecute(InternalHttpClient.java:185)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:83)
+	at com.ibm.rules.decisioncenter.remoting.internal.RemoteSessionAuthClient.hasAccessGranted(RemoteSessionAuthClient.java:128)
+	... 60 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: signature check failed
+	at java.base/sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:350)
+	at java.base/sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at java.base/sun.security.validator.Validator.validate(Validator.java:264)
+	at java.base/sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:343)
+	at java.base/sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:226)
+	at java.base/sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:133)
+	at java.base/sun.security.ssl.ClientHandshaker.checkServerCerts(ClientHandshaker.java:1947)
+	... 82 more
+Caused by: java.security.cert.CertPathValidatorException: signature check failed
+	at java.base/sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at java.base/sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at java.base/sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at java.base/sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.base/java.security.cert.CertPathValidator.validate(CertPathValidator.java:309)
+	at java.base/sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:345)
+	... 88 more
+Caused by: java.security.SignatureException: Signature does not match.
+	at java.base/sun.security.x509.X509CertImpl.verify(X509CertImpl.java:449)
+	at java.base/sun.security.provider.certpath.BasicChecker.verifySignature(BasicChecker.java:166)
+	at java.base/sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:147)
+	at java.base/sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 93 more
+[24/12/24 14:16:03][INFO][baselinesdiff.DifferenceBaseline-159] [PPPPPPP] 000000000000000
+[24/12/24 14:16:03][INFO][baselinesdiff.DifferenceBaseline-160] [PPPPPPP] user: rtsAdmin
+[24/12/24 14:16:03][INFO][baselinesdiff.DifferenceBaseline-161] [PPPPPPP] password: rtsAdmin
+[24/12/24 14:16:03][INFO][baselinesdiff.DifferenceBaseline-162] [PPPPPPP] url: https://172.16.16.6:9443/decisioncenter
+[24/12/24 14:16:03][INFO][baselinesdiff.DifferenceBaseline-163] [PPPPPPP] datasource: jdbc/ilogDataSource
+[24/12/24 14:16:04][INFO][org.springframework.context.support.AbstractApplicationContext-588] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@261cea9a: startup date [Tue Dec 24 14:16:04 CST 2024]; root of context hierarchy
+[24/12/24 14:16:04][INFO][org.springframework.beans.factory.xml.XmlBeanDefinitionReader-317] Loading XML bean definitions from class path resource [ilog/rules/teamserver/client/client-applicationContext.xml]
+[24/12/24 14:16:05][INFO][baselinesdiff.DifferenceBaseline-169] [PPPPPPP] 1111111111111111
+[24/12/24 14:16:05][INFO][baselinesdiff.DifferenceBaseline-170] false
+[24/12/24 14:16:05][INFO][org.springframework.context.support.AbstractApplicationContext-588] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@eba4f0e: startup date [Tue Dec 24 14:16:05 CST 2024]; root of context hierarchy
+[24/12/24 14:16:05][INFO][org.springframework.beans.factory.xml.XmlBeanDefinitionReader-317] Loading XML bean definitions from class path resource [ilog/rules/teamserver/client/client-applicationContext.xml]
+[24/12/24 14:16:07][INFO][services.deployRuleAppService-42] 產生比對報表失敗
+[24/12/24 14:16:07][ERROR][services.deployRuleAppService-49] 差異清單和差異報表無法產生！
+[24/12/24 14:16:07][ERROR][services.deployRuleAppService-50] Could not access HTTP invoker remote service at [https://172.16.16.6:9443/decisioncenter/remoting/session?__dcsid=9ac350b73669cab100f96034ed926082]; nested exception is org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+org.springframework.remoting.RemoteAccessException: Could not access HTTP invoker remote service at [https://172.16.16.6:9443/decisioncenter/remoting/session?__dcsid=9ac350b73669cab100f96034ed926082]; nested exception is org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.convertHttpInvokerAccessException(HttpInvokerClientInterceptor.java:231)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.invoke(HttpInvokerClientInterceptor.java:157)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212)
+	at com.sun.proxy.$Proxy146.checkBaselineAccess(Unknown Source)
+	at ilog.rules.teamserver.model.impl.IlrAbstractSession.setWorkingBaseline(IlrAbstractSession.java:1917)
+	at ilog.rules.teamserver.model.impl.IlrAbstractCachingSession.setWorkingBaseline(IlrAbstractCachingSession.java:851)
+	at ilog.rules.teamserver.model.impl.IlrAbstractSession.setWorkingBaseline(IlrAbstractSession.java:1910)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at ilog.rules.teamserver.client.IlrSessionInvocationHandler.invoke(IlrSessionInvocationHandler.java:41)
+	at com.sun.proxy.$Proxy147.setWorkingBaseline(Unknown Source)
+	at baselinesdiff.model.Baseline.setCurrentProject(Baseline.java:107)
+	at baselinesdiff.model.Baseline.<init>(Baseline.java:73)
+	at baselinesdiff.DifferenceBaseline.getActionRule(DifferenceBaseline.java:171)
+	at baselinesdiff.DifferenceBaseline.doMergeProject(DifferenceBaseline.java:109)
+	at services.deployRuleAppService.getRuleApp(deployRuleAppService.java:32)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory.lambda$static$0(ResourceMethodInvocationHandlerFactory.java:52)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:124)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:167)
+	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$ResponseOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:176)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:79)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:469)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:391)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:80)
+	at org.glassfish.jersey.server.ServerRuntime$1.run(ServerRuntime.java:253)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:248)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:244)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:292)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:274)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:244)
+	at org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:265)
+	at org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:232)
+	at org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:680)
+	at org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:394)
+	at org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:346)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:366)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:319)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:651)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:417)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:754)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1376)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:844)
+Caused by: org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+	at org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor.validateResponse(HttpComponentsHttpInvokerRequestExecutor.java:328)
+	at org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor.doExecuteRequest(HttpComponentsHttpInvokerRequestExecutor.java:195)
+	at org.springframework.remoting.httpinvoker.AbstractHttpInvokerRequestExecutor.executeRequest(AbstractHttpInvokerRequestExecutor.java:140)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.executeRequest(HttpInvokerClientInterceptor.java:206)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.executeRequest(HttpInvokerClientInterceptor.java:188)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.invoke(HttpInvokerClientInterceptor.java:154)
+	... 65 more
+[24/12/24 14:36:32][INFO][baselinesdiff.DifferenceBaseline-159] [PPPPPPP] 000000000000000
+[24/12/24 14:36:32][INFO][baselinesdiff.DifferenceBaseline-160] [PPPPPPP] user: rtsAdmin
+[24/12/24 14:36:33][INFO][baselinesdiff.DifferenceBaseline-161] [PPPPPPP] password: rtsAdmin
+[24/12/24 14:36:33][INFO][baselinesdiff.DifferenceBaseline-162] [PPPPPPP] url: https://172.16.16.6:9443/decisioncenter
+[24/12/24 14:36:33][INFO][baselinesdiff.DifferenceBaseline-163] [PPPPPPP] datasource: jdbc/ilogDataSource
+[24/12/24 14:36:33][INFO][org.springframework.context.support.AbstractApplicationContext-588] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@465539d6: startup date [Tue Dec 24 14:36:33 CST 2024]; root of context hierarchy
+[24/12/24 14:36:33][INFO][org.springframework.beans.factory.xml.XmlBeanDefinitionReader-317] Loading XML bean definitions from class path resource [ilog/rules/teamserver/client/client-applicationContext.xml]
+[24/12/24 14:36:34][INFO][baselinesdiff.DifferenceBaseline-169] [PPPPPPP] 1111111111111111
+[24/12/24 14:36:34][INFO][baselinesdiff.DifferenceBaseline-170] false
+[24/12/24 14:36:34][INFO][baselinesdiff.model.Baseline-69] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:36:34][INFO][baselinesdiff.model.Baseline-70] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:36:34][INFO][baselinesdiff.model.Baseline-71] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:36:34][INFO][baselinesdiff.model.Baseline-72] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:36:34][INFO][baselinesdiff.model.Baseline-73] [PPPPP] projectname: ETSRules
+[24/12/24 14:36:34][INFO][baselinesdiff.model.Baseline-74] [PPPPP] baseline: .
+[24/12/24 14:36:34][INFO][baselinesdiff.model.Baseline-75] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:36:34][INFO][baselinesdiff.model.Baseline-76] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:36:34][INFO][baselinesdiff.model.Baseline-77] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:36:34][INFO][baselinesdiff.model.Baseline-78] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:36:34][INFO][baselinesdiff.model.Baseline-79] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:36:34][INFO][org.springframework.context.support.AbstractApplicationContext-588] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@16ff28f2: startup date [Tue Dec 24 14:36:34 CST 2024]; root of context hierarchy
+[24/12/24 14:36:34][INFO][org.springframework.beans.factory.xml.XmlBeanDefinitionReader-317] Loading XML bean definitions from class path resource [ilog/rules/teamserver/client/client-applicationContext.xml]
+[24/12/24 14:36:36][INFO][services.deployRuleAppService-42] 產生比對報表失敗
+[24/12/24 14:36:36][ERROR][services.deployRuleAppService-49] 差異清單和差異報表無法產生！
+[24/12/24 14:36:36][ERROR][services.deployRuleAppService-50] Could not access HTTP invoker remote service at [https://172.16.16.6:9443/decisioncenter/remoting/session?__dcsid=7a051566403fadff9afffc4ae055a987]; nested exception is org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+org.springframework.remoting.RemoteAccessException: Could not access HTTP invoker remote service at [https://172.16.16.6:9443/decisioncenter/remoting/session?__dcsid=7a051566403fadff9afffc4ae055a987]; nested exception is org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.convertHttpInvokerAccessException(HttpInvokerClientInterceptor.java:231)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.invoke(HttpInvokerClientInterceptor.java:157)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212)
+	at com.sun.proxy.$Proxy146.checkBaselineAccess(Unknown Source)
+	at ilog.rules.teamserver.model.impl.IlrAbstractSession.setWorkingBaseline(IlrAbstractSession.java:1917)
+	at ilog.rules.teamserver.model.impl.IlrAbstractCachingSession.setWorkingBaseline(IlrAbstractCachingSession.java:851)
+	at ilog.rules.teamserver.model.impl.IlrAbstractSession.setWorkingBaseline(IlrAbstractSession.java:1910)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at ilog.rules.teamserver.client.IlrSessionInvocationHandler.invoke(IlrSessionInvocationHandler.java:41)
+	at com.sun.proxy.$Proxy147.setWorkingBaseline(Unknown Source)
+	at baselinesdiff.model.Baseline.setCurrentProject(Baseline.java:118)
+	at baselinesdiff.model.Baseline.<init>(Baseline.java:84)
+	at baselinesdiff.DifferenceBaseline.getActionRule(DifferenceBaseline.java:171)
+	at baselinesdiff.DifferenceBaseline.doMergeProject(DifferenceBaseline.java:109)
+	at services.deployRuleAppService.getRuleApp(deployRuleAppService.java:32)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory.lambda$static$0(ResourceMethodInvocationHandlerFactory.java:52)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:124)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:167)
+	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$ResponseOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:176)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:79)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:469)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:391)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:80)
+	at org.glassfish.jersey.server.ServerRuntime$1.run(ServerRuntime.java:253)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:248)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:244)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:292)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:274)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:244)
+	at org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:265)
+	at org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:232)
+	at org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:680)
+	at org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:394)
+	at org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:346)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:366)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:319)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:651)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:417)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:754)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1376)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:844)
+Caused by: org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+	at org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor.validateResponse(HttpComponentsHttpInvokerRequestExecutor.java:328)
+	at org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor.doExecuteRequest(HttpComponentsHttpInvokerRequestExecutor.java:195)
+	at org.springframework.remoting.httpinvoker.AbstractHttpInvokerRequestExecutor.executeRequest(AbstractHttpInvokerRequestExecutor.java:140)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.executeRequest(HttpInvokerClientInterceptor.java:206)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.executeRequest(HttpInvokerClientInterceptor.java:188)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.invoke(HttpInvokerClientInterceptor.java:154)
+	... 65 more
+[24/12/24 14:41:26][INFO][baselinesdiff.DifferenceBaseline-159] [PPPPPPP] 000000000000000
+[24/12/24 14:41:26][INFO][baselinesdiff.DifferenceBaseline-160] [PPPPPPP] user: rtsAdmin
+[24/12/24 14:41:26][INFO][baselinesdiff.DifferenceBaseline-161] [PPPPPPP] password: rtsAdmin
+[24/12/24 14:41:26][INFO][baselinesdiff.DifferenceBaseline-162] [PPPPPPP] url: https://172.16.16.6:9443/decisioncenter
+[24/12/24 14:41:26][INFO][baselinesdiff.DifferenceBaseline-163] [PPPPPPP] datasource: jdbc/ilogDataSource
+[24/12/24 14:41:26][INFO][org.springframework.context.support.AbstractApplicationContext-588] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@3a9b0b83: startup date [Tue Dec 24 14:41:26 CST 2024]; root of context hierarchy
+[24/12/24 14:41:26][INFO][org.springframework.beans.factory.xml.XmlBeanDefinitionReader-317] Loading XML bean definitions from class path resource [ilog/rules/teamserver/client/client-applicationContext.xml]
+[24/12/24 14:41:27][INFO][baselinesdiff.DifferenceBaseline-169] [PPPPPPP] 1111111111111111
+[24/12/24 14:41:27][INFO][baselinesdiff.DifferenceBaseline-170] false
+[24/12/24 14:41:27][INFO][baselinesdiff.model.Baseline-69] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:41:27][INFO][baselinesdiff.model.Baseline-70] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:41:27][INFO][baselinesdiff.model.Baseline-71] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:41:27][INFO][baselinesdiff.model.Baseline-72] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:41:27][INFO][baselinesdiff.model.Baseline-73] [PPPPP] projectname: NBRules
+[24/12/24 14:41:27][INFO][baselinesdiff.model.Baseline-74] [PPPPP] baseline: .
+[24/12/24 14:41:27][INFO][baselinesdiff.model.Baseline-75] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:41:27][INFO][baselinesdiff.model.Baseline-76] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:41:27][INFO][baselinesdiff.model.Baseline-77] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:41:27][INFO][baselinesdiff.model.Baseline-78] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:41:27][INFO][baselinesdiff.model.Baseline-79] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:41:27][INFO][org.springframework.context.support.AbstractApplicationContext-588] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@49874748: startup date [Tue Dec 24 14:41:27 CST 2024]; root of context hierarchy
+[24/12/24 14:41:27][INFO][org.springframework.beans.factory.xml.XmlBeanDefinitionReader-317] Loading XML bean definitions from class path resource [ilog/rules/teamserver/client/client-applicationContext.xml]
+[24/12/24 14:41:27][INFO][services.deployRuleAppService-42] 產生比對報表失敗
+[24/12/24 14:41:27][ERROR][services.deployRuleAppService-49] 差異清單和差異報表無法產生！
+[24/12/24 14:41:27][ERROR][services.deployRuleAppService-50] Could not access HTTP invoker remote service at [https://172.16.16.6:9443/decisioncenter/remoting/session?__dcsid=6488143b80acb89d0c262b5fbe8d6bf2]; nested exception is org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+org.springframework.remoting.RemoteAccessException: Could not access HTTP invoker remote service at [https://172.16.16.6:9443/decisioncenter/remoting/session?__dcsid=6488143b80acb89d0c262b5fbe8d6bf2]; nested exception is org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.convertHttpInvokerAccessException(HttpInvokerClientInterceptor.java:231)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.invoke(HttpInvokerClientInterceptor.java:157)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212)
+	at com.sun.proxy.$Proxy146.checkBaselineAccess(Unknown Source)
+	at ilog.rules.teamserver.model.impl.IlrAbstractSession.setWorkingBaseline(IlrAbstractSession.java:1917)
+	at ilog.rules.teamserver.model.impl.IlrAbstractCachingSession.setWorkingBaseline(IlrAbstractCachingSession.java:851)
+	at ilog.rules.teamserver.model.impl.IlrAbstractSession.setWorkingBaseline(IlrAbstractSession.java:1910)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at ilog.rules.teamserver.client.IlrSessionInvocationHandler.invoke(IlrSessionInvocationHandler.java:41)
+	at com.sun.proxy.$Proxy147.setWorkingBaseline(Unknown Source)
+	at baselinesdiff.model.Baseline.setCurrentProject(Baseline.java:118)
+	at baselinesdiff.model.Baseline.<init>(Baseline.java:84)
+	at baselinesdiff.DifferenceBaseline.getActionRule(DifferenceBaseline.java:171)
+	at baselinesdiff.DifferenceBaseline.doMergeProject(DifferenceBaseline.java:109)
+	at services.deployRuleAppService.getRuleApp(deployRuleAppService.java:32)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory.lambda$static$0(ResourceMethodInvocationHandlerFactory.java:52)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:124)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:167)
+	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$ResponseOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:176)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:79)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:469)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:391)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:80)
+	at org.glassfish.jersey.server.ServerRuntime$1.run(ServerRuntime.java:253)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:248)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:244)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:292)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:274)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:244)
+	at org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:265)
+	at org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:232)
+	at org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:680)
+	at org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:394)
+	at org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:346)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:366)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:319)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:651)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:417)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:754)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1376)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:844)
+Caused by: org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+	at org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor.validateResponse(HttpComponentsHttpInvokerRequestExecutor.java:328)
+	at org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor.doExecuteRequest(HttpComponentsHttpInvokerRequestExecutor.java:195)
+	at org.springframework.remoting.httpinvoker.AbstractHttpInvokerRequestExecutor.executeRequest(AbstractHttpInvokerRequestExecutor.java:140)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.executeRequest(HttpInvokerClientInterceptor.java:206)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.executeRequest(HttpInvokerClientInterceptor.java:188)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.invoke(HttpInvokerClientInterceptor.java:154)
+	... 65 more
+[24/12/24 14:51:10][INFO][baselinesdiff.DifferenceBaseline-159] [PPPPPPP] 000000000000000
+[24/12/24 14:51:10][INFO][baselinesdiff.DifferenceBaseline-160] [PPPPPPP] user: rtsAdmin
+[24/12/24 14:51:10][INFO][baselinesdiff.DifferenceBaseline-161] [PPPPPPP] password: rtsAdmin
+[24/12/24 14:51:10][INFO][baselinesdiff.DifferenceBaseline-162] [PPPPPPP] url: https://172.16.16.6:9443/decisioncenter
+[24/12/24 14:51:10][INFO][baselinesdiff.DifferenceBaseline-163] [PPPPPPP] datasource: jdbc/ilogDataSource
+[24/12/24 14:51:10][INFO][org.springframework.context.support.AbstractApplicationContext-588] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@7a07544: startup date [Tue Dec 24 14:51:10 CST 2024]; root of context hierarchy
+[24/12/24 14:51:10][INFO][org.springframework.beans.factory.xml.XmlBeanDefinitionReader-317] Loading XML bean definitions from class path resource [ilog/rules/teamserver/client/client-applicationContext.xml]
+[24/12/24 14:51:10][INFO][baselinesdiff.DifferenceBaseline-169] [PPPPPPP] 1111111111111111
+[24/12/24 14:51:10][INFO][baselinesdiff.DifferenceBaseline-170] false
+[24/12/24 14:51:10][INFO][baselinesdiff.model.Baseline-69] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:51:10][INFO][baselinesdiff.model.Baseline-70] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:51:10][INFO][baselinesdiff.model.Baseline-71] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:51:10][INFO][baselinesdiff.model.Baseline-72] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:51:10][INFO][baselinesdiff.model.Baseline-73] [PPPPP] projectname: ETSRules
+[24/12/24 14:51:10][INFO][baselinesdiff.model.Baseline-74] [PPPPP] baseline: .
+[24/12/24 14:51:10][INFO][baselinesdiff.model.Baseline-75] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:51:10][INFO][baselinesdiff.model.Baseline-76] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:51:10][INFO][baselinesdiff.model.Baseline-77] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:51:10][INFO][baselinesdiff.model.Baseline-78] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:51:10][INFO][baselinesdiff.model.Baseline-79] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:51:10][INFO][org.springframework.context.support.AbstractApplicationContext-588] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@70f023bf: startup date [Tue Dec 24 14:51:10 CST 2024]; root of context hierarchy
+[24/12/24 14:51:10][INFO][org.springframework.beans.factory.xml.XmlBeanDefinitionReader-317] Loading XML bean definitions from class path resource [ilog/rules/teamserver/client/client-applicationContext.xml]
+[24/12/24 14:51:11][INFO][services.deployRuleAppService-42] 產生比對報表失敗
+[24/12/24 14:51:11][ERROR][services.deployRuleAppService-49] 差異清單和差異報表無法產生！
+[24/12/24 14:51:11][ERROR][services.deployRuleAppService-50] Could not access HTTP invoker remote service at [https://172.16.16.6:9443/decisioncenter/remoting/session?__dcsid=2e24a49151fdcabe62337e6c49b7315d]; nested exception is org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+org.springframework.remoting.RemoteAccessException: Could not access HTTP invoker remote service at [https://172.16.16.6:9443/decisioncenter/remoting/session?__dcsid=2e24a49151fdcabe62337e6c49b7315d]; nested exception is org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.convertHttpInvokerAccessException(HttpInvokerClientInterceptor.java:231)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.invoke(HttpInvokerClientInterceptor.java:157)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212)
+	at com.sun.proxy.$Proxy146.checkBaselineAccess(Unknown Source)
+	at ilog.rules.teamserver.model.impl.IlrAbstractSession.setWorkingBaseline(IlrAbstractSession.java:1917)
+	at ilog.rules.teamserver.model.impl.IlrAbstractCachingSession.setWorkingBaseline(IlrAbstractCachingSession.java:851)
+	at ilog.rules.teamserver.model.impl.IlrAbstractSession.setWorkingBaseline(IlrAbstractSession.java:1910)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at ilog.rules.teamserver.client.IlrSessionInvocationHandler.invoke(IlrSessionInvocationHandler.java:41)
+	at com.sun.proxy.$Proxy147.setWorkingBaseline(Unknown Source)
+	at baselinesdiff.model.Baseline.setCurrentProject(Baseline.java:118)
+	at baselinesdiff.model.Baseline.<init>(Baseline.java:84)
+	at baselinesdiff.DifferenceBaseline.getActionRule(DifferenceBaseline.java:171)
+	at baselinesdiff.DifferenceBaseline.doMergeProject(DifferenceBaseline.java:109)
+	at services.deployRuleAppService.getRuleApp(deployRuleAppService.java:32)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory.lambda$static$0(ResourceMethodInvocationHandlerFactory.java:52)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:124)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:167)
+	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$ResponseOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:176)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:79)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:469)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:391)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:80)
+	at org.glassfish.jersey.server.ServerRuntime$1.run(ServerRuntime.java:253)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:248)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:244)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:292)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:274)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:244)
+	at org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:265)
+	at org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:232)
+	at org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:680)
+	at org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:394)
+	at org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:346)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:366)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:319)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:651)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:417)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:754)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1376)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:844)
+Caused by: org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+	at org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor.validateResponse(HttpComponentsHttpInvokerRequestExecutor.java:328)
+	at org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor.doExecuteRequest(HttpComponentsHttpInvokerRequestExecutor.java:195)
+	at org.springframework.remoting.httpinvoker.AbstractHttpInvokerRequestExecutor.executeRequest(AbstractHttpInvokerRequestExecutor.java:140)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.executeRequest(HttpInvokerClientInterceptor.java:206)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.executeRequest(HttpInvokerClientInterceptor.java:188)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.invoke(HttpInvokerClientInterceptor.java:154)
+	... 65 more
+[24/12/24 14:57:14][INFO][baselinesdiff.DifferenceBaseline-159] [PPPPPPP] 000000000000000
+[24/12/24 14:57:14][INFO][baselinesdiff.DifferenceBaseline-160] [PPPPPPP] user: rtsAdmin
+[24/12/24 14:57:14][INFO][baselinesdiff.DifferenceBaseline-161] [PPPPPPP] password: rtsAdmin
+[24/12/24 14:57:14][INFO][baselinesdiff.DifferenceBaseline-162] [PPPPPPP] url: https://172.16.16.6:9443/decisioncenter
+[24/12/24 14:57:14][INFO][baselinesdiff.DifferenceBaseline-163] [PPPPPPP] datasource: jdbc/ilogDataSource
+[24/12/24 14:57:14][INFO][org.springframework.context.support.AbstractApplicationContext-588] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@591954da: startup date [Tue Dec 24 14:57:14 CST 2024]; root of context hierarchy
+[24/12/24 14:57:14][INFO][org.springframework.beans.factory.xml.XmlBeanDefinitionReader-317] Loading XML bean definitions from class path resource [ilog/rules/teamserver/client/client-applicationContext.xml]
+[24/12/24 14:57:14][INFO][baselinesdiff.DifferenceBaseline-169] [PPPPPPP] 1111111111111111
+[24/12/24 14:57:14][INFO][baselinesdiff.DifferenceBaseline-170] false
+[24/12/24 14:57:14][INFO][baselinesdiff.model.Baseline-69] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:57:14][INFO][baselinesdiff.model.Baseline-70] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:57:14][INFO][baselinesdiff.model.Baseline-71] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:57:14][INFO][baselinesdiff.model.Baseline-72] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:57:14][INFO][baselinesdiff.model.Baseline-73] [PPPPP] projectname: ETSRules
+[24/12/24 14:57:14][INFO][baselinesdiff.model.Baseline-74] [PPPPP] baseline: .
+[24/12/24 14:57:14][INFO][baselinesdiff.model.Baseline-75] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:57:14][INFO][baselinesdiff.model.Baseline-76] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:57:14][INFO][baselinesdiff.model.Baseline-77] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:57:14][INFO][baselinesdiff.model.Baseline-78] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:57:14][INFO][baselinesdiff.model.Baseline-79] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 14:57:14][INFO][org.springframework.context.support.AbstractApplicationContext-588] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@132774d8: startup date [Tue Dec 24 14:57:14 CST 2024]; root of context hierarchy
+[24/12/24 14:57:14][INFO][org.springframework.beans.factory.xml.XmlBeanDefinitionReader-317] Loading XML bean definitions from class path resource [ilog/rules/teamserver/client/client-applicationContext.xml]
+[24/12/24 14:57:15][INFO][services.deployRuleAppService-42] 產生比對報表失敗
+[24/12/24 14:57:15][ERROR][services.deployRuleAppService-49] 差異清單和差異報表無法產生！
+[24/12/24 14:57:15][ERROR][services.deployRuleAppService-50] Could not access HTTP invoker remote service at [https://172.16.16.6:9443/decisioncenter/remoting/session?__dcsid=919807aa568a5770cda3cf8c8e723eeb]; nested exception is org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+org.springframework.remoting.RemoteAccessException: Could not access HTTP invoker remote service at [https://172.16.16.6:9443/decisioncenter/remoting/session?__dcsid=919807aa568a5770cda3cf8c8e723eeb]; nested exception is org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.convertHttpInvokerAccessException(HttpInvokerClientInterceptor.java:231)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.invoke(HttpInvokerClientInterceptor.java:157)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212)
+	at com.sun.proxy.$Proxy146.checkBaselineAccess(Unknown Source)
+	at ilog.rules.teamserver.model.impl.IlrAbstractSession.setWorkingBaseline(IlrAbstractSession.java:1917)
+	at ilog.rules.teamserver.model.impl.IlrAbstractCachingSession.setWorkingBaseline(IlrAbstractCachingSession.java:851)
+	at ilog.rules.teamserver.model.impl.IlrAbstractSession.setWorkingBaseline(IlrAbstractSession.java:1910)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at ilog.rules.teamserver.client.IlrSessionInvocationHandler.invoke(IlrSessionInvocationHandler.java:41)
+	at com.sun.proxy.$Proxy147.setWorkingBaseline(Unknown Source)
+	at baselinesdiff.model.Baseline.setCurrentProject(Baseline.java:118)
+	at baselinesdiff.model.Baseline.<init>(Baseline.java:84)
+	at baselinesdiff.DifferenceBaseline.getActionRule(DifferenceBaseline.java:171)
+	at baselinesdiff.DifferenceBaseline.doMergeProject(DifferenceBaseline.java:109)
+	at services.deployRuleAppService.getRuleApp(deployRuleAppService.java:32)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory.lambda$static$0(ResourceMethodInvocationHandlerFactory.java:52)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:124)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:167)
+	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$ResponseOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:176)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:79)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:469)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:391)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:80)
+	at org.glassfish.jersey.server.ServerRuntime$1.run(ServerRuntime.java:253)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:248)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:244)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:292)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:274)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:244)
+	at org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:265)
+	at org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:232)
+	at org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:680)
+	at org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:394)
+	at org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:346)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:366)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:319)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:651)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:417)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:754)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1376)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:844)
+Caused by: org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+	at org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor.validateResponse(HttpComponentsHttpInvokerRequestExecutor.java:328)
+	at org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor.doExecuteRequest(HttpComponentsHttpInvokerRequestExecutor.java:195)
+	at org.springframework.remoting.httpinvoker.AbstractHttpInvokerRequestExecutor.executeRequest(AbstractHttpInvokerRequestExecutor.java:140)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.executeRequest(HttpInvokerClientInterceptor.java:206)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.executeRequest(HttpInvokerClientInterceptor.java:188)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.invoke(HttpInvokerClientInterceptor.java:154)
+	... 65 more
+[24/12/24 15:01:02][INFO][baselinesdiff.DifferenceBaseline-159] [PPPPPPP] 000000000000000
+[24/12/24 15:01:02][INFO][baselinesdiff.DifferenceBaseline-160] [PPPPPPP] user: rtsAdmin
+[24/12/24 15:01:02][INFO][baselinesdiff.DifferenceBaseline-161] [PPPPPPP] password: rtsAdmin
+[24/12/24 15:01:02][INFO][baselinesdiff.DifferenceBaseline-162] [PPPPPPP] url: https://172.16.16.6:9443/decisioncenter
+[24/12/24 15:01:02][INFO][baselinesdiff.DifferenceBaseline-163] [PPPPPPP] datasource: jdbc/ilogDataSource
+[24/12/24 15:01:02][INFO][org.springframework.context.support.AbstractApplicationContext-588] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@4ea76b92: startup date [Tue Dec 24 15:01:02 CST 2024]; root of context hierarchy
+[24/12/24 15:01:02][INFO][org.springframework.beans.factory.xml.XmlBeanDefinitionReader-317] Loading XML bean definitions from class path resource [ilog/rules/teamserver/client/client-applicationContext.xml]
+[24/12/24 15:01:02][INFO][baselinesdiff.DifferenceBaseline-169] [PPPPPPP] 1111111111111111
+[24/12/24 15:01:02][INFO][baselinesdiff.DifferenceBaseline-170] false
+[24/12/24 15:01:02][INFO][baselinesdiff.model.Baseline-69] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:01:02][INFO][baselinesdiff.model.Baseline-70] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:01:02][INFO][baselinesdiff.model.Baseline-71] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:01:02][INFO][baselinesdiff.model.Baseline-72] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:01:02][INFO][baselinesdiff.model.Baseline-73] [PPPPP] projectname: ETSRules
+[24/12/24 15:01:02][INFO][baselinesdiff.model.Baseline-74] [PPPPP] baseline: .
+[24/12/24 15:01:02][INFO][baselinesdiff.model.Baseline-75] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:01:02][INFO][baselinesdiff.model.Baseline-76] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:01:02][INFO][baselinesdiff.model.Baseline-77] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:01:02][INFO][baselinesdiff.model.Baseline-78] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:01:02][INFO][baselinesdiff.model.Baseline-79] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:01:03][INFO][org.springframework.context.support.AbstractApplicationContext-588] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@b3ed25c: startup date [Tue Dec 24 15:01:03 CST 2024]; root of context hierarchy
+[24/12/24 15:01:03][INFO][org.springframework.beans.factory.xml.XmlBeanDefinitionReader-317] Loading XML bean definitions from class path resource [ilog/rules/teamserver/client/client-applicationContext.xml]
+[24/12/24 15:01:03][INFO][services.deployRuleAppService-42] 產生比對報表失敗
+[24/12/24 15:01:03][ERROR][services.deployRuleAppService-49] 差異清單和差異報表無法產生！
+[24/12/24 15:01:03][ERROR][services.deployRuleAppService-50] Could not access HTTP invoker remote service at [https://172.16.16.6:9443/decisioncenter/remoting/session?__dcsid=6550b10d11fe076cd4346888ab6ec080]; nested exception is org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+org.springframework.remoting.RemoteAccessException: Could not access HTTP invoker remote service at [https://172.16.16.6:9443/decisioncenter/remoting/session?__dcsid=6550b10d11fe076cd4346888ab6ec080]; nested exception is org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.convertHttpInvokerAccessException(HttpInvokerClientInterceptor.java:231)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.invoke(HttpInvokerClientInterceptor.java:157)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212)
+	at com.sun.proxy.$Proxy146.checkBaselineAccess(Unknown Source)
+	at ilog.rules.teamserver.model.impl.IlrAbstractSession.setWorkingBaseline(IlrAbstractSession.java:1917)
+	at ilog.rules.teamserver.model.impl.IlrAbstractCachingSession.setWorkingBaseline(IlrAbstractCachingSession.java:851)
+	at ilog.rules.teamserver.model.impl.IlrAbstractSession.setWorkingBaseline(IlrAbstractSession.java:1910)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at ilog.rules.teamserver.client.IlrSessionInvocationHandler.invoke(IlrSessionInvocationHandler.java:41)
+	at com.sun.proxy.$Proxy147.setWorkingBaseline(Unknown Source)
+	at baselinesdiff.model.Baseline.setCurrentProject(Baseline.java:118)
+	at baselinesdiff.model.Baseline.<init>(Baseline.java:84)
+	at baselinesdiff.DifferenceBaseline.getActionRule(DifferenceBaseline.java:171)
+	at baselinesdiff.DifferenceBaseline.doMergeProject(DifferenceBaseline.java:109)
+	at services.deployRuleAppService.getRuleApp(deployRuleAppService.java:32)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory.lambda$static$0(ResourceMethodInvocationHandlerFactory.java:52)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:124)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:167)
+	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$ResponseOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:176)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:79)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:469)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:391)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:80)
+	at org.glassfish.jersey.server.ServerRuntime$1.run(ServerRuntime.java:253)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:248)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:244)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:292)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:274)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:244)
+	at org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:265)
+	at org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:232)
+	at org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:680)
+	at org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:394)
+	at org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:346)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:366)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:319)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:651)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:417)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:754)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1376)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:844)
+Caused by: org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+	at org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor.validateResponse(HttpComponentsHttpInvokerRequestExecutor.java:328)
+	at org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor.doExecuteRequest(HttpComponentsHttpInvokerRequestExecutor.java:195)
+	at org.springframework.remoting.httpinvoker.AbstractHttpInvokerRequestExecutor.executeRequest(AbstractHttpInvokerRequestExecutor.java:140)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.executeRequest(HttpInvokerClientInterceptor.java:206)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.executeRequest(HttpInvokerClientInterceptor.java:188)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.invoke(HttpInvokerClientInterceptor.java:154)
+	... 65 more
+[24/12/24 15:04:57][INFO][baselinesdiff.DifferenceBaseline-159] [PPPPPPP] 000000000000000
+[24/12/24 15:04:57][INFO][baselinesdiff.DifferenceBaseline-160] [PPPPPPP] user: rtsAdmin
+[24/12/24 15:04:57][INFO][baselinesdiff.DifferenceBaseline-161] [PPPPPPP] password: rtsAdmin
+[24/12/24 15:04:57][INFO][baselinesdiff.DifferenceBaseline-162] [PPPPPPP] url: https://172.16.16.6:9443/decisioncenter
+[24/12/24 15:04:57][INFO][baselinesdiff.DifferenceBaseline-163] [PPPPPPP] datasource: jdbc/ilogDataSource
+[24/12/24 15:04:57][INFO][org.springframework.context.support.AbstractApplicationContext-588] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@239138b6: startup date [Tue Dec 24 15:04:57 CST 2024]; root of context hierarchy
+[24/12/24 15:04:57][INFO][org.springframework.beans.factory.xml.XmlBeanDefinitionReader-317] Loading XML bean definitions from class path resource [ilog/rules/teamserver/client/client-applicationContext.xml]
+[24/12/24 15:04:58][INFO][baselinesdiff.DifferenceBaseline-169] [PPPPPPP] 1111111111111111
+[24/12/24 15:04:58][INFO][baselinesdiff.DifferenceBaseline-170] false
+[24/12/24 15:04:58][INFO][baselinesdiff.model.Baseline-69] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:04:58][INFO][baselinesdiff.model.Baseline-70] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:04:58][INFO][baselinesdiff.model.Baseline-71] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:04:58][INFO][baselinesdiff.model.Baseline-72] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:04:58][INFO][baselinesdiff.model.Baseline-73] [PPPPP] projectname: NBRules
+[24/12/24 15:04:58][INFO][baselinesdiff.model.Baseline-74] [PPPPP] baseline: .
+[24/12/24 15:04:58][INFO][baselinesdiff.model.Baseline-75] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:04:58][INFO][baselinesdiff.model.Baseline-76] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:04:58][INFO][baselinesdiff.model.Baseline-77] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:04:58][INFO][baselinesdiff.model.Baseline-78] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:04:58][INFO][baselinesdiff.model.Baseline-79] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:04:58][INFO][org.springframework.context.support.AbstractApplicationContext-588] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@3882c04d: startup date [Tue Dec 24 15:04:58 CST 2024]; root of context hierarchy
+[24/12/24 15:04:58][INFO][org.springframework.beans.factory.xml.XmlBeanDefinitionReader-317] Loading XML bean definitions from class path resource [ilog/rules/teamserver/client/client-applicationContext.xml]
+[24/12/24 15:04:58][INFO][services.deployRuleAppService-42] 產生比對報表失敗
+[24/12/24 15:04:58][ERROR][services.deployRuleAppService-49] 差異清單和差異報表無法產生！
+[24/12/24 15:04:58][ERROR][services.deployRuleAppService-50] Could not access HTTP invoker remote service at [https://172.16.16.6:9443/decisioncenter/remoting/session?__dcsid=b26b885b6e5eb3d18806e4ea6126d234]; nested exception is org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+org.springframework.remoting.RemoteAccessException: Could not access HTTP invoker remote service at [https://172.16.16.6:9443/decisioncenter/remoting/session?__dcsid=b26b885b6e5eb3d18806e4ea6126d234]; nested exception is org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.convertHttpInvokerAccessException(HttpInvokerClientInterceptor.java:231)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.invoke(HttpInvokerClientInterceptor.java:157)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212)
+	at com.sun.proxy.$Proxy146.checkBaselineAccess(Unknown Source)
+	at ilog.rules.teamserver.model.impl.IlrAbstractSession.setWorkingBaseline(IlrAbstractSession.java:1917)
+	at ilog.rules.teamserver.model.impl.IlrAbstractCachingSession.setWorkingBaseline(IlrAbstractCachingSession.java:851)
+	at ilog.rules.teamserver.model.impl.IlrAbstractSession.setWorkingBaseline(IlrAbstractSession.java:1910)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at ilog.rules.teamserver.client.IlrSessionInvocationHandler.invoke(IlrSessionInvocationHandler.java:41)
+	at com.sun.proxy.$Proxy147.setWorkingBaseline(Unknown Source)
+	at baselinesdiff.model.Baseline.setCurrentProject(Baseline.java:118)
+	at baselinesdiff.model.Baseline.<init>(Baseline.java:84)
+	at baselinesdiff.DifferenceBaseline.getActionRule(DifferenceBaseline.java:171)
+	at baselinesdiff.DifferenceBaseline.doMergeProject(DifferenceBaseline.java:109)
+	at services.deployRuleAppService.getRuleApp(deployRuleAppService.java:32)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory.lambda$static$0(ResourceMethodInvocationHandlerFactory.java:52)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:124)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:167)
+	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$ResponseOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:176)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:79)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:469)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:391)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:80)
+	at org.glassfish.jersey.server.ServerRuntime$1.run(ServerRuntime.java:253)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:248)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:244)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:292)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:274)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:244)
+	at org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:265)
+	at org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:232)
+	at org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:680)
+	at org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:394)
+	at org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:346)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:366)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:319)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:651)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:417)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:754)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1376)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:844)
+Caused by: org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+	at org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor.validateResponse(HttpComponentsHttpInvokerRequestExecutor.java:328)
+	at org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor.doExecuteRequest(HttpComponentsHttpInvokerRequestExecutor.java:195)
+	at org.springframework.remoting.httpinvoker.AbstractHttpInvokerRequestExecutor.executeRequest(AbstractHttpInvokerRequestExecutor.java:140)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.executeRequest(HttpInvokerClientInterceptor.java:206)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.executeRequest(HttpInvokerClientInterceptor.java:188)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.invoke(HttpInvokerClientInterceptor.java:154)
+	... 65 more
+[24/12/24 15:14:33][INFO][baselinesdiff.DifferenceBaseline-159] [PPPPPPP] 000000000000000
+[24/12/24 15:14:33][INFO][baselinesdiff.DifferenceBaseline-160] [PPPPPPP] user: rtsAdmin
+[24/12/24 15:14:33][INFO][baselinesdiff.DifferenceBaseline-161] [PPPPPPP] password: rtsAdmin
+[24/12/24 15:14:33][INFO][baselinesdiff.DifferenceBaseline-162] [PPPPPPP] url: https://172.16.16.6:9443/decisioncenter
+[24/12/24 15:14:33][INFO][baselinesdiff.DifferenceBaseline-163] [PPPPPPP] datasource: jdbc/ilogDataSource
+[24/12/24 15:14:33][INFO][org.springframework.context.support.AbstractApplicationContext-588] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@6e8c523d: startup date [Tue Dec 24 15:14:33 CST 2024]; root of context hierarchy
+[24/12/24 15:14:33][INFO][org.springframework.beans.factory.xml.XmlBeanDefinitionReader-317] Loading XML bean definitions from class path resource [ilog/rules/teamserver/client/client-applicationContext.xml]
+[24/12/24 15:14:34][INFO][baselinesdiff.DifferenceBaseline-169] [PPPPPPP] 1111111111111111
+[24/12/24 15:14:34][INFO][baselinesdiff.DifferenceBaseline-170] false
+[24/12/24 15:14:34][INFO][baselinesdiff.model.Baseline-69] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:14:34][INFO][baselinesdiff.model.Baseline-70] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:14:34][INFO][baselinesdiff.model.Baseline-71] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:14:34][INFO][baselinesdiff.model.Baseline-72] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:14:34][INFO][baselinesdiff.model.Baseline-73] [PPPPP] projectname: ETSRules
+[24/12/24 15:14:34][INFO][baselinesdiff.model.Baseline-74] [PPPPP] baseline: .
+[24/12/24 15:14:34][INFO][baselinesdiff.model.Baseline-75] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:14:34][INFO][baselinesdiff.model.Baseline-76] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:14:34][INFO][baselinesdiff.model.Baseline-77] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:14:34][INFO][baselinesdiff.model.Baseline-78] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:14:34][INFO][baselinesdiff.model.Baseline-79] BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+[24/12/24 15:14:34][INFO][org.springframework.context.support.AbstractApplicationContext-588] Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@2f8d320f: startup date [Tue Dec 24 15:14:34 CST 2024]; root of context hierarchy
+[24/12/24 15:14:34][INFO][org.springframework.beans.factory.xml.XmlBeanDefinitionReader-317] Loading XML bean definitions from class path resource [ilog/rules/teamserver/client/client-applicationContext.xml]
+[24/12/24 15:14:35][INFO][services.deployRuleAppService-42] 產生比對報表失敗
+[24/12/24 15:14:35][ERROR][services.deployRuleAppService-49] 差異清單和差異報表無法產生！
+[24/12/24 15:14:35][ERROR][services.deployRuleAppService-50] Could not access HTTP invoker remote service at [https://172.16.16.6:9443/decisioncenter/remoting/session?__dcsid=a342e18eb85d47a8aaf0d0c7cb2dd4dc]; nested exception is org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+org.springframework.remoting.RemoteAccessException: Could not access HTTP invoker remote service at [https://172.16.16.6:9443/decisioncenter/remoting/session?__dcsid=a342e18eb85d47a8aaf0d0c7cb2dd4dc]; nested exception is org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.convertHttpInvokerAccessException(HttpInvokerClientInterceptor.java:231)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.invoke(HttpInvokerClientInterceptor.java:157)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212)
+	at com.sun.proxy.$Proxy146.checkBaselineAccess(Unknown Source)
+	at ilog.rules.teamserver.model.impl.IlrAbstractSession.setWorkingBaseline(IlrAbstractSession.java:1917)
+	at ilog.rules.teamserver.model.impl.IlrAbstractCachingSession.setWorkingBaseline(IlrAbstractCachingSession.java:851)
+	at ilog.rules.teamserver.model.impl.IlrAbstractSession.setWorkingBaseline(IlrAbstractSession.java:1910)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at ilog.rules.teamserver.client.IlrSessionInvocationHandler.invoke(IlrSessionInvocationHandler.java:41)
+	at com.sun.proxy.$Proxy147.setWorkingBaseline(Unknown Source)
+	at baselinesdiff.model.Baseline.setCurrentProject(Baseline.java:118)
+	at baselinesdiff.model.Baseline.<init>(Baseline.java:84)
+	at baselinesdiff.DifferenceBaseline.getActionRule(DifferenceBaseline.java:171)
+	at baselinesdiff.DifferenceBaseline.doMergeProject(DifferenceBaseline.java:109)
+	at services.deployRuleAppService.getRuleApp(deployRuleAppService.java:32)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory.lambda$static$0(ResourceMethodInvocationHandlerFactory.java:52)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:124)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:167)
+	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$ResponseOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:176)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:79)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:469)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:391)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:80)
+	at org.glassfish.jersey.server.ServerRuntime$1.run(ServerRuntime.java:253)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:248)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:244)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:292)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:274)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:244)
+	at org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:265)
+	at org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:232)
+	at org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:680)
+	at org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:394)
+	at org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:346)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:366)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:319)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:651)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:417)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:754)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1376)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:844)
+Caused by: org.apache.http.NoHttpResponseException: Did not receive successful HTTP response: status code = 500, status message = [Internal Server Error]
+	at org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor.validateResponse(HttpComponentsHttpInvokerRequestExecutor.java:328)
+	at org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor.doExecuteRequest(HttpComponentsHttpInvokerRequestExecutor.java:195)
+	at org.springframework.remoting.httpinvoker.AbstractHttpInvokerRequestExecutor.executeRequest(AbstractHttpInvokerRequestExecutor.java:140)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.executeRequest(HttpInvokerClientInterceptor.java:206)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.executeRequest(HttpInvokerClientInterceptor.java:188)
+	at org.springframework.remoting.httpinvoker.HttpInvokerClientInterceptor.invoke(HttpInvokerClientInterceptor.java:154)
+	... 65 more
